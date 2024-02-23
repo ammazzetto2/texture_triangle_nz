@@ -1,0 +1,75 @@
+---
+title: "NZ Texture Triangle"
+author: "Andre Mazzetto"
+date: "2024-02-23"
+output: html_document
+---
+
+# Intro
+
+# Load packages
+
+```{r}
+
+library(ggtern)
+library(dplyr)
+
+```
+
+# Define polygons
+
+```{r}
+
+g <- data.frame(y=c(1,0,0),
+                x=c(0,1,.4),
+                z=c(0,0,.6),         
+                series="Green",
+                label = "A")
+
+p <- data.frame(y=c(1,0.475,0.6),
+                x=c(0,0.210,0),
+                z=c(0,0.315,.4),         
+                series="Red",
+                label="B")
+
+q <- data.frame(y=c(0.575,0.475,0.0,0.0),
+                x=c(0.040,0.210,0.4,0.1),
+                z=c(0.385,0.315,0.6,0.9),         
+                series="Yellow",
+                label="C")
+
+f <- data.frame(y=c(0.6,0.575,0.0,0.0),
+                x=c(0.0,0.040,0.1,0.0),
+                z=c(0.4,0.385,0.9,1.0),         
+                series="Blue",
+                label="D")
+
+data = rbind(g, p, q, f)
+
+```
+
+# Print triangle
+
+```{r}
+
+ggplot(data = data, aes(
+  y = y,
+  x = x,
+  z = z
+)) +
+  coord_tern(L = "x", T = "y", R = "z")  +
+  geom_polygon(  #<<
+    aes(fill = series),  #<<
+    alpha = 0.0,  #<<
+    size = 0.5,  #<<
+    color = "black"  #<<
+  )   +
+  theme_showarrows() +
+  theme_clockwise() +
+  theme(text = element_text(family = "Helvetica")) +
+  guides(fill=FALSE, color=FALSE)  #<<
+
+
+
+
+```
