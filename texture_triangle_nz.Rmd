@@ -7,18 +7,19 @@ output: html_document
 
 # Intro
 
-# Load packages
+# Load basic packages
 
 ```{r}
 
-library(ggtern)
 library(dplyr)
 
 ```
 
-# Define polygons
+# Option 1
 
 ```{r}
+
+library(ggtern)
 
 g <- data.frame(y=c(1,0,0),
                 x=c(0,1,.4),
@@ -46,12 +47,6 @@ f <- data.frame(y=c(0.6,0.575,0.0,0.0),
 
 data = rbind(g, p, q, f)
 
-```
-
-# Print triangle
-
-```{r}
-
 ggplot(data = data, aes(
   y = y,
   x = x,
@@ -70,6 +65,228 @@ ggplot(data = data, aes(
   guides(fill=FALSE, color=FALSE)  #<<
 
 
+```
+
+# Option 2
+
+```{r}
+
+g <- data.frame(y=c(1,0,0),
+                x=c(0,1,.4),
+                z=c(0,0,.6),         Series="Green")
+
+p <- data.frame(y=c(1,0.475,0.6),
+                x=c(0,0.210,0),
+                z=c(0,0.315,.4),         Series="Red")
+
+q <- data.frame(y=c(0.575,0.475,0.0,0.0),
+                x=c(0.040,0.210,0.4,0.1),
+                z=c(0.385,0.315,0.6,0.9),         Series="Yellow")
+
+f <- data.frame(y=c(0.6,0.575,0.0,0.0),
+                x=c(0.0,0.040,0.1,0.0),
+                z=c(0.4,0.385,0.9,1.0),         Series="Blue")
+
+DATA = rbind(g, p, q, f)
+ggtern(data=DATA,aes(x,y,z)) + 
+  geom_polygon(aes(fill=Series),alpha=.5,color="black",size=0.25) +
+  scale_fill_manual(values=as.character(unique(DATA$Series))) +
+  theme(legend.position=c(0,1),legend.justification=c(0,1)) + 
+  labs(fill="Region",title="Sample Filled Regions")
 
 
 ```
+
+# Option 3
+
+```{r}
+
+library (Ternary)
+
+TernaryPlot(
+  atip = "A", btip = "B", ctip = "C",
+  alab = "Aness", blab = "Bness", clab = "Cness",
+  lab.col = c("red", "darkgreen", "blue")
+  )
+
+# Add data points
+data_points <- list(
+  R = c(255, 0, 0), 
+  O = c(240, 180, 52),
+  Y = c(210, 222, 102),
+  G = c(111, 222, 16),
+  B = c(25, 160, 243),
+  I = c(92, 12, 243),
+  V = c(225, 24, 208)
+)
+
+AddToTernary(graphics::points, data_points, pch = 21, cex = 2.8, 
+             bg = vapply(data_points, 
+                         function (x) rgb(x[1], x[2], x[3], 128,
+                                          maxColorValue = 255),
+                         character(1))
+             )
+
+AddToTernary(text, data_points, names(data_points), cex = 0.8, font = 2)
+legend("topright", 
+       legend = c("Red", "Orange", "Yellow", "Green"),
+       cex = 0.8, bty = "n", pch = 21, pt.cex = 1.8,
+       pt.bg = c(rgb(255,   0,   0, 128, NULL, 255), 
+                 rgb(240, 180,  52, 128, NULL, 255),
+                 rgb(210, 222, 102, 128, NULL, 255),
+                 rgb(111, 222,  16, 128, NULL, 255)),
+       )
+
+```
+
+# Option 4
+
+```{r}
+
+library(Ternary)
+
+# Define points corresponding to corners of a region to plot
+my_corners <- list(c(22, 66, 12), c(22, 72, 6), c(15, 80, 5), c(12, 76, 12))
+
+# Remove plot margins
+par(mar = rep(0, 4))
+
+# Create clipped plotting area
+TernaryPlot()
+
+# Plot desired polygon
+TernaryPolygon(my_corners, col = "#2cbe4e88")
+
+# Add data points
+data_points <- list(
+  R = c(255, 0, 0), 
+  O = c(240, 180, 52),
+  Y = c(210, 222, 102),
+  G = c(111, 222, 16),
+  B = c(25, 160, 243),
+  I = c(92, 12, 243),
+  V = c(225, 24, 208)
+)
+
+AddToTernary(graphics::points, data_points, pch = 21, cex = 2.8, 
+             bg = vapply(data_points, 
+                         function (x) rgb(x[1], x[2], x[3], 128,
+                                          maxColorValue = 255),
+                         character(1))
+             )
+
+AddToTernary(text, data_points, names(data_points), cex = 0.8, font = 2)
+legend("topright", 
+       legend = c("Red", "Orange", "Yellow", "Green"),
+       cex = 0.8, bty = "n", pch = 21, pt.cex = 1.8,
+       pt.bg = c(rgb(255,   0,   0, 128, NULL, 255), 
+                 rgb(240, 180,  52, 128, NULL, 255),
+                 rgb(210, 222, 102, 128, NULL, 255),
+                 rgb(111, 222,  16, 128, NULL, 255)),
+       )
+
+```
+
+# Option 5
+
+```{r}
+
+library(Ternary)
+
+my_corners_2 <- list(c(100,0,0),
+                     c(55,45,0),
+                     c(40,45,15),
+                     c(40,20,40),
+                     c(60,0,40)
+)
+
+# Remove plot margins
+par(mar = rep(0, 4))
+
+# Create clipped plotting area
+TernaryPlot()
+
+# Plot desired polygon
+TernaryPolygon(my_corners_2, col = "#2cbe4e88")
+
+```
+
+# Option 5
+
+```{r}
+
+library(Ternary)
+
+my_corners_2 <- list(c(100,0,0),
+                     c(55,45,0),
+                     c(40,45,15),
+                     c(40,20,40),
+                     c(60,0,40),
+                     c(55,45,0),
+                     c(35,65,0),
+                     c(35,45,20)
+)
+# Remove plot margins
+par(mar = rep(0, 4))
+
+# Create clipped plotting area
+TernaryPlot()
+
+# Plot desired polygon
+TernaryPolygon(my_corners_2, col = "#2cbe4e88")
+
+```
+
+# Option 6
+
+```{r}
+
+library(ggtern)
+library(dplyr)
+library(ggplot2)
+
+data <- data.frame (Clay=c(1,0.55,0.40,0.40,0.60,0.55,0.35,0.35),
+                    Sand=c(0,0.45,0.45,0.20,0,0.45,0.65,0.45),
+                    Silt=c(0,0,0.15,0.40,0.40,0,0,0.20),
+                    Label=c("Clay","Clay","Clay","Clay","Clay", "Sandy Clay","Sandy Clay","Sandy Clay"),
+                    Colour=c("green","green","green","green","green","yellow","yellow","yellow")
+)
+
+data_text <- data  %>% group_by(Label) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+
+soil_data <- data.frame(
+  soil= c("a", "b", "c", "d"),
+  sand = c(15, 18, 57, 32),
+  silt = c(52, 70, 8, 26),
+  clay = c(33, 12, 35, 42)
+)
+
+ggplot(data = data, aes(
+  y = Clay,
+  x = Sand,
+  z = Silt
+)) +
+  coord_tern(L = "x", T = "y", R = "z") +
+    geom_polygon(
+    aes(fill = Label),
+    alpha = 0.5,
+    size = 0.5, 
+    color = "black" 
+    ) +
+  geom_text(data = data_text, 
+            aes(label = Label), 
+            color = 'black',
+            size = 2)   +
+  geom_point(  #<<
+    data = soil_data,
+    aes(x = sand,
+      y = clay, 
+      z = silt
+    )  
+  ) +
+  scale_fill_manual(values = c("green", "yellow")) + 
+  theme_showarrows() +
+  theme_clockwise() 
+```
+
