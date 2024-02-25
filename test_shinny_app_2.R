@@ -1,12 +1,10 @@
-############################################ Packages
-
 # Required Libraries
 library(shiny)
 library(ggplot2)
 library(ggtern)
+library(dplyr)
 
-############################################ Base data
-
+# Base data
 nz_data <- data.frame (Clay=c(1,0.6,0.6,
                               0.6,0.6,0.35,0.35,
                               0.6,0.6,0.35,0.35,
@@ -46,7 +44,7 @@ nz_data <- data.frame (Clay=c(1,0.6,0.6,
                        Label=c("Clay","Clay","Clay",
                                "Loamy Clay","Loamy Clay","Loamy Clay","Loamy Clay",
                                "Silt Clay","Silt Clay","Silt Clay","Silt Clay",
-                               "Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam",
+                               "Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam",
                                "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
                                "Silt Loam","Silt Loam","Silt Loam","Silt Loam",
                                "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
@@ -59,30 +57,48 @@ nz_data <- data.frame (Clay=c(1,0.6,0.6,
 data_text <- nz_data  %>% group_by(Label) %>%
   summarise_if(is.numeric, mean, na.rm = TRUE)
 
-############################################ Shinny app
-
 # Define UI
 ui <- fluidPage(
   tags$head(
-    tags$style(HTML("#ternaryPlot { margin: 0px; }"))  # Adjust margin here
+    tags$style(HTML("#ternaryPlot { margin: 0px; } 
+                    .nav-tabs > li {
+                      display: inline-block;
+                    }
+                    .readme-text {
+                      padding-top: 20px;
+                    }"))  # Adjust margin, tab display, and padding here
   ),
-  titlePanel("Ternary Plot in Shiny"),
+  titlePanel("Soil Texture Triangle - NZ classification"),
   sidebarLayout(
     sidebarPanel(
-      style = "width: 220px;",  # Adjust the width here
-      # Manual data entry section
-      textInput("sampleName", "Sample Name"),
-      numericInput("sandValue", "Sand", value = 50, min = 0, max = 100),
-      numericInput("siltValue", "Silt", value = 25, min = 0, max = 100),
-      numericInput("clayValue", "Clay", value = 25, min = 0, max = 100),
-      actionButton("addManualDataBtn", "Add Data"),
-      
-      # Upload CSV section
-      fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
-      
-      # Buttons to clear data and download
-      actionButton("clearDataBtn", "Clear Data"),
-      downloadButton("downloadDataBtn", "Download Data")
+      style = "width: 400px;",  # Adjust the width here
+      tabsetPanel(
+        tabPanel("Read Me",
+                 # Read Me section with padding
+                 div(class = "readme-text",
+                     p("This is a generic Read Me text. You can replace it with your own content.")
+                 )
+        ),
+        tabPanel("Manual Entry",
+                 # Manual data entry section
+                 textInput("sampleName", "Sample Name"),
+                 numericInput("sandValue", "Sand", value = 50, min = 0, max = 100),
+                 numericInput("siltValue", "Silt", value = 25, min = 0, max = 100),
+                 numericInput("clayValue", "Clay", value = 25, min = 0, max = 100),
+                 actionButton("addManualDataBtn", "Add Data"),
+                 br(),
+                 actionButton("clearDataBtn_manual", "Clear Data"),
+                 downloadButton("downloadDataBtn_manual", "Download Data")
+        ),
+        tabPanel("Upload CSV",
+                 # Upload CSV section
+                 fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
+                 downloadButton("downloadTemplateBtn", "Download Template CSV"),
+                 br(),
+                 actionButton("clearDataBtn_upload", "Clear Data"),
+                 downloadButton("downloadDataBtn_upload", "Download Data")
+        )
+      )
     ),
     mainPanel(
       # Output: Ternary Plot
@@ -90,7 +106,6 @@ ui <- fluidPage(
     )
   )
 )
-
 
 # Define server logic
 server <- function(input, output) {
@@ -105,19 +120,27 @@ server <- function(input, output) {
   
   # Update data with manual input
   observeEvent(input$addManualDataBtn, {
-    newSample <- data.frame(
-      soil = input$sampleName,
-      sand = input$sandValue,
-      silt = input$siltValue,
-      clay = input$clayValue
-    )
-    current_data <- soil_data()
-    new_data <- rbind(current_data, newSample)
-    soil_data(new_data)
+    # Check if the sum of sand, silt, and clay is equal to 100
+    if (input$sandValue + input$siltValue + input$clayValue != 100) {
+      showModal(modalDialog(
+        title = "Error",
+        "The sum of Clay, Silt, and Sand must be equal to 100%"
+      ))
+    } else {
+      newSample <- data.frame(
+        soil = input$sampleName,
+        sand = input$sandValue,
+        silt = input$siltValue,
+        clay = input$clayValue
+      )
+      current_data <- soil_data()
+      new_data <- rbind(current_data, newSample)
+      soil_data(new_data)
+    }
   })
   
-  # Clear data
-  observeEvent(input$clearDataBtn, {
+  # Clear data (manual entry)
+  observeEvent(input$clearDataBtn_manual, {
     soil_data(data.frame(
       soil = character(),
       sand = numeric(),
@@ -126,13 +149,51 @@ server <- function(input, output) {
     ))
   })
   
-  # Download data as CSV
-  output$downloadDataBtn <- downloadHandler(
+  # Clear data (upload)
+  observeEvent(input$clearDataBtn_upload, {
+    soil_data(data.frame(
+      soil = character(),
+      sand = numeric(),
+      silt = numeric(),
+      clay = numeric()
+    ))
+  })
+  
+  # Download data as CSV (manual entry)
+  output$downloadDataBtn_manual <- downloadHandler(
     filename = function() {
-      paste("soil_data", ".csv", sep = "")
+      paste("soil_data_manual", ".csv", sep = "")
     },
     content = function(file) {
       write.csv(soil_data(), file, row.names = FALSE)
+    }
+  )
+  
+  # Download data as CSV (upload)
+  output$downloadDataBtn_upload <- downloadHandler(
+    filename = function() {
+      paste("soil_data_upload", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(soil_data(), file, row.names = FALSE)
+    }
+  )
+  
+  # Download template CSV
+  output$downloadTemplateBtn <- downloadHandler(
+    filename = function() {
+      "template_soil_data.csv"
+    },
+    content = function(file) {
+      # Create a template dataframe with headers
+      template_data <- data.frame(
+        soil = character(),
+        sand = numeric(),
+        silt = numeric(),
+        clay = numeric()
+      )
+      # Write to CSV
+      write.csv(template_data, file, row.names = FALSE)
     }
   )
   
@@ -141,7 +202,16 @@ server <- function(input, output) {
     inFile <- input$fileUpload
     if (!is.null(inFile)) {
       data <- read.csv(inFile$datapath)
-      soil_data(data)
+      # Check if the sum of sand, silt, and clay exceeds 100 in any row
+      invalid_rows <- which(rowSums(data[, c("sand", "silt", "clay")]) > 100)
+      if (length(invalid_rows) > 0) {
+        showModal(modalDialog(
+          title = "Error",
+          paste("The sum of Sand, Silt, and Clay exceeds 100% in rows:", paste(invalid_rows, collapse = ", "))
+        ))
+      } else {
+        soil_data(data)
+      }
     }
   })
   
@@ -157,20 +227,34 @@ server <- function(input, output) {
       geom_polygon(
         aes(fill = Label),
         alpha = 0.4,
-        size = 0.1, 
+        size = 0.5, 
         color = "black" 
       ) +
       geom_text(data = data_text, 
                 aes(label = Label), 
                 color = 'black',
-                size = 4)   +
+                size = 5)   +
       geom_point(
         data = soil_data(),
         aes(x = sand,
             y = clay, 
             z = silt
-        ), size=5 
+        ), size=5, color="red" 
       ) +
+      geom_text(
+        data = soil_data(),
+        aes(x = sand,
+            y = clay, 
+            z = silt,
+            label = soil),
+        color = 'red',
+        size = 4,
+        hjust=-1
+      ) +
+      theme_custom(base_size = 20,
+                   col.T = "black",
+                   col.L = "black",
+                   col.R = "black") +
       theme_showarrows() +
       theme_arrowcustomlength(.35, .65) +
       theme_anticlockwise() +
@@ -178,7 +262,13 @@ server <- function(input, output) {
       scale_L_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1))+
       scale_R_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1)) +
       theme_mesh(n = 10)+
-      theme(legend.position = "none") 
+      theme(legend.position = "none")  + 
+      labs( x       = "",
+            xarrow  = "Sand",
+            y       = "",
+            yarrow  = "Clay",
+            z       = "",
+            zarrow  = "Silt")
     
     print(p)
   })

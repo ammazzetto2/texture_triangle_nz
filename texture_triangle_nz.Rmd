@@ -7,17 +7,128 @@ output: html_document
 
 # Intro
 
-# Load basic packages
-
-```{r}
-
-library(dplyr)
-
-```
 # Working version
 
 ```{r}
 
+library(ggtern)
+library(dplyr)
+library(ggplot2)
+
+nz_data <- data.frame (Clay=c(1,0.6,0.6,
+                              0.6,0.6,0.35,0.35,
+                              0.6,0.6,0.35,0.35,
+                              0.35,0.35,0.18,0.18,
+                              0.35,0.35,0.18,0.18,
+                              0.35,0.35,0.18,0.18,
+                              0.18,0.18,0.08,0.08,
+                              0.08,0.08,0,0,
+                              0.08,0.08,0,0,
+                              0.18,0.18,0,0,
+                              0,0.18,0),
+                       
+                    Sand=c(0,0.40,0,
+                           0.1,0.4,0.65,0.35,
+                           0,0.1,0.35,0,
+                           0.50,0.65,0.82,0.67,
+                           0.25,0.50,0.67,0.42,
+                           0,0.25,0.42,0,
+                           0.42,0.82,0.92,0.52,
+                           0.80,0.92,1,0.80,
+                           0.52,0.8,0.8,0.6,
+                           0,0.42,0.60,0.18,
+                           0,0,0.18),
+                    
+                    Silt=c(0,0,0.40,
+                           0.3,0,0,0.30,
+                           0.4,0.3,0.3,0.65,
+                           0.15,0,0,0.15,
+                           0.40,0.15,0.15,0.40,
+                           0.65,0.40,0.40,0.82,
+                           0.40,0,0,0.40,
+                           0.12,0,0,0.20,
+                           0.4,0.12,0.20,0.4,
+                           0.82,0.4,0.4,0.82,
+                           1,0.82,0.82),
+                    
+                    Label=c("Clay","Clay","Clay",
+                            "Loamy Clay","Loamy Clay","Loamy Clay","Loamy Clay",
+                            "Silt Clay","Silt Clay","Silt Clay","Silt Clay",
+                            "Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam",
+                            "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
+                            "Silt Loam","Silt Loam","Silt Loam","Silt Loam",
+                            "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
+                            "Sand","Sand","Sand","Sand",
+                            "Loamy Sand","Loamy Sand","Loamy Sand","Loamy Sand",
+                            "Loamy Silt","Loamy Silt","Loamy Silt","Loamy Silt",
+                            "Silt","Silt","Silt")
+)
+
+# Manually select colors for each polygon
+polygon_colors <- c("blue", "green", "red", "orange", "yellow", "purple", "cyan", "magenta", "pink", "brown", "gray")
+
+
+data_text <- nz_data  %>% group_by(Label) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE)
+
+soil_data <- data.frame(
+  soil= c("a"),
+  sand = c(50),
+  silt = c(25),
+  clay = c(25)
+)
+
+ggplot(data = nz_data, aes(
+  y = Clay,
+  x = Sand,
+  z = Silt
+)) +
+  coord_tern(L = "x", T = "y", R = "z") +
+    geom_polygon(
+    aes(fill = Label),
+    alpha = 0.4,
+    size = 0.1, 
+    color = "black" 
+    ) +
+  scale_fill_manual(values = polygon_colors) +  # Manually set fill colors
+  geom_text(data = data_text, 
+            aes(label = Label), 
+            color = 'black',
+            size = 4)   +
+  geom_point(
+        data = soil_data,
+        aes(x = sand,
+            y = clay, 
+            z = silt
+        ), size=5, color="red" 
+      ) +
+      geom_text(
+        data = soil_data,
+        aes(x = sand,
+            y = clay, 
+            z = silt,
+            label = soil),
+        color = 'red',
+        size = 4,
+        hjust=-1
+      ) +
+  theme_custom(base_size = 20,
+col.T = "black",
+col.L = "black",
+col.R = "black") +
+  theme_showarrows() +
+  theme_arrowcustomlength(.35,.65)+
+  theme_anticlockwise() +
+  scale_T_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1))+
+  scale_L_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1))+
+  scale_R_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1)) +
+  theme(legend.position = "none") 
+
+
+
+```
+
+```{r}
 library(ggtern)
 library(dplyr)
 library(ggplot2)
@@ -75,13 +186,13 @@ data_text <- nz_data  %>% group_by(Label) %>%
   summarise_if(is.numeric, mean, na.rm = TRUE)
 
 soil_data <- data.frame(
-  soil= c("a", "b", "c", "d"),
-  sand = c(15, 18, 57, 32),
-  silt = c(52, 70, 8, 26),
-  clay = c(33, 12, 35, 42)
+  soil= c("a"),
+  sand = c(50),
+  silt = c(25),
+  clay = c(25)
 )
 
-ggplot(data = nz_data, aes(
+g <- ggplot(data = nz_data, aes(
   y = Clay,
   x = Sand,
   z = Silt
@@ -113,10 +224,13 @@ ggplot(data = nz_data, aes(
   theme_mesh(n = 10)+
   theme(legend.position = "none") 
 
-#theme_custom(
-#col.T = "black",
-#col.L = "black",
-#col.R = "black") 
+plotly(
+  
+
+  
+  
+) 
+
 
 ```
 
