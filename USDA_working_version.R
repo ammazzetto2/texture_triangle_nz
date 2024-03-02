@@ -1,3 +1,4 @@
+
 # Required Libraries
 library(shiny)
 library(ggplot2)
@@ -5,60 +6,65 @@ library(ggtern)
 library(dplyr)
 
 # Base data
-nz_data <- data.frame (Clay=c(1,0.6,0.6,
-                              0.6,0.6,0.35,0.35,
-                              0.6,0.6,0.35,0.35,
-                              0.35,0.35,0.18,0.18,
-                              0.35,0.35,0.18,0.18,
-                              0.35,0.35,0.18,0.18,
-                              0.18,0.18,0.08,0.08,
-                              0.08,0.08,0,0,
-                              0.08,0.08,0,0,
-                              0.18,0.18,0,0,
-                              0,0.18,0),
-                       
-                       Sand=c(0,0.40,0,
-                              0.1,0.4,0.65,0.35,
-                              0,0.1,0.35,0,
-                              0.50,0.65,0.82,0.67,
-                              0.25,0.50,0.67,0.42,
-                              0,0.25,0.42,0,
-                              0.42,0.82,0.92,0.52,
-                              0.80,0.92,1,0.80,
-                              0.52,0.8,0.8,0.6,
-                              0,0.42,0.60,0.18,
-                              0,0,0.18),
-                       
-                       Silt=c(0,0,0.40,
-                              0.3,0,0,0.30,
-                              0.4,0.3,0.3,0.65,
-                              0.15,0,0,0.15,
-                              0.40,0.15,0.15,0.40,
-                              0.65,0.40,0.40,0.82,
-                              0.40,0,0,0.40,
-                              0.12,0,0,0.20,
-                              0.4,0.12,0.20,0.4,
-                              0.82,0.4,0.4,0.82,
-                              1,0.82,0.82),
-                       
-                       Label=c("Clay","Clay","Clay",
-                               "Loamy Clay","Loamy Clay","Loamy Clay","Loamy Clay",
-                               "Silt Clay","Silt Clay","Silt Clay","Silt Clay",
-                               "Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam",
-                               "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
-                               "Silt Loam","Silt Loam","Silt Loam","Silt Loam",
-                               "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
-                               "Sand","Sand","Sand","Sand",
-                               "Loamy Sand","Loamy Sand","Loamy Sand","Loamy Sand",
-                               "Loamy Silt","Loamy Silt","Loamy Silt","Loamy Silt",
-                               "Silt","Silt","Silt")
+usda_data <- data.frame (Clay=c(1,0.55,0.4,0.4,0.6,
+                                0.55,0.35,0.35,
+                                0.35,0.2,0.2,0.275,0.35,
+                                0.2,0.15,0,0,0.05,0.05,0.2,
+                                0.15,0.1,0,0,
+                                0.1,0,0,
+                                0.4,0.275,0.275,0.4,
+                                0.275,0.2,0.05,0.05,0.275,
+                                0.275,0,0,0.125,0.125,0.275,
+                                0.6,0.4,0.4,
+                                0.4,0.275,0.275,0.4,
+                                0.125,0,0,0.125),
+                         
+                         Sand=c(0,0.45,0.45,0.2,0,
+                                0.45,0.65,0.45,
+                                0.65,0.8,0.525,0.45,0.45,
+                                0.8,0.85,0.7,0.5,0.45,0.525,0.525,
+                                0.85,0.9,0.85,0.7,
+                                0.9,1,0.85,
+                                0.45,0.45,0.2,0.2,
+                                0.45,0.525,0.525,0.45,0.225,
+                                0.225,0.5,0.2,0.075,0,0,
+                                0,0.2,0,
+                                0.2,0.2,0,0,
+                                0.075,0.2,0,0),
+                         
+                         Silt=c(0,0,0.15,0.4,0.4,
+                                0,0,0.2,
+                                0,0,0.275,0.275,0.2,
+                                0,0,0.3,0.5,0.5,0.425,0.275,
+                                0,0,0.15,0.3,
+                                0,0,0.15,
+                                0.15,0.275,0.525,0.4,
+                                0.275,0.275,0.425,0.5,0.5,
+                                0.5,0.5,0.8,0.8,0.875,0.725,
+                                0.4,0.4,0.6,
+                                0.4,0.525,0.725,0.6,
+                                0.8,0.8,1,0.875),
+                         
+                         Label=c("Clay","Clay","Clay","Clay","Clay",
+                                 "Sandy Clay","Sandy Clay","Sandy Clay",
+                                 "Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam",
+                                 "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
+                                 "Loamy Sand", "Loamy Sand","Loamy Sand","Loamy Sand",
+                                 "Sand","Sand","Sand",
+                                 "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
+                                 "Loam","Loam","Loam","Loam","Loam",
+                                 "Silt Loam","Silt Loam","Silt Loam","Silt Loam","Silt Loam","Silt Loam",
+                                 "Silty Clay","Silty Clay","Silty Clay",
+                                 "Silty Clay Loam","Silty Clay Loam","Silty Clay Loam","Silty Clay Loam",
+                                 "Silt","Silt","Silt","Silt")
 )
 
-data_text <- nz_data  %>% group_by(Label) %>%
+data_text_usda <- usda_data  %>% group_by(Label) %>%
   summarise_if(is.numeric, mean, na.rm = TRUE)
 
 # Define UI
 ui <- fluidPage(
+  
   tags$head(
     tags$style(HTML("#ternaryPlot { margin: 0px; } 
                     .nav-tabs > li {
@@ -66,9 +72,21 @@ ui <- fluidPage(
                     }
                     .readme-text {
                       padding-top: 20px;
+                    }
+                    .logo {
+                      position: absolute;
+                      width: 100px; /* Adjust width as needed */
+                    }
+                    #logo1 {
+                      top: 10px;
+                      right: 10px;
+                    }
+                    #logo2 {
+                      top: 120px; /* Adjust position as needed */
+                      right: 10px;
                     }"))  # Adjust margin, tab display, and padding here
   ),
-  titlePanel("Soil Texture Triangle - NZ classification"),
+  titlePanel("Ternary Plot in Shiny"),
   sidebarLayout(
     sidebarPanel(
       style = "width: 400px;",  # Adjust the width here
@@ -102,7 +120,9 @@ ui <- fluidPage(
     ),
     mainPanel(
       # Output: Ternary Plot
-      plotOutput("ternaryPlot", height = "750px", width = "100%")  # Adjust height and width here
+      plotOutput("ternaryPlot", height = "700px", width = "100%"),  # Adjust height and width here
+      tags$img(src = "lincoln_uni.jpg", id = "logo1", class = "logo"),
+      tags$img(src = "agresearch.png", id = "logo2", class = "logo")
     )
   )
 )
@@ -218,7 +238,7 @@ server <- function(input, output) {
   # Render Plot
   output$ternaryPlot <- renderPlot({
     # Create ternary plot
-    p <- ggplot(data = nz_data, aes(
+    p <- ggplot(data = usda_data, aes(
       y = Clay,
       x = Sand,
       z = Silt
@@ -230,7 +250,7 @@ server <- function(input, output) {
         size = 0.5, 
         color = "black" 
       ) +
-      geom_text(data = data_text, 
+      geom_text(data = data_text_usda, 
                 aes(label = Label), 
                 color = 'black',
                 size = 5)   +
@@ -257,7 +277,7 @@ server <- function(input, output) {
                    col.R = "black") +
       theme_showarrows() +
       theme_arrowcustomlength(.35, .65) +
-      theme_anticlockwise() +
+      theme_clockwise() +
       scale_T_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1))+
       scale_L_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1))+
       scale_R_continuous(breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1)) +
