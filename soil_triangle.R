@@ -395,7 +395,7 @@ server <- function(input, output, session) {
       polygon_data <- nz_data
       data_text <- data_text_nz
       
-      # Define arrow settings for New Zealand
+      # Define theme for New Zealand
       theme_function <- theme(
         tern.axis.arrow = element_line(colour = "black", size = 1.5),
         tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.0), # Sand axis
@@ -411,12 +411,12 @@ server <- function(input, output, session) {
       polygon_data <- usda_data
       data_text <- data_text_usda
       
-      # Define arrow settings for USDA
+      # Define theme for USDA
       theme_function <- theme(
         tern.axis.arrow = element_line(colour = "black", size = 1.5),
-        tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.5), # Sand axis
-        tern.axis.arrow.text.T = element_text(hjust = 0.7, vjust = -1.2), # Clay axis
-        tern.axis.arrow.text.R = element_text(hjust = 1.0, vjust = 1.0),  # Silt axis
+        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = -1.0), # Percent Clay
+        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0), # Percent Silt
+        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = 1.0),  # Percent Sand
         tern.axis.arrow.sep = 0.05,
         tern.grid.major = element_blank(),
         tern.grid.minor = element_blank(),
@@ -425,7 +425,7 @@ server <- function(input, output, session) {
       )
     }
     
-    # Outer triangle coordinates
+    # Outer triangle coordinates (no need to change)
     outer_triangle <- data.frame(
       x = c(0, 1, 0, 0),
       y = c(0, 0, 1, 0),
@@ -434,11 +434,11 @@ server <- function(input, output, session) {
     
     # Plot
     p <- ggplot(data = polygon_data, aes(
-      y = Clay,
       x = Sand,
+      y = Clay,
       z = Silt
     )) +
-      coord_tern(L = "x", T = "y", R = "z") +  # Default ternary coordinates
+      coord_tern(L = "x", T = "y", R = "z") +
       geom_polygon(
         aes(fill = Label),
         alpha = 0.4,
@@ -472,27 +472,31 @@ server <- function(input, output, session) {
         size = 2,
         color = "black"
       ) +
+      
       theme_showarrows() +
+      
       scale_T_continuous(breaks = seq(0.1, 1, by = 0.1)) +
+      
       scale_L_continuous(breaks = seq(0.1, 1, by = 0.1)) +
+      
       scale_R_continuous(breaks = seq(0.1, 1, by = 0.1)) +
+      
       theme(legend.position = "none") +
+      
       labs(
         x = "",
-        xarrow = "Sand",
+        xarrow = ifelse(input$dataset == "USDA", "Clay", "Sand"),
         y = "",
-        yarrow = "Clay",
+        yarrow = ifelse(input$dataset == "USDA", "Silt", "Clay"),
         z = "",
-        zarrow = "Silt"
+        zarrow = ifelse(input$dataset == "USDA", "Sand", "Silt")
       ) +
       theme_function  # Apply the dynamic theme
     
     print(p)
   })
   
-  
 }
-
-
+  
 # Run the application
 shinyApp(ui = ui, server = server)
