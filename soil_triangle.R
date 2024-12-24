@@ -199,6 +199,7 @@ ui <- fluidPage(
 library(pracma)
 
 # Define server logic
+# Define server logic
 server <- function(input, output, session) {
   
   # Update the selected dataset in both tabs
@@ -327,19 +328,64 @@ server <- function(input, output, session) {
         # Select dataset polygons based on the selected dataset
         if (input$dataset == "New Zealand") {
           polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
+          classification_system <- "New Zealand"
         } else {
           polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
+          classification_system <- "USDA"
         }
         
         # Classify points into polygons
         points$classification <- classify_points(points, polygons)
+        points$classification_system <- classification_system  # Add classification system column
       } else {
-        points$classification <- character(0)  # Empty classification column if no data
+        points <- data.frame(
+          soil = character(0),
+          sand = numeric(0),
+          silt = numeric(0),
+          clay = numeric(0),
+          classification = character(0),
+          classification_system = character(0)
+        )
       }
       
       write.csv(points, file, row.names = FALSE)
+    }
+  )
+  
+  # Download handler for uploaded data
+  output$downloadDataBtn_upload <- downloadHandler(
+    filename = function() {
+      paste("classified_soil_data_upload", ".csv", sep = "")
     },
-    contentType = "text/csv"
+    content = function(file) {
+      points <- soil_data()
+      
+      if (nrow(points) > 0) {
+        # Select dataset polygons based on the selected dataset
+        if (input$dataset_upload == "New Zealand") {
+          polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
+          classification_system <- "New Zealand"
+        } else {
+          polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
+          classification_system <- "USDA"
+        }
+        
+        # Classify points into polygons
+        points$classification <- classify_points(points, polygons)
+        points$classification_system <- classification_system  # Add classification system column
+      } else {
+        points <- data.frame(
+          soil = character(0),
+          sand = numeric(0),
+          silt = numeric(0),
+          clay = numeric(0),
+          classification = character(0),
+          classification_system = character(0)
+        )
+      }
+      
+      write.csv(points, file, row.names = FALSE)
+    }
   )
   
   # Render ternary plot
@@ -388,7 +434,7 @@ server <- function(input, output, session) {
         aes(x = sand,
             y = clay,
             z = silt),
-        size = 5, color = "red"
+        size = 7, color = "red"
       ) +
       geom_text(
         data = soil_data(),
@@ -397,7 +443,7 @@ server <- function(input, output, session) {
             z = silt,
             label = soil),
         color = 'red',
-        size = 4,
+        size = 6,
         hjust = -1
       ) +
       geom_path(
@@ -431,6 +477,7 @@ server <- function(input, output, session) {
     print(p)
   })
 }
+
 
 # Run the application
 shinyApp(ui = ui, server = server)
