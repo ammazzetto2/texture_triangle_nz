@@ -405,6 +405,7 @@ server <- function(input, output, session) {
         tern.grid.major = element_blank(),
         tern.grid.minor = element_blank(),
         tern.panel.background = element_blank(),
+        tern.axis.clockwise = FALSE,
         axis.text = element_text(size = 20, colour = "black")
       )
     } else {
@@ -414,13 +415,14 @@ server <- function(input, output, session) {
       # Define theme for USDA
       theme_function <- theme(
         tern.axis.arrow = element_line(colour = "black", size = 1.5),
-        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = -1.0), # Percent Clay
+        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = 1.0), # Percent Sand
         tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0), # Percent Silt
-        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = 1.0),  # Percent Sand
+        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = -1.0),  # Percent Sand
         tern.axis.arrow.sep = 0.05,
         tern.grid.major = element_blank(),
         tern.grid.minor = element_blank(),
         tern.panel.background = element_blank(),
+        tern.axis.clockwise = TRUE,
         axis.text = element_text(size = 20, colour = "black")
       )
     }
@@ -485,11 +487,11 @@ server <- function(input, output, session) {
       
       labs(
         x = "",
-        xarrow = ifelse(input$dataset == "USDA", "Clay", "Sand"),
+        xarrow = ifelse(input$dataset == "USDA", "Sand", "Sand"),
         y = "",
-        yarrow = ifelse(input$dataset == "USDA", "Silt", "Clay"),
+        yarrow = ifelse(input$dataset == "USDA", "Clay", "Clay"),
         z = "",
-        zarrow = ifelse(input$dataset == "USDA", "Sand", "Silt")
+        zarrow = ifelse(input$dataset == "USDA", "Silt", "Silt")
       ) +
       theme_function  # Apply the dynamic theme
     
