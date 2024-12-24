@@ -186,7 +186,7 @@ ui <- fluidPage(
       )
     ),
     mainPanel(
-      style = "margin-top: -250px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
+      style = "margin-top: -200px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
       plotOutput("ternaryPlot", height = "1200px", width = "110%")
     )
   )
@@ -390,20 +390,40 @@ server <- function(input, output, session) {
   
   # Render ternary plot
   output$ternaryPlot <- renderPlot({
-    # Dynamically assign data and theme based on the selected dataset
+    # Dynamically assign data based on the selected dataset
     if (input$dataset == "New Zealand") {
       polygon_data <- nz_data
       data_text <- data_text_nz
-      theme_function <- theme_anticlockwise()
+      
+      # Define arrow settings for New Zealand
+      theme_function <- theme(
+        tern.axis.arrow = element_line(colour = "black", size = 1.5),
+        tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.0), # Sand axis
+        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0), # Clay axis
+        tern.axis.arrow.text.R = element_text(hjust = 1.2, vjust = 1.0),  # Silt axis
+        tern.axis.arrow.sep = 0.05,
+        tern.grid.major = element_blank(),
+        tern.grid.minor = element_blank(),
+        tern.panel.background = element_blank(),
+        axis.text = element_text(size = 20, colour = "black")
+      )
     } else {
       polygon_data <- usda_data
       data_text <- data_text_usda
-      theme_function <- theme_clockwise()
+      
+      # Define arrow settings for USDA
+      theme_function <- theme(
+        tern.axis.arrow = element_line(colour = "black", size = 1.5),
+        tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.5), # Sand axis
+        tern.axis.arrow.text.T = element_text(hjust = 0.7, vjust = -1.2), # Clay axis
+        tern.axis.arrow.text.R = element_text(hjust = 1.0, vjust = 1.0),  # Silt axis
+        tern.axis.arrow.sep = 0.05,
+        tern.grid.major = element_blank(),
+        tern.grid.minor = element_blank(),
+        tern.panel.background = element_blank(),
+        axis.text = element_text(size = 20, colour = "black")
+      )
     }
-    
-    # Modify data_text for "Loamy Sand" label in USDA dataset
-    modified_data_text <- data_text %>%
-      mutate(angle = ifelse(input$dataset == "USDA" & Label == "Loamy Sand", 325, 0))
     
     # Outer triangle coordinates
     outer_triangle <- data.frame(
@@ -425,8 +445,8 @@ server <- function(input, output, session) {
         size = 1,
         color = "black"
       ) +
-      geom_text(data = modified_data_text,
-                aes(label = Label, angle = angle),
+      geom_text(data = data_text,
+                aes(label = Label),
                 color = 'black',
                 size = 6) +
       geom_point(
@@ -465,17 +485,12 @@ server <- function(input, output, session) {
         z = "",
         zarrow = "Silt"
       ) +
-      theme(
-        tern.axis.arrow = element_line(colour = "black", size = 1.5),
-        tern.grid.major = element_blank(),
-        tern.grid.minor = element_blank(),
-        tern.panel.background = element_blank(),
-        axis.text = element_text(size = 20, colour = "black")
-      ) +
-      theme_function
+      theme_function  # Apply the dynamic theme
     
     print(p)
   })
+  
+  
 }
 
 
