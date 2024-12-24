@@ -1,10 +1,11 @@
-# Required Libraries
+#------------------------------------------------- Required Libraries
+
 library(shiny)
 library(ggplot2)
 library(ggtern)
 library(dplyr)
 
-# Base data
+#------------------------------------------------- NZ 
 nz_data <- data.frame (Clay=c(1,0.6,0.6,
                               0.6,0.6,0.35,0.35,
                               0.6,0.6,0.35,0.35,
@@ -54,10 +55,12 @@ nz_data <- data.frame (Clay=c(1,0.6,0.6,
                                "Silt","Silt","Silt")
 )
 
-data_text_nz <- nz_data  %>% group_by(Label) %>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)
+data_text_nz <- nz_data  %>% 
+                group_by(Label) %>%
+                summarise_if(is.numeric, mean, na.rm = TRUE)
 
-# Base data
+#------------------------------------------------- USDA
+
 usda_data <- data.frame (Clay=c(1,0.55,0.4,0.4,0.6,
                                 0.55,0.35,0.35,
                                 0.35,0.2,0.2,0.275,0.35,
@@ -111,8 +114,65 @@ usda_data <- data.frame (Clay=c(1,0.55,0.4,0.4,0.6,
                                  "Silt","Silt","Silt","Silt")
 )
 
-data_text_usda <- usda_data  %>% group_by(Label) %>%
-  summarise_if(is.numeric, mean, na.rm = TRUE)
+data_text_usda <- usda_data  %>% 
+                  group_by(Label) %>%
+                  summarise_if(is.numeric, mean, na.rm = TRUE)
+
+#------------------------------------------------- Australian
+
+australian_data <- data.frame (Clay=c(0, 0, 0.09, 0.08,
+                                      0.12, 0.1, 0.2, 0.32,
+                                      0.75, 0.4, 0.4,
+                                      0.08, 0.18, 0.2, 0.1,
+                                      0.28, 0.5, 0.32,
+                                      1, 0.5, 0.32, 0.4, 0.75,
+                                      0.4, 0.4, 0.32, 0.32,
+                                      0.32, 0.32, 0, 0,
+                                      0.09, 0, 0, 0.12,
+                                      0.18, 0.2, 0.32, 0.28,
+                                      0.4, 0.32, 0.2, 0.32),
+                                      
+                               
+                               Sand=c(1, 0.93, 0.85, 0.92,
+                                      0.63, 0.765, 0.7, 0.43,
+                                      0, 0.35, 0,
+                                      0.92, 0.82, 0.7, 0.765,
+                                      0.72, 0.5, 0.62,
+                                      0, 0.5, 0.62, 0.35, 0,
+                                      0.35, 0, 0, 0.43,
+                                      0.43, 0, 0, 0.75,
+                                      0.85, 0.93, 0.75, 0.63,
+                                      0.82, 0.7, 0.62, 0.72,
+                                      0.35, 0.43, 0.7, 0.62),
+                               
+                               Silt=c(0, 0.07, 0.06, 0,
+                                      0.25, 0.135, 0.1, 0.25,
+                                      0.25, 0.25, 0.6,
+                                      0, 0, 0.1, 0.135,
+                                      0, 0, 0.06,
+                                      0, 0, 0.06, 0.25, 0.25,
+                                      0.25, 0.6, 0.68, 0.25,
+                                      0.25, 0.68, 1, 0.25,
+                                      0.06, 0.07, 0.25, 0.25,
+                                      0, 0.1, 0.06, 0,
+                                      0.25, 0.25, 0.1, 0.06),
+                               
+                               Label=c("Sand","Sand","Sand", "Sand",
+                                       "Loam", "Loam", "Loam", "Loam",
+                                       "Silty Clay", "Silty Clay", "Silty Clay",
+                                       "Sandy Loam", "Sandy Loam", "Sandy Loam", "Sandy Loam",
+                                       "Sandy Clay", "Sandy Clay", "Sandy Clay",
+                                       "Clay", "Clay", "Clay", "Clay", "Clay",
+                                       "Silty Clay Loam", "Silty Clay Loam", "Silty Clay Loam", "Silty Clay Loam",
+                                       "Silty Loam", "Silty Loam", "Silty Loam", "Silty Loam",
+                                       "Loamy Sand", "Loamy Sand", "Loamy Sand", "Loamy Sand",
+                                       "Sandy Clay Loam", "Sandy Clay Loam", "Sandy Clay Loam", "Sandy Clay Loam", 
+                                       "Clay Loam", "Clay Loam", "Clay Loam", "Clay Loam")
+)
+
+data_text_australian <- australian_data  %>% 
+                        group_by(Label) %>%
+                        summarise_if(is.numeric, mean, na.rm = TRUE)
 
 #################################################### Define UI
 ui <- fluidPage(
@@ -135,7 +195,7 @@ ui <- fluidPage(
                  tags$div(
                    style = "margin-top: 15px;",  # Adds spacing from the top
                    selectInput("dataset", "Select Classification:",
-                               choices = c("New Zealand", "USDA"),
+                               choices = c("New Zealand", "USDA", "Australian"),
                                selected = "New Zealand")
                  ),
                  hr(),
@@ -166,7 +226,7 @@ ui <- fluidPage(
                  tags$div(
                    style = "margin-top: 15px;",  # Adds spacing from the top
                    selectInput("dataset_upload", "Select Classification:",
-                               choices = c("New Zealand", "USDA"),
+                               choices = c("New Zealand", "USDA", "Australian"),
                                selected = "New Zealand")
                  ),
                  tags$div(
@@ -189,7 +249,7 @@ ui <- fluidPage(
       )
     ),
     mainPanel(
-      style = "margin-top: -200px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
+      style = "margin-top: -250px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
       plotOutput("ternaryPlot", height = "1200px", width = "110%")
     )
   )
@@ -332,9 +392,12 @@ server <- function(input, output, session) {
         if (input$dataset == "New Zealand") {
           polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
           classification_system <- "New Zealand"
-        } else {
+        } else if (input$dataset == "USDA") {
           polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
           classification_system <- "USDA"
+        } else if (input$dataset == "Australian") {
+          polygons <- split(australian_data[, c("Sand", "Silt", "Clay")], australian_data$Label)
+          classification_system <- "Australian"
         }
         
         # Classify points into polygons
@@ -368,9 +431,12 @@ server <- function(input, output, session) {
         if (input$dataset_upload == "New Zealand") {
           polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
           classification_system <- "New Zealand"
-        } else {
+        } else if (input$dataset_upload == "USDA") {
           polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
           classification_system <- "USDA"
+        } else if (input$dataset_upload == "Australian") {
+          polygons <- split(australian_data[, c("Sand", "Silt", "Clay")], australian_data$Label)
+          classification_system <- "Australian"
         }
         
         # Classify points into polygons
@@ -397,13 +463,11 @@ server <- function(input, output, session) {
     if (input$dataset == "New Zealand") {
       polygon_data <- nz_data
       data_text <- data_text_nz
-      
-      # Define theme for New Zealand
       theme_function <- theme(
         tern.axis.arrow = element_line(colour = "black", size = 1.5),
-        tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.0), # Sand axis
-        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0), # Clay axis
-        tern.axis.arrow.text.R = element_text(hjust = 1.2, vjust = 1.0),  # Silt axis
+        tern.axis.arrow.text.L = element_text(hjust = 0.5, vjust = -1.0),
+        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0),
+        tern.axis.arrow.text.R = element_text(hjust = 1.2, vjust = 1.0),
         tern.axis.arrow.sep = 0.05,
         tern.grid.major = element_blank(),
         tern.grid.minor = element_blank(),
@@ -411,16 +475,29 @@ server <- function(input, output, session) {
         tern.axis.clockwise = FALSE,
         axis.text = element_text(size = 20, colour = "black")
       )
-    } else {
+    } else if (input$dataset == "USDA") {
       polygon_data <- usda_data
       data_text <- data_text_usda
-      
-      # Define theme for USDA
       theme_function <- theme(
         tern.axis.arrow = element_line(colour = "black", size = 1.5),
-        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = 1.0), # Percent Sand
-        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0), # Percent Silt
-        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = -1.0),  # Percent Sand
+        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = 1.0),
+        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0),
+        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = -1.0),
+        tern.axis.arrow.sep = 0.05,
+        tern.grid.major = element_blank(),
+        tern.grid.minor = element_blank(),
+        tern.panel.background = element_blank(),
+        tern.axis.clockwise = TRUE,
+        axis.text = element_text(size = 20, colour = "black")
+      )
+    } else if (input$dataset == "Australian") {
+      polygon_data <- australian_data
+      data_text <- data_text_australian
+      theme_function <- theme(
+        tern.axis.arrow = element_line(colour = "black", size = 1.5),
+        tern.axis.arrow.text.L = element_text(hjust = 1.2, vjust = 1.0),
+        tern.axis.arrow.text.T = element_text(hjust = 0.5, vjust = -1.0),
+        tern.axis.arrow.text.R = element_text(hjust = -0.5, vjust = -1.0),
         tern.axis.arrow.sep = 0.05,
         tern.grid.major = element_blank(),
         tern.grid.minor = element_blank(),
