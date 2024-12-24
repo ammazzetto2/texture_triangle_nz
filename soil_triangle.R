@@ -116,7 +116,7 @@ data_text_usda <- usda_data  %>% group_by(Label) %>%
 
 #################################################### Define UI
 ui <- fluidPage(
-  titlePanel("Ternary Plot in Shiny"),
+  titlePanel("Soil Classification Tool"),
   sidebarLayout(
     sidebarPanel(
       style = "width: 400px;",
@@ -134,16 +134,16 @@ ui <- fluidPage(
         tabPanel("Data Selection",
                  tags$div(
                    style = "margin-top: 15px;",  # Adds spacing from the top
-                   selectInput("dataset", "Select Dataset:",
+                   selectInput("dataset", "Select Classification:",
                                choices = c("New Zealand", "USDA"),
                                selected = "New Zealand")
                  ),
                  hr(),
                  # Manual data entry section
                  textInput("sampleName", "Sample Name"),
-                 numericInput("sandValue", "Sand", value = 50, min = 0, max = 100),
-                 numericInput("siltValue", "Silt", value = 25, min = 0, max = 100),
-                 numericInput("clayValue", "Clay", value = 25, min = 0, max = 100),
+                 numericInput("sandValue", "% Sand (0 to 100)", value = 50, min = 0, max = 100),
+                 numericInput("siltValue", "% Silt (0 to 100)", value = 25, min = 0, max = 100),
+                 numericInput("clayValue", "% Clay (0 to 100)", value = 25, min = 0, max = 100),
                  tags$div(
                    tags$div(
                      actionButton("addManualDataBtn", "Add Data", style = "width: 100%;"),
@@ -162,17 +162,20 @@ ui <- fluidPage(
                           style = "display: block; margin-top: 10px; text-align: left; color: #007bff;")
                  )
         ),
-        tabPanel("Upload CSV",
+        tabPanel("Upload data",
                  tags$div(
                    style = "margin-top: 15px;",  # Adds spacing from the top
-                   selectInput("dataset_upload", "Select Dataset:",
+                   selectInput("dataset_upload", "Select Classification:",
                                choices = c("New Zealand", "USDA"),
                                selected = "New Zealand")
                  ),
-                 fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
+                 tags$div(
+                   downloadButton("downloadTemplateBtn", "Download Template CSV", style = "width: 100%;"),
+                   style = "display: flex; flex-direction: column; gap: 15px; margin-top: 15px;" # Vertically aligned buttons
+                ),     
+                fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
                  tags$div(
                    actionButton("clearDataBtn_upload", "Clear Data", style = "width: 100%;"),
-                   downloadButton("downloadTemplateBtn", "Download Template CSV", style = "width: 100%;"),
                    downloadButton("downloadDataBtn_upload", "Download Data", style = "width: 100%;"),
                    style = "display: flex; flex-direction: column; gap: 15px; margin-top: 15px;" # Vertically aligned buttons
                  ),
