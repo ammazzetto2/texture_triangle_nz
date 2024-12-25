@@ -249,7 +249,7 @@ ui <- fluidPage(
       )
     ),
     mainPanel(
-      style = "margin-top: -250px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
+      style = "margin-top: -290px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
       plotOutput("ternaryPlot", height = "1200px", width = "110%")
     )
   )
