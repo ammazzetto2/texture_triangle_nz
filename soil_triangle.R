@@ -176,10 +176,37 @@ data_text_australian <- australian_data  %>%
 
 #################################################### Define UI
 ui <- fluidPage(
+  
+  # Add CSS to ensure consistent zoom and scaling
+  tags$head(
+    tags$style(HTML("
+    body {
+      zoom: 100% !important;
+    }
+    @media (max-width: 1600px) {
+      body { zoom: 90% !important; }
+    }
+    @media (max-width: 1366px) {
+      body { zoom: 80% !important; }
+    }
+    .sidebarPanel {
+      font-size: 18px !important;
+    }
+    label, .shiny-input-container {
+      font-size: 18px !important;
+    }
+    .btn, .action-button, .download-button {
+      font-size: 18px !important;
+      padding: 10px;
+    }
+  "))
+  ),
+  
+  
   titlePanel("Soil Classification Tool"),
   sidebarLayout(
     sidebarPanel(
-      style = "width: 400px;",
+      style = "min-width: 450px; max-width: 600px; width: 40%; font-size: 18px;", # Adjusted width & font size
       tabsetPanel(
         tabPanel("Introduction",
                  tags$div(
@@ -224,32 +251,35 @@ ui <- fluidPage(
         ),
         tabPanel("Upload data",
                  tags$div(
-                   style = "margin-top: 15px;",  # Adds spacing from the top
+                   style = "margin-top: 15px; padding: 15px;",  # Adds spacing & padding for better alignment
                    selectInput("dataset_upload", "Select Classification:",
                                choices = c("New Zealand", "USDA", "Australian"),
-                               selected = "New Zealand")
-                 ),
-                 tags$div(
-                   downloadButton("downloadTemplateBtn", "Download Template CSV", style = "width: 100%;"),
-                   style = "display: flex; flex-direction: column; gap: 15px; margin-top: 15px;" # Vertically aligned buttons
-                ),     
-                fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
-                 tags$div(
+                               selected = "New Zealand"),
+                   
+                   tags$div(style = "margin-top: 10px;"),  # Add spacing
+                   
+                   fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
+                   
+                   tags$div(style = "margin-top: 10px;"),  # Add spacing
+                   
                    actionButton("clearDataBtn_upload", "Clear Data", style = "width: 100%;"),
+                   
+                   tags$div(style = "margin-top: 10px;"),  # Add spacing
+                   
                    downloadButton("downloadDataBtn_upload", "Download Data", style = "width: 100%;"),
-                   style = "display: flex; flex-direction: column; gap: 15px; margin-top: 15px;" # Vertically aligned buttons
-                 ),
-                 tags$div(
-                   img(src = "lincoln_uni.jpg", height = "80px", width = "40%", style = "margin-top: 20px;"),
-                   tags$a("Contact - Josie Mazzetto", 
-                          href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
-                          style = "display: block; margin-top: 10px; text-align: left; color: #007bff;")
+                   
+                   tags$div(
+                     img(src = "lincoln_uni.jpg", height = "80px", width = "20%", style = "margin-top: 20px;"),
+                     tags$a("Contact - Josie Mazzetto", 
+                            href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
+                            style = "display: block; margin-top: 10px; text-align: left; color: #007bff;")
+                   )
                  )
         )
       )
     ),
     mainPanel(
-      style = "margin-top: -290px; margin-left: -100px; padding: 0;",  # Adjust the top margin to move chart upwards
+      style = "margin-top: -200px; margin-left: -80px; padding: 0;",  # Adjust the top margin to move chart upwards
       plotOutput("ternaryPlot", height = "1200px", width = "110%")
     )
   )
