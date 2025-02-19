@@ -527,10 +527,11 @@ server <- function(input, output, session) {
         size = 1,
         color = "black"
       ) +
-      geom_text(data = data_text,
-                aes(label = Label),
+      geom_text(data = data_text %>% 
+                  mutate(angle = ifelse(Label == "Loamy Sand" & input$dataset == "USDA", 330, 0)),
+                aes(label = Label, angle = angle),
                 color = 'black',
-                size = 6) +
+                size = 6)+
       geom_point(
         data = soil_data(),
         aes(x = sand,
