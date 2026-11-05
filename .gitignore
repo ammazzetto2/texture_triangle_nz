@@ -1,0 +1,11 @@
+# Local R session and editor state
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# Project-local installed packages
+.R-library/
+
+# macOS metadata
+.DS_Store
