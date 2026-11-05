@@ -1,7 +1,7 @@
 # Keep the app's direct dependencies in one place. Missing packages and their
 # dependencies are installed locally; existing usable packages are reused.
 ensure_project_dependencies <- function(
-    packages = c("shiny", "ggplot2", "ggtern", "dplyr", "pracma"),
+    packages = c("shiny", "bslib", "ggplot2", "ggtern", "dplyr", "pracma"),
     library = ".R-library",
     repos = "https://cloud.r-project.org") {
   if (!dir.exists(library) && !dir.create(library, recursive = TRUE)) {
