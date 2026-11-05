@@ -28,18 +28,10 @@ data_text_australian <- australian_data  %>%
 #################################################### Define UI
 ui <- fluidPage(
   
-  # Add CSS to ensure consistent zoom and scaling
+  # Let Bootstrap's grid adapt to the viewport without browser zoom overrides.
   tags$head(
     tags$style(HTML("
-    body {
-      zoom: 100% !important;
-    }
-    @media (max-width: 1600px) {
-      body { zoom: 90% !important; }
-    }
-    @media (max-width: 1366px) {
-      body { zoom: 80% !important; }
-    }
+    .results-table { overflow-x: auto; }
     .sidebarPanel {
       font-size: 18px !important;
     }
@@ -58,12 +50,15 @@ ui <- fluidPage(
   tags$p("Downloads flag shared boundaries and overlapping regions and list candidate classes."),
   sidebarLayout(
     sidebarPanel(
-      style = "min-width: 450px; max-width: 600px; width: 40%; font-size: 18px;", # Adjusted width & font size
+      width = 4,
+      style = "font-size: 18px;",
       tabsetPanel(
         tabPanel("Introduction",
                  tags$div(
                    style = "margin-top: 15px;",
-                   tags$p("TBC text", style = "font-size: 16px; margin-bottom: 20px;"),  # Placeholder for text
+                   tags$p("Enter sample percentages in Data Selection or upload a CSV. Sand, silt, and clay must total 100%."),
+                   tags$p("Review the Results tab before downloading. Samples on shared boundaries or overlapping regions list candidate classes without choosing one."),
+                   tags$p("Manual entries and uploads share one dataset. Either Clear Data button removes all samples. Download your results before closing the session."),
                    img(src = "lincoln_uni.jpg", height = "80px", width = "40%", style = "margin-bottom: 20px;"),
                    tags$a("Contact - Josie Mazzetto", 
                           href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
@@ -111,6 +106,8 @@ ui <- fluidPage(
                    tags$div(style = "margin-top: 10px;"),  # Add spacing
                    
                    fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
+                   helpText("Required columns: soil, sand, silt, clay. Use percentages from 0 to 100, with no extra columns."),
+                   downloadButton("downloadTemplateBtn", "Download CSV template"),
                    
                    tags$div(style = "margin-top: 10px;"),  # Add spacing
                    
@@ -131,8 +128,16 @@ ui <- fluidPage(
       )
     ),
     mainPanel(
-      style = "margin-top: -200px; margin-left: -80px; padding: 0;",  # Adjust the top margin to move chart upwards
-      plotOutput("ternaryPlot", height = "1200px", width = "110%")
+      width = 8,
+      tabsetPanel(
+        tabPanel("Triangle", plotOutput("ternaryPlot", height = "750px", width = "100%")),
+        tabPanel("Results",
+          tags$h3(textOutput("resultsSummary", inline = TRUE)),
+          tags$p("A boundary may have one class or several candidates. Overlap means the current polygons match more than one interior. A dash means no single class was assigned."),
+          tags$p("Downloads contain all samples and the full classification details."),
+          tags$div(class = "results-table", tableOutput("resultsTable"))
+        )
+      )
     )
   )
 )
@@ -158,6 +163,40 @@ server <- function(input, output, session) {
     silt = numeric(),
     clay = numeric()
   ))
+
+  # The on-screen table and both downloads use the same calculated results.
+  classified_data <- reactive({
+    req(input$dataset)
+    classify_soil_data(soil_data(), input$dataset)
+  })
+
+  output$resultsSummary <- renderText({
+    results <- classified_data()
+    if (nrow(results) == 0L) return("No samples yet. Add a sample or upload a CSV.")
+    unresolved <- sum(is.na(results$classification))
+    paste0(input$dataset, ": ", nrow(results), " sample(s), ",
+           unresolved, " without a single class")
+  })
+
+  results_table <- reactive({
+    results <- classified_data()
+    clean_label <- function(x) gsub("[[:space:]]+", " ", x)
+    data.frame(
+      Sample = results$soil,
+      `Sand (%)` = results$sand,
+      `Silt (%)` = results$silt,
+      `Clay (%)` = results$clay,
+      Class = ifelse(is.na(results$classification), "—", clean_label(results$classification)),
+      Status = results$classification_status,
+      `Candidate classes` = clean_label(results$classification_candidates),
+      check.names = FALSE
+    )
+  })
+
+  output$resultsTable <- renderTable({
+    results_table()
+  }, striped = TRUE, bordered = TRUE, rownames = FALSE, digits = 6,
+     sanitize.text.function = htmltools::htmlEscape)
   
   # Keep the existing dataset intact when validation fails.
   add_samples <- function(read_samples) {
@@ -238,7 +277,7 @@ server <- function(input, output, session) {
   output$downloadDataBtn_manual <- downloadHandler(
     filename = function() "soil_data_manual.csv",
     content = function(file) {
-      write.csv(classify_soil_data(soil_data(), input$dataset), file,
+      write.csv(classified_data(), file,
                 row.names = FALSE)
     }
   )
@@ -246,7 +285,7 @@ server <- function(input, output, session) {
   output$downloadDataBtn_upload <- downloadHandler(
     filename = function() "classified_soil_data_upload.csv",
     content = function(file) {
-      write.csv(classify_soil_data(soil_data(), input$dataset_upload), file,
+      write.csv(classified_data(), file,
                 row.names = FALSE)
     }
   )

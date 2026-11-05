@@ -41,10 +41,16 @@ runs the dependency check when sourced directly.
 1. Open **Data Selection**, choose a classification system, enter a sample name
    and sand, silt, and clay percentages, then select **Add Data**.
 2. Alternatively, open **Upload data** and upload a CSV in the format below.
+   **Download CSV template** provides the required header; add sample rows
+   before uploading it.
 3. View sample points on the triangle. Changing the classification system
-   updates the triangle and the classifications used for download.
-4. Select **Download Data** to export the samples with `classification` and
-   `classification_system` columns.
+   updates the triangle, the Results table, and downloaded classifications.
+4. Open **Results** to review percentages, class, status, and candidate classes.
+   The summary counts samples without a single assigned class. A dash in the
+   Class column means no single class was assigned; inspect the candidates.
+   On narrow screens, scroll the table horizontally to see all columns.
+5. Select **Download Data** in either input tab to export all samples and their
+   full classification details. Both buttons export the same current results.
 
 Manual entries and uploaded samples share one dataset for the current app
 session. Uploading appends samples. Either **Clear Data** button clears all
@@ -110,6 +116,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
+| `tests/results.R` | Results table, summary, template, and export consistency checks |
 | `WWW/` | Existing logo images; static asset serving needs verification |
 | `examples/` | Example input data |
 | `docs/classification.md` | Classification policy, source review, and known geometry issues |
@@ -126,6 +133,7 @@ From the repository root (missing app dependencies are installed automatically):
 Rscript --vanilla tests/validation.R
 Rscript --vanilla tests/dependencies.R
 Rscript --vanilla tests/classification.R
+Rscript --vanilla tests/results.R
 ```
 
 The script uses base R assertions and Shiny's `testServer()`; no separate test
@@ -140,6 +148,10 @@ Classification checks cover every class's vertex mean, example samples, export
 columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and both Shiny
 download handlers under all three systems. These are regression checks of the
 current polygons, not validation against authoritative scientific references.
+
+Results checks verify the empty state, ambiguous results, system switching,
+export consistency, CSV template schema, clearing, and safe display of sample
+names as text.
 
 ## Initial verification
 
