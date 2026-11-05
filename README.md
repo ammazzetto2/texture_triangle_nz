@@ -8,36 +8,33 @@ triangle, and download the samples with their classifications.
 
 ## Run locally
 
-Install R, then open R or RStudio in this repository's root folder. Install the
-required packages once:
+Install R, then open R or RStudio in this repository's root folder and run:
 
 ```r
-install.packages(c("shiny", "ggplot2", "ggtern", "dplyr", "pracma"),
-                 repos = "https://cloud.r-project.org")
+source("run_app.R")
 ```
 
-Start the app from the same folder:
+Or start from a terminal in the repository root:
 
-```r
-shiny::runApp("soil_triangle.R")
+```sh
+Rscript run_app.R
 ```
 
-The app opens in a browser. Stop it with Escape in RStudio or Ctrl+C in a
-terminal. Package versions are not yet locked, so compatibility needs checking
-when setting up a new environment.
+Startup automatically checks for `shiny`, `ggplot2`, `ggtern`, `dplyr`, and
+`pracma`. Missing packages and their required dependencies are installed from
+CRAN into `.R-library/` inside this project. Already available, loadable packages
+are reused. The local library is added to R's library paths for the session and
+is excluded from Git. No manual package installation is needed.
 
-For an isolated project-local package installation instead:
+R itself must already be installed. An internet connection is required when
+packages are missing; source package installations may also require system
+build tools. With dependencies installed, startup does not need to download
+packages. Package versions are not yet locked, so this setup automates
+installation but does not guarantee identical environments across computers.
 
-```r
-dir.create(".R-library", showWarnings = FALSE)
-.libPaths(c(normalizePath(".R-library"), .libPaths()))
-install.packages(c("shiny", "ggplot2", "ggtern", "dplyr", "pracma"),
-                 repos = "https://cloud.r-project.org")
-shiny::runApp("soil_triangle.R")
-```
-
-Repeat the `.libPaths(...)` line in each new R session when using that local
-library. The library is excluded from Git.
+In RStudio the app opens in a browser. Terminal startup prints a local URL to
+open. Stop it with Escape in RStudio or Ctrl+C in a terminal. The main app also
+runs the dependency check when sourced directly.
 
 ## Use the app
 
@@ -55,7 +52,7 @@ samples. Download data before closing the session if you want to keep it.
 
 ## CSV format
 
-Use exactly these column names and order:
+Use exactly these column names (the order may vary):
 
 ```csv
 soil,sand,silt,clay
@@ -67,15 +64,21 @@ Sample C,90,5,5
 A ready-to-upload file is available at
 [`examples/soil_samples.csv`](examples/soil_samples.csv).
 
-- `soil`: a sample name.
+- `soil`: a nonblank sample name. Surrounding whitespace is removed.
 - `sand`, `silt`, `clay`: numeric percentages from 0 to 100, adding up to 100
   for each sample. Use percentages, not fractions between 0 and 1.
 - Include all four columns, with no extra columns or missing values.
 - Use a comma separator and a decimal point for fractional percentages.
 
-The current input checks are incomplete. In particular, malformed files,
-nonnumeric values, missing values, and extra columns may produce errors.
-Totals are currently compared to 100 exactly, without a rounding tolerance.
+Manual entries and uploads use the same validation rules. Missing or duplicate
+columns, extra columns, empty tables, blank sample names, nonnumeric percentages,
+missing or infinite values, and percentages outside 0–100 are rejected. Invalid
+totals report sample row numbers (excluding the CSV header). Rejected input
+leaves existing samples intact; an upload is accepted only if all rows are valid.
+
+Totals use an absolute tolerance of `1e-8` percentage points to accommodate
+floating-point arithmetic. Values are not normalized or rounded automatically.
+This tolerance does not accommodate laboratory measurement or rounding error.
 
 ## Scientific status
 
@@ -97,14 +100,34 @@ alone do not establish that a system has no gaps or overlaps.
 
 | Path | Purpose |
 | --- | --- |
+| `run_app.R` | Launcher with automatic dependency setup |
+| `R/dependencies.R` | Shared package checks and installation |
 | `soil_triangle.R` | Current Shiny app, polygon data, classification, and exports |
+| `R/validation.R` | Shared manual-entry and CSV validation |
+| `tests/validation.R` | Validation and Shiny integration checks |
 | `WWW/` | Existing logo images; static asset serving needs verification |
 | `examples/` | Example input data |
 | `old_files/` | Earlier scripts, an R Markdown draft, and reference workbooks |
 
 The files named `*_tests.R` in `old_files/` are historical app prototypes,
-not an automated test suite. There is currently no automated test suite or
-documented deployment procedure.
+not an automated test suite. A deployment procedure is not yet documented.
+
+## Run validation checks
+
+From the repository root (missing app dependencies are installed automatically):
+
+```sh
+Rscript --vanilla tests/validation.R
+Rscript --vanilla tests/dependencies.R
+```
+
+The script uses base R assertions and Shiny's `testServer()`; no separate test
+package is needed. It checks valid samples, invalid values and schemas, malformed
+CSV input, floating-point tolerance, and preservation of session data after
+rejected input. It uses the same dependency setup as the app.
+
+The dependency checks simulate installation and failure paths without downloads
+or changes to your actual R library paths.
 
 ## Initial verification
 

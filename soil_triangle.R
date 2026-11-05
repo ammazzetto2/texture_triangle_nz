@@ -1,9 +1,14 @@
 #------------------------------------------------- Required Libraries
 
+source("R/dependencies.R", local = TRUE)
+ensure_project_dependencies()
+
 library(shiny)
 library(ggplot2)
 library(ggtern)
 library(dplyr)
+
+source("R/validation.R", local = TRUE)
 
 #------------------------------------------------- NZ 
 nz_data <- data.frame (Clay=c(1,0.6,0.6,
@@ -312,56 +317,45 @@ server <- function(input, output, session) {
     clay = numeric()
   ))
   
-  # Update soil data with manual input
+  # Keep the existing dataset intact when validation fails.
+  add_samples <- function(read_samples) {
+    samples <- tryCatch(
+      read_samples(),
+      error = function(e) {
+        showModal(modalDialog(
+          title = "Check sample data",
+          conditionMessage(e),
+          easyClose = TRUE
+        ))
+        NULL
+      }
+    )
+    if (!is.null(samples)) {
+      soil_data(rbind(soil_data(), samples))
+    }
+  }
+
   observeEvent(input$addManualDataBtn, {
-    # Check if the sum of sand, silt, and clay is 100
-    if (input$sandValue + input$siltValue + input$clayValue != 100) {
-      showModal(modalDialog(
-        title = "Error",
-        "The sum of Sand, Silt, and Clay must be equal to 100%"
-      ))
-    } else {
-      newSample <- data.frame(
+    add_samples(function() {
+      values <- list(input$sampleName, input$sandValue,
+                     input$siltValue, input$clayValue)
+      if (any(lengths(values) != 1L)) {
+        stop("Enter a sample name and all three percentages.", call. = FALSE)
+      }
+      validate_soil_data(data.frame(
         soil = input$sampleName,
         sand = input$sandValue,
         silt = input$siltValue,
         clay = input$clayValue
-      )
-      current_data <- soil_data()
-      updated_data <- rbind(current_data, newSample)
-      soil_data(updated_data)
-    }
-  })
-  
-  # Process uploaded CSV file
-  observeEvent(input$fileUpload, {
-    req(input$fileUpload) # Ensure a file is uploaded
-    
-    # Read the uploaded CSV file
-    uploaded_data <- read.csv(input$fileUpload$datapath)
-    
-    # Validate the uploaded data
-    if (!all(c("soil", "sand", "silt", "clay") %in% colnames(uploaded_data))) {
-      showModal(modalDialog(
-        title = "Error",
-        "The uploaded file must contain columns: 'soil', 'sand', 'silt', and 'clay'."
       ))
-    } else {
-      # Check if sand, silt, and clay add up to 100 for all rows
-      if (any(rowSums(uploaded_data[, c("sand", "silt", "clay")]) != 100)) {
-        showModal(modalDialog(
-          title = "Error",
-          "The sum of Sand, Silt, and Clay must equal 100% in all rows."
-        ))
-      } else {
-        # Add uploaded data to soil_data
-        current_data <- soil_data()
-        updated_data <- rbind(current_data, uploaded_data)
-        soil_data(updated_data)
-      }
-    }
+    })
   })
-  
+
+  observeEvent(input$fileUpload, {
+    req(input$fileUpload)
+    add_samples(function() read_soil_csv(input$fileUpload$datapath))
+  })
+
   # Clear manually added soil data
   observeEvent(input$clearDataBtn_manual, {
     soil_data(data.frame(
