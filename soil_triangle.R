@@ -153,7 +153,10 @@ server <- function(input, output, session) {
   output$ternaryPlot <- renderPlot({
     req(input$dataset)
     width <- session$clientData$output_ternaryPlot_width
-    text_scale <- if (is.null(width) || !is.finite(width)) 1 else max(0.65, min(1, width / 750))
+    height <- session$clientData$output_ternaryPlot_height
+    dimensions <- c(width, height)
+    text_scale <- if (length(dimensions) != 2L || any(!is.finite(dimensions))) 1 else
+      max(0.65, min(1, width / 750, height / 560))
     print(build_soil_plot(soil_data(), input$dataset, text_scale = text_scale,
                           show_labels = !identical(input$showSampleLabels, FALSE)))
   })

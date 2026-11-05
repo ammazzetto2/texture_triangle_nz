@@ -93,9 +93,11 @@ build_app_ui <- function() {
                   tags$span("Soil texture classification")),
         tags$details(class = "about-details",
           tags$summary("About & methodology"),
+          tags$div(class = "about-content",
           tags$p("This research prototype supports New Zealand, USDA, and Australian texture polygons. Scientific source verification is ongoing, and a known overlap remains in the Australian data."),
           tags$p("Boundary and overlap reporting is a software policy. It does not resolve the underlying scientific conventions."),
           tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
+          )
         ),
         tags$a("Contact Josie Mazzetto", href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz")
       )

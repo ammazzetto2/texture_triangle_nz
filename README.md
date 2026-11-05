@@ -57,8 +57,10 @@ Uploading appends samples. **Clear all samples** clears the dataset. Download
 results before closing the session if you want to keep them.
 
 The interface uses a shared Bootstrap 5 theme, system fonts, and local styles
-and branding assets, with no external font requests. The layout stacks on
-smaller screens. **About & methodology** in the footer links to local notes
+and branding assets, with no external font requests. The desktop workspace fits
+the browser height: the triangle resizes and long results scroll inside their
+panel. On smaller screens the layout stacks and normal page scrolling keeps
+controls readable. **About & methodology** in the footer links to local notes
 covering classification behavior and the known Australian polygon overlap.
 
 ## CSV format
