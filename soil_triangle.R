@@ -10,170 +10,16 @@ library(dplyr)
 
 source("R/validation.R", local = TRUE)
 
-#------------------------------------------------- NZ 
-nz_data <- data.frame (Clay=c(1,0.6,0.6,
-                              0.6,0.6,0.35,0.35,
-                              0.6,0.6,0.35,0.35,
-                              0.35,0.35,0.18,0.18,
-                              0.35,0.35,0.18,0.18,
-                              0.35,0.35,0.18,0.18,
-                              0.18,0.18,0.08,0.08,
-                              0.08,0.08,0,0,
-                              0.08,0.08,0,0,
-                              0.18,0.18,0,0,
-                              0,0.18,0),
-                       
-                       Sand=c(0,0.40,0,
-                              0.1,0.4,0.65,0.35,
-                              0,0.1,0.35,0,
-                              0.50,0.65,0.82,0.67,
-                              0.25,0.50,0.67,0.42,
-                              0,0.25,0.42,0,
-                              0.42,0.82,0.92,0.52,
-                              0.80,0.92,1,0.80,
-                              0.52,0.8,0.8,0.6,
-                              0,0.42,0.60,0.18,
-                              0,0,0.18),
-                       
-                       Silt=c(0,0,0.40,
-                              0.3,0,0,0.30,
-                              0.4,0.3,0.3,0.65,
-                              0.15,0,0,0.15,
-                              0.40,0.15,0.15,0.40,
-                              0.65,0.40,0.40,0.82,
-                              0.40,0,0,0.40,
-                              0.12,0,0,0.20,
-                              0.4,0.12,0.20,0.4,
-                              0.82,0.4,0.4,0.82,
-                              1,0.82,0.82),
-                       
-                       Label=c("Clay","Clay","Clay",
-                               "Loamy Clay","Loamy Clay","Loamy Clay","Loamy Clay",
-                               "Silt Clay","Silt Clay","Silt Clay","Silt Clay",
-                               "Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam","Sandy \n Clay \n Loam",
-                               "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
-                               "Silt Loam","Silt Loam","Silt Loam","Silt Loam",
-                               "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
-                               "Sand","Sand","Sand","Sand",
-                               "Loamy Sand","Loamy Sand","Loamy Sand","Loamy Sand",
-                               "Loamy Silt","Loamy Silt","Loamy Silt","Loamy Silt",
-                               "Silt","Silt","Silt")
-)
+source("R/classification_data.R", local = TRUE)
+source("R/classification.R", local = TRUE)
 
 data_text_nz <- nz_data  %>% 
                 group_by(Label) %>%
                 summarise_if(is.numeric, mean, na.rm = TRUE)
 
-#------------------------------------------------- USDA
-
-usda_data <- data.frame (Clay=c(1,0.55,0.4,0.4,0.6,
-                                0.55,0.35,0.35,
-                                0.35,0.2,0.2,0.275,0.35,
-                                0.2,0.15,0,0,0.05,0.05,0.2,
-                                0.15,0.1,0,0,
-                                0.1,0,0,
-                                0.4,0.275,0.275,0.4,
-                                0.275,0.2,0.05,0.05,0.275,
-                                0.275,0,0,0.125,0.125,0.275,
-                                0.6,0.4,0.4,
-                                0.4,0.275,0.275,0.4,
-                                0.125,0,0,0.125),
-                         
-                         Sand=c(0,0.45,0.45,0.2,0,
-                                0.45,0.65,0.45,
-                                0.65,0.8,0.525,0.45,0.45,
-                                0.8,0.85,0.7,0.5,0.45,0.525,0.525,
-                                0.85,0.9,0.85,0.7,
-                                0.9,1,0.85,
-                                0.45,0.45,0.2,0.2,
-                                0.45,0.525,0.525,0.45,0.225,
-                                0.225,0.5,0.2,0.075,0,0,
-                                0,0.2,0,
-                                0.2,0.2,0,0,
-                                0.075,0.2,0,0),
-                         
-                         Silt=c(0,0,0.15,0.4,0.4,
-                                0,0,0.2,
-                                0,0,0.275,0.275,0.2,
-                                0,0,0.3,0.5,0.5,0.425,0.275,
-                                0,0,0.15,0.3,
-                                0,0,0.15,
-                                0.15,0.275,0.525,0.4,
-                                0.275,0.275,0.425,0.5,0.5,
-                                0.5,0.5,0.8,0.8,0.875,0.725,
-                                0.4,0.4,0.6,
-                                0.4,0.525,0.725,0.6,
-                                0.8,0.8,1,0.875),
-                         
-                         Label=c("Clay","Clay","Clay","Clay","Clay",
-                                 "Sandy \n Clay","Sandy \n Clay","Sandy \n Clay",
-                                 "Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam","Sandy Clay Loam",
-                                 "Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam","Sandy Loam",
-                                 "Loamy Sand", "Loamy Sand","Loamy Sand","Loamy Sand",
-                                 "Sand","Sand","Sand",
-                                 "Clay Loam","Clay Loam","Clay Loam","Clay Loam",
-                                 "Loam","Loam","Loam","Loam","Loam",
-                                 "Silt Loam","Silt Loam","Silt Loam","Silt Loam","Silt Loam","Silt Loam",
-                                 "Silty Clay","Silty Clay","Silty Clay",
-                                 "Silty Clay \n Loam","Silty Clay \n Loam","Silty Clay \n Loam","Silty Clay \n Loam",
-                                 "Silt","Silt","Silt","Silt")
-)
-
 data_text_usda <- usda_data  %>% 
                   group_by(Label) %>%
                   summarise_if(is.numeric, mean, na.rm = TRUE)
-
-#------------------------------------------------- Australian
-
-australian_data <- data.frame (Clay=c(0, 0, 0.09, 0.08,
-                                      0.12, 0.1, 0.2, 0.32,
-                                      0.75, 0.4, 0.4,
-                                      0.08, 0.18, 0.2, 0.1,
-                                      0.28, 0.5, 0.32,
-                                      1, 0.5, 0.32, 0.4, 0.75,
-                                      0.4, 0.4, 0.32, 0.32,
-                                      0.32, 0.32, 0, 0,
-                                      0.09, 0, 0, 0.12,
-                                      0.18, 0.2, 0.32, 0.28,
-                                      0.4, 0.32, 0.2, 0.32),
-                                      
-                               
-                               Sand=c(1, 0.93, 0.85, 0.92,
-                                      0.63, 0.765, 0.7, 0.43,
-                                      0, 0.35, 0,
-                                      0.92, 0.82, 0.7, 0.765,
-                                      0.72, 0.5, 0.62,
-                                      0, 0.5, 0.62, 0.35, 0,
-                                      0.35, 0, 0, 0.43,
-                                      0.43, 0, 0, 0.75,
-                                      0.85, 0.93, 0.75, 0.63,
-                                      0.82, 0.7, 0.62, 0.72,
-                                      0.35, 0.43, 0.7, 0.62),
-                               
-                               Silt=c(0, 0.07, 0.06, 0,
-                                      0.25, 0.135, 0.1, 0.25,
-                                      0.25, 0.25, 0.6,
-                                      0, 0, 0.1, 0.135,
-                                      0, 0, 0.06,
-                                      0, 0, 0.06, 0.25, 0.25,
-                                      0.25, 0.6, 0.68, 0.25,
-                                      0.25, 0.68, 1, 0.25,
-                                      0.06, 0.07, 0.25, 0.25,
-                                      0, 0.1, 0.06, 0,
-                                      0.25, 0.25, 0.1, 0.06),
-                               
-                               Label=c("Sand","Sand","Sand", "Sand",
-                                       "Loam", "Loam", "Loam", "Loam",
-                                       "Silty Clay", "Silty Clay", "Silty Clay",
-                                       "Sandy Loam", "Sandy Loam", "Sandy Loam", "Sandy Loam",
-                                       "Sandy Clay", "Sandy Clay", "Sandy Clay",
-                                       "Clay", "Clay", "Clay", "Clay", "Clay",
-                                       "Silty Clay Loam", "Silty Clay Loam", "Silty Clay Loam", "Silty Clay Loam",
-                                       "Silty Loam", "Silty Loam", "Silty Loam", "Silty Loam",
-                                       "Loamy Sand", "Loamy Sand", "Loamy Sand", "Loamy Sand",
-                                       "Sandy Clay Loam", "Sandy Clay Loam", "Sandy Clay Loam", "Sandy Clay Loam", 
-                                       "Clay Loam", "Clay Loam", "Clay Loam", "Clay Loam")
-)
 
 data_text_australian <- australian_data  %>% 
                         group_by(Label) %>%
@@ -293,11 +139,6 @@ ui <- fluidPage(
 
 
 # Define server logic
-# Load necessary libraries
-library(pracma)
-
-# Define server logic
-# Define server logic
 server <- function(input, output, session) {
   
   # Update the selected dataset in both tabs
@@ -392,95 +233,23 @@ server <- function(input, output, session) {
     }
   )
   
-  # Function to classify points based on polygons using pracma::inpolygon
-  classify_points <- function(points, polygons) {
-    classification <- rep(NA, nrow(points))  # Initialize classifications as NA
-    for (i in seq_along(polygons)) {
-      polygon <- polygons[[i]]
-      inside <- inpolygon(points$sand / 100, points$clay / 100, polygon$Sand, polygon$Clay)
-      classification[inside] <- names(polygons)[i]
-    }
-    return(classification)
-  }
-  
-  # Download handler for manually entered data
+  # Both download paths share the same classifier and export schema.
   output$downloadDataBtn_manual <- downloadHandler(
-    filename = function() {
-      paste("soil_data_manual", ".csv", sep = "")
-    },
+    filename = function() "soil_data_manual.csv",
     content = function(file) {
-      points <- soil_data()
-      
-      if (nrow(points) > 0) {
-        # Select dataset polygons based on the selected dataset
-        if (input$dataset == "New Zealand") {
-          polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
-          classification_system <- "New Zealand"
-        } else if (input$dataset == "USDA") {
-          polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
-          classification_system <- "USDA"
-        } else if (input$dataset == "Australian") {
-          polygons <- split(australian_data[, c("Sand", "Silt", "Clay")], australian_data$Label)
-          classification_system <- "Australian"
-        }
-        
-        # Classify points into polygons
-        points$classification <- classify_points(points, polygons)
-        points$classification_system <- classification_system  # Add classification system column
-      } else {
-        points <- data.frame(
-          soil = character(0),
-          sand = numeric(0),
-          silt = numeric(0),
-          clay = numeric(0),
-          classification = character(0),
-          classification_system = character(0)
-        )
-      }
-      
-      write.csv(points, file, row.names = FALSE)
+      write.csv(classify_soil_data(soil_data(), input$dataset), file,
+                row.names = FALSE)
     }
   )
-  
-  # Download handler for uploaded data
+
   output$downloadDataBtn_upload <- downloadHandler(
-    filename = function() {
-      paste("classified_soil_data_upload", ".csv", sep = "")
-    },
+    filename = function() "classified_soil_data_upload.csv",
     content = function(file) {
-      points <- soil_data()
-      
-      if (nrow(points) > 0) {
-        # Select dataset polygons based on the selected dataset
-        if (input$dataset_upload == "New Zealand") {
-          polygons <- split(nz_data[, c("Sand", "Silt", "Clay")], nz_data$Label)
-          classification_system <- "New Zealand"
-        } else if (input$dataset_upload == "USDA") {
-          polygons <- split(usda_data[, c("Sand", "Silt", "Clay")], usda_data$Label)
-          classification_system <- "USDA"
-        } else if (input$dataset_upload == "Australian") {
-          polygons <- split(australian_data[, c("Sand", "Silt", "Clay")], australian_data$Label)
-          classification_system <- "Australian"
-        }
-        
-        # Classify points into polygons
-        points$classification <- classify_points(points, polygons)
-        points$classification_system <- classification_system  # Add classification system column
-      } else {
-        points <- data.frame(
-          soil = character(0),
-          sand = numeric(0),
-          silt = numeric(0),
-          clay = numeric(0),
-          classification = character(0),
-          classification_system = character(0)
-        )
-      }
-      
-      write.csv(points, file, row.names = FALSE)
+      write.csv(classify_soil_data(soil_data(), input$dataset_upload), file,
+                row.names = FALSE)
     }
   )
-  
+
   # Render ternary plot
   output$ternaryPlot <- renderPlot({
     # Dynamically assign data based on the selected dataset

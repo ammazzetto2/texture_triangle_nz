@@ -83,18 +83,25 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 ## Scientific status
 
 This repository is a prototype. The polygon coordinates and class names are
-embedded in `soil_triangle.R`; authoritative source references and boundary
+stored in `R/classification_data.R`; authoritative source references and boundary
 conventions still need to be documented and verified for each system.
 
 Classification uses point-in-polygon checks in sand/clay coordinates. When a
 sample matches more than one polygon, the last matching class in the current
-iteration order wins. Boundary assignments therefore need explicit review.
+iteration order wins. Exact polygon edges are excluded by the current
+point-in-polygon settings, so samples on boundaries can have no classification
+(exported as `NA`). This includes pure sand, clay, and silt in all three systems.
+Boundary assignments therefore need explicit review.
 Some exported class labels contain line breaks used for plot formatting.
 
 Initial structural checks found that polygon vertices are within 0–1 and sum
 to 1. The Australian polygons have a combined area of 0.50025 compared with
-0.5 for the full triangle; the cause still needs investigation. Area totals
-alone do not establish that a system has no gaps or overlaps.
+0.5 for the full triangle. A sample with 90.5% sand, 1.3% silt, and 8.2% clay
+matches both the Australian Sand and Sandy Loam interiors; the existing iteration
+order assigns Sandy Loam. This confirms an overlap, but the complete geometry
+still needs investigation. Area totals alone do not establish that a system has
+no gaps or overlaps. These behaviors are documented in tests to make future
+corrections reviewable, not to endorse their scientific accuracy.
 
 ## Repository layout
 
@@ -102,9 +109,12 @@ alone do not establish that a system has no gaps or overlaps.
 | --- | --- |
 | `run_app.R` | Launcher with automatic dependency setup |
 | `R/dependencies.R` | Shared package checks and installation |
-| `soil_triangle.R` | Current Shiny app, polygon data, classification, and exports |
+| `soil_triangle.R` | Shiny UI, server, plotting, and download handlers |
+| `R/classification_data.R` | Polygon coordinates and class labels |
+| `R/classification.R` | Shared classification and export preparation |
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
+| `tests/classification.R` | Classification, geometry, and download checks |
 | `WWW/` | Existing logo images; static asset serving needs verification |
 | `examples/` | Example input data |
 | `old_files/` | Earlier scripts, an R Markdown draft, and reference workbooks |
@@ -112,13 +122,14 @@ alone do not establish that a system has no gaps or overlaps.
 The files named `*_tests.R` in `old_files/` are historical app prototypes,
 not an automated test suite. A deployment procedure is not yet documented.
 
-## Run validation checks
+## Run checks
 
 From the repository root (missing app dependencies are installed automatically):
 
 ```sh
 Rscript --vanilla tests/validation.R
 Rscript --vanilla tests/dependencies.R
+Rscript --vanilla tests/classification.R
 ```
 
 The script uses base R assertions and Shiny's `testServer()`; no separate test
@@ -128,6 +139,11 @@ rejected input. It uses the same dependency setup as the app.
 
 The dependency checks simulate installation and failure paths without downloads
 or changes to your actual R library paths.
+
+Classification checks cover every class's vertex mean, example samples, export
+columns, empty exports, known boundary and overlap behavior, and both Shiny
+download handlers under all three systems. These are regression checks of the
+current polygons, not validation against authoritative scientific references.
 
 ## Initial verification
 
@@ -141,7 +157,8 @@ ggtern 4.0.0, dplyr 1.2.1, and pracma 2.4.6 confirmed:
 
 Plot rendering emits warnings, including ignored `xarrow`, `yarrow`, and
 `zarrow` labels. These checks do not establish visual correctness or cover
-browser interactions, file uploads, downloads, or scientific accuracy.
+browser interactions or scientific accuracy. Subsequent integration checks
+cover valid and rejected uploads and both CSV download handlers.
 
 ## Planned improvements
 
