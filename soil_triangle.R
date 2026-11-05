@@ -12,136 +12,11 @@ source("R/classification.R", local = TRUE)
 
 source("R/plotting.R", local = TRUE)
 
-#################################################### Define UI
-ui <- fluidPage(
-  
-  # Let Bootstrap's grid adapt to the viewport without browser zoom overrides.
-  tags$head(
-    tags$style(HTML("
-    .results-table { overflow-x: auto; }
-    .sidebarPanel {
-      font-size: 18px !important;
-    }
-    label, .shiny-input-container {
-      font-size: 18px !important;
-    }
-    .btn, .action-button, .download-button {
-      font-size: 18px !important;
-      padding: 10px;
-    }
-  "))
-  ),
-  
-  
-  titlePanel("Soil Classification Tool"),
-  tags$p("Downloads flag shared boundaries and overlapping regions and list candidate classes."),
-  sidebarLayout(
-    sidebarPanel(
-      width = 4,
-      style = "font-size: 18px;",
-      tabsetPanel(
-        tabPanel("Introduction",
-                 tags$div(
-                   style = "margin-top: 15px;",
-                   tags$p("Enter sample percentages in Data Selection or upload a CSV. Sand, silt, and clay must total 100%."),
-                   tags$p("Review the Results tab before downloading. Samples on shared boundaries or overlapping regions list candidate classes without choosing one."),
-                   tags$p("Manual entries and uploads share one dataset. Either Clear Data button removes all samples. Download your results before closing the session."),
-                   img(src = "lincoln_uni.jpg", height = "80px", width = "40%", style = "margin-bottom: 20px;"),
-                   tags$a("Contact - Josie Mazzetto", 
-                          href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
-                          style = "display: block; text-align: left; color: #007bff;")
-                 )
-        ),
-        tabPanel("Data Selection",
-                 tags$div(
-                   style = "margin-top: 15px;",  # Adds spacing from the top
-                   selectInput("dataset", "Select Classification:",
-                               choices = c("New Zealand", "USDA", "Australian"),
-                               selected = "New Zealand")
-                 ),
-                 hr(),
-                 # Manual data entry section
-                 textInput("sampleName", "Sample Name"),
-                 numericInput("sandValue", "% Sand (0 to 100)", value = 50, min = 0, max = 100),
-                 numericInput("siltValue", "% Silt (0 to 100)", value = 25, min = 0, max = 100),
-                 numericInput("clayValue", "% Clay (0 to 100)", value = 25, min = 0, max = 100),
-                 tags$div(
-                   tags$div(
-                     actionButton("addManualDataBtn", "Add Data", style = "width: 100%;"),
-                     actionButton("clearDataBtn_manual", "Clear Data", style = "width: 100%;"),
-                     style = "display: flex; flex-direction: column; gap: 10px;"  # Vertically aligned buttons with spacing
-                   ),
-                   tags$div(
-                     downloadButton("downloadDataBtn_manual", "Download Data", style = "width: 100%;"),
-                     style = "margin-top: 15px;"  # Add space above the download button
-                   )
-                 ),
-                 tags$div(
-                   img(src = "lincoln_uni.jpg", height = "80px", width = "40%", style = "margin-top: 20px;"),
-                   tags$a("Contact - Josie Mazzetto", 
-                          href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
-                          style = "display: block; margin-top: 10px; text-align: left; color: #007bff;")
-                 )
-        ),
-        tabPanel("Upload data",
-                 tags$div(
-                   style = "margin-top: 15px; padding: 15px;",  # Adds spacing & padding for better alignment
-                   selectInput("dataset_upload", "Select Classification:",
-                               choices = c("New Zealand", "USDA", "Australian"),
-                               selected = "New Zealand"),
-                   
-                   tags$div(style = "margin-top: 10px;"),  # Add spacing
-                   
-                   fileInput("fileUpload", "Upload CSV file", accept = ".csv"),
-                   helpText("Required columns: soil, sand, silt, clay. Use percentages from 0 to 100, with no extra columns."),
-                   downloadButton("downloadTemplateBtn", "Download CSV template"),
-                   
-                   tags$div(style = "margin-top: 10px;"),  # Add spacing
-                   
-                   actionButton("clearDataBtn_upload", "Clear Data", style = "width: 100%;"),
-                   
-                   tags$div(style = "margin-top: 10px;"),  # Add spacing
-                   
-                   downloadButton("downloadDataBtn_upload", "Download Data", style = "width: 100%;"),
-                   
-                   tags$div(
-                     img(src = "lincoln_uni.jpg", height = "80px", width = "20%", style = "margin-top: 20px;"),
-                     tags$a("Contact - Josie Mazzetto", 
-                            href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz", 
-                            style = "display: block; margin-top: 10px; text-align: left; color: #007bff;")
-                   )
-                 )
-        )
-      )
-    ),
-    mainPanel(
-      width = 8,
-      tabsetPanel(
-        tabPanel("Triangle", plotOutput("ternaryPlot", height = "750px", width = "100%")),
-        tabPanel("Results",
-          tags$h3(textOutput("resultsSummary", inline = TRUE)),
-          tags$p("A boundary may have one class or several candidates. Overlap means the current polygons match more than one interior. A dash means no single class was assigned."),
-          tags$p("Downloads contain all samples and the full classification details."),
-          tags$div(class = "results-table", tableOutput("resultsTable"))
-        )
-      )
-    )
-  )
-)
-
-
+source("R/ui.R", local = TRUE)
+ui <- build_app_ui()
 
 # Define server logic
 server <- function(input, output, session) {
-  
-  # Update the selected dataset in both tabs
-  observeEvent(input$dataset, {
-    updateSelectInput(session, "dataset_upload", selected = input$dataset)
-  })
-  
-  observeEvent(input$dataset_upload, {
-    updateSelectInput(session, "dataset", selected = input$dataset_upload)
-  })
   
   # Initialize empty dataframe to hold soil data
   soil_data <- reactiveVal(data.frame(
@@ -151,7 +26,7 @@ server <- function(input, output, session) {
     clay = numeric()
   ))
 
-  # The on-screen table and both downloads use the same calculated results.
+  # The on-screen table and shared download use the same calculated results.
   classified_data <- reactive({
     req(input$dataset)
     classify_soil_data(soil_data(), input$dataset)
@@ -180,11 +55,34 @@ server <- function(input, output, session) {
     )
   })
 
-  output$resultsTable <- renderTable({
-    results_table()
-  }, striped = TRUE, bordered = TRUE, rownames = FALSE, digits = 6,
-     sanitize.text.function = htmltools::htmlEscape)
-  
+  output$resultsTable <- renderUI({
+    build_results_table(results_table())
+  })
+
+  output$workspaceStats <- renderUI({
+    results <- classified_data()
+    tagList(
+      tags$span(class = "stat-chip", tags$strong(nrow(results)),
+                if (nrow(results) == 1L) " sample" else " samples"),
+      tags$span(class = "stat-chip", tags$strong(sum(is.na(results$classification))),
+                " need review")
+    )
+  })
+
+  output$compositionTotal <- renderUI({
+    values <- c(input$sandValue, input$siltValue, input$clayValue)
+    if (length(values) != 3L || any(!is.finite(values))) {
+      return(tags$div(class = "composition-total", "Enter all three percentages."))
+    }
+    total <- sum(values)
+    valid <- all(values >= 0 & values <= 100) && abs(total - 100) <= 1e-8
+    tags$div(class = paste("composition-total", if (valid) "total-valid" else "total-invalid"),
+      tags$span("Composition total"),
+      tags$strong(paste0(format(round(total, 6), trim = TRUE), "%")),
+      tags$small(if (valid) "Ready to add" else "Must total 100%")
+    )
+  })
+
   # Keep the existing dataset intact when validation fails.
   add_samples <- function(read_samples) {
     samples <- tryCatch(
@@ -224,26 +122,11 @@ server <- function(input, output, session) {
     add_samples(function() read_soil_csv(input$fileUpload$datapath))
   })
 
-  # Clear manually added soil data
-  observeEvent(input$clearDataBtn_manual, {
-    soil_data(data.frame(
-      soil = character(),
-      sand = numeric(),
-      silt = numeric(),
-      clay = numeric()
-    ))
+  observeEvent(input$clearDataBtn, {
+    soil_data(data.frame(soil = character(), sand = numeric(),
+                         silt = numeric(), clay = numeric()))
   })
-  
-  # Clear uploaded soil data
-  observeEvent(input$clearDataBtn_upload, {
-    soil_data(data.frame(
-      soil = character(),
-      sand = numeric(),
-      silt = numeric(),
-      clay = numeric()
-    ))
-  })
-  
+
   # Download template CSV
   output$downloadTemplateBtn <- downloadHandler(
     filename = function() {
@@ -260,26 +143,19 @@ server <- function(input, output, session) {
     }
   )
   
-  # Both download paths share the same classifier and export schema.
-  output$downloadDataBtn_manual <- downloadHandler(
-    filename = function() "soil_data_manual.csv",
+  output$downloadDataBtn <- downloadHandler(
+    filename = function() "soil_texture_results.csv",
     content = function(file) {
-      write.csv(classified_data(), file,
-                row.names = FALSE)
-    }
-  )
-
-  output$downloadDataBtn_upload <- downloadHandler(
-    filename = function() "classified_soil_data_upload.csv",
-    content = function(file) {
-      write.csv(classified_data(), file,
-                row.names = FALSE)
+      write.csv(classified_data(), file, row.names = FALSE)
     }
   )
 
   output$ternaryPlot <- renderPlot({
     req(input$dataset)
-    print(build_soil_plot(soil_data(), input$dataset))
+    width <- session$clientData$output_ternaryPlot_width
+    text_scale <- if (is.null(width) || !is.finite(width)) 1 else max(0.65, min(1, width / 750))
+    print(build_soil_plot(soil_data(), input$dataset, text_scale = text_scale,
+                          show_labels = !identical(input$showSampleLabels, FALSE)))
   })
 
   

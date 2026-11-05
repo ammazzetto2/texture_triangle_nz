@@ -47,12 +47,16 @@ for (system in c("New Zealand", "USDA", "Australian")) {
   cat(system, "plot labels and warning-free rendering: PASS\n")
 }
 
+# Hiding sample labels leaves sample points and class labels intact.
+hidden <- ggtern::ggplot_build(build_soil_plot(samples, "New Zealand", show_labels = FALSE))
+stopifnot(nrow(hidden$data[[3]]) == nrow(samples), nrow(hidden$data[[4]]) == 0L)
+
 app_env <- new.env()
 source("soil_triangle.R", local = app_env)
 shiny::testServer(app_env$server, {
   soil_data(samples)
   for (system in c("New Zealand", "USDA", "Australian")) {
-    session$setInputs(dataset = system, dataset_upload = system)
+    session$setInputs(dataset = system)
     plot_output <- output$ternaryPlot
     stopifnot(!is.null(plot_output))
   }

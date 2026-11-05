@@ -107,19 +107,17 @@ source("soil_triangle.R", local = app_env)
 shiny::testServer(app_env$server, {
   soil_data(fixtures)
   for (system in systems) {
-    session$setInputs(dataset = system, dataset_upload = system)
-    # Exercise actual Shiny download handlers, not just the shared helper.
-    manual <- read.csv(output$downloadDataBtn_manual)
-    upload <- read.csv(output$downloadDataBtn_upload)
+    session$setInputs(dataset = system)
+    # Exercise the shared Shiny download handler, not just the classifier.
+    manual <- read.csv(output$downloadDataBtn)
     expected_export <- classify_soil_data(fixtures, system)
-    stopifnot(identical(manual, upload),
+    stopifnot(identical(manual, expected_export),
               identical(manual$classification, expected[[system]]),
               identical(manual$classification_status, expected_export$classification_status),
               identical(manual$classification_candidates, expected_export$classification_candidates),
               all(manual$classification_system == system))
   }
   soil_data(fixtures[FALSE, ])
-  stopifnot(nrow(read.csv(output$downloadDataBtn_manual)) == 0L,
-            nrow(read.csv(output$downloadDataBtn_upload)) == 0L)
+  stopifnot(nrow(read.csv(output$downloadDataBtn)) == 0L)
 })
 cat("Classification download integration checks: PASS\n")

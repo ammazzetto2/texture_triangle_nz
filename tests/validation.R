@@ -44,7 +44,7 @@ cat("Validation checks: PASS\n")
 app_env <- new.env()
 app <- source("soil_triangle.R", local = app_env)$value
 shiny::testServer(app_env$server, {
-  session$setInputs(dataset = "New Zealand", dataset_upload = "New Zealand")
+  session$setInputs(dataset = "New Zealand")
   session$setInputs(sampleName = "Valid", sandValue = 50, siltValue = 25,
                     clayValue = 25, addManualDataBtn = 1)
   stopifnot(nrow(soil_data()) == 1)
@@ -62,7 +62,7 @@ shiny::testServer(app_env$server, {
   session$setInputs(fileUpload = list(datapath = invalid_csv))
   stopifnot(identical(soil_data(), original))
   unlink(invalid_csv)
-  session$setInputs(clearDataBtn_manual = 1)
+  session$setInputs(clearDataBtn = 1)
   stopifnot(nrow(soil_data()) == 0)
 })
 cat("Shiny validation integration checks: PASS\n")

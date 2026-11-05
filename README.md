@@ -20,7 +20,7 @@ Or start from a terminal in the repository root:
 Rscript run_app.R
 ```
 
-Startup automatically checks for `shiny`, `ggplot2`, `ggtern`, `dplyr`, and
+Startup automatically checks for `shiny`, `bslib`, `ggplot2`, `ggtern`, `dplyr`, and
 `pracma`. Missing packages and their required dependencies are installed from
 CRAN into `.R-library/` inside this project. Already available, loadable packages
 are reused. The local library is added to R's library paths for the session and
@@ -38,23 +38,28 @@ runs the dependency check when sourced directly.
 
 ## Use the app
 
-1. Open **Data Selection**, choose a classification system, enter a sample name
-   and sand, silt, and clay percentages, then select **Add Data**.
-2. Alternatively, open **Upload data** and upload a CSV in the format below.
-   **Download CSV template** provides the required header; add sample rows
-   before uploading it.
-3. View sample points on the triangle. Changing the classification system
-   updates the triangle, the Results table, and downloaded classifications.
-4. Open **Results** to review percentages, class, status, and candidate classes.
-   The summary counts samples without a single assigned class. A dash in the
-   Class column means no single class was assigned; inspect the candidates.
-   On narrow screens, scroll the table horizontally to see all columns.
-5. Select **Download Data** in either input tab to export all samples and their
-   full classification details. Both buttons export the same current results.
+1. Choose the shared **Classification system** at the top of the workspace.
+2. Under **Add samples**, use **Manual entry** to enter a name and sand, silt,
+   and clay percentages, then select **Add sample**. The live composition total
+   indicates whether the percentages add up to 100.
+3. Alternatively, use **CSV upload**. **Get CSV template** provides the required
+   header; add sample rows before uploading it.
+4. Explore **Triangle**, or open **Results** to review classes, labelled status
+   badges, and candidate classes. The top bar counts samples that need review
+   because they have no single assigned class. On narrow screens, scroll the
+   table horizontally to see all columns.
+5. Select **Download CSV** to export all current samples and classification
+   details. **Sample labels** on the Triangle tab can be turned off for crowded
+   datasets; the points remain visible.
 
-Manual entries and uploaded samples share one dataset for the current app
-session. Uploading appends samples. Either **Clear Data** button clears all
-samples. Download data before closing the session if you want to keep it.
+Manual entries and uploaded samples share one dataset for the current session.
+Uploading appends samples. **Clear all samples** clears the dataset. Download
+results before closing the session if you want to keep them.
+
+The interface uses a shared Bootstrap 5 theme, system fonts, and local styles
+and branding assets, with no external font requests. The layout stacks on
+smaller screens. **About & methodology** in the footer links to local notes
+covering classification behavior and the known Australian polygon overlap.
 
 ## CSV format
 
@@ -110,7 +115,8 @@ limitations, and remaining verification work are documented in
 | --- | --- |
 | `run_app.R` | Launcher with automatic dependency setup |
 | `R/dependencies.R` | Shared package checks and installation |
-| `soil_triangle.R` | Shiny UI, server, plotting, and download handlers |
+| `soil_triangle.R` | Shiny server and shared download handler |
+| `R/ui.R` | Page structure, Bootstrap theme, and accessible results table |
 | `R/classification_data.R` | Polygon coordinates and class labels |
 | `R/classification.R` | Shared classification and export preparation |
 | `R/plotting.R` | Ternary plot construction, labels, and styling |
@@ -119,7 +125,7 @@ limitations, and remaining verification work are documented in
 | `tests/classification.R` | Classification, geometry, and download checks |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |
 | `tests/plotting.R` | Rendered text, graphics, and Shiny plot checks |
-| `WWW/` | Existing logo images; static asset serving needs verification |
+| `www/` | Stylesheet, methodology page, and branding assets served by Shiny |
 | `examples/` | Example input data |
 | `docs/classification.md` | Classification policy, source review, and known geometry issues |
 | `old_files/` | Earlier scripts, an R Markdown draft, and reference workbooks |
@@ -148,20 +154,20 @@ The dependency checks simulate installation and failure paths without downloads
 or changes to your actual R library paths.
 
 Classification checks cover every class's vertex mean, example samples, export
-columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and both Shiny
-download handlers under all three systems. These are regression checks of the
+columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and the shared Shiny
+download handler under all three systems. These are regression checks of the
 current polygons, not validation against authoritative scientific references.
 
 Results checks verify the empty state, ambiguous results, system switching,
 export consistency, CSV template schema, clearing, and safe display of sample
-names as text.
+names as text. They also check the live composition total and status badges.
 
 Plotting checks build and draw all three systems with samples and with an empty
 dataset. They check the rendered graphics for every class label, sample name,
 and axis label, and fail on rendering warnings or messages. They also exercise
 the Shiny plot output. Class and sample text use explicit identity positioning
 for compatibility with ggplot2 4 and ggtern 4. Crowded sample labels may still
-overlap; automatic label collision avoidance is not implemented.
+overlap; automatic label collision avoidance is not implemented. Sample labels can be hidden without removing points.
 
 ## Initial verification
 
@@ -177,7 +183,7 @@ The initial plotting warnings and dropped text layers have since been fixed.
 The plotting checks now confirm warning-free rendering with visible text layers
 on the versions listed above; rendered previews of all three systems were
 visually inspected. Subsequent integration checks cover valid and rejected
-uploads, results, both CSV download handlers, and plotting. These checks do not
+uploads, results, the CSV download handler, and plotting. These checks do not
 establish scientific accuracy or complete browser coverage.
 
 ## Planned improvements
