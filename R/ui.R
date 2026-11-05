@@ -65,6 +65,19 @@ build_app_ui <- function() {
             tags$summary("How to read your results"),
             tags$p("Each composition is a point on the triangle. The Results tab lists its class and candidate classes."),
             tags$p("A shared boundary or overlapping region can have more than one candidate. These samples are marked for review rather than assigned a single class.")
+          ),
+          tags$div(class = "sidebar-resources",
+            tags$details(class = "about-details",
+              tags$summary("About & methodology"),
+              tags$div(class = "about-content",
+                tags$p("This research prototype supports New Zealand, USDA, and Australian texture polygons. Scientific source verification is ongoing, and a known overlap remains in the Australian data."),
+                tags$p("Boundary and overlap reporting is a software policy. It does not resolve the underlying scientific conventions."),
+                tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
+              )
+            ),
+            tags$a("Contact Josie Mazzetto", class = "sidebar-contact",
+                   href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz"),
+            tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University")
           )
         ),
         tags$section(class = "visual-panel panel", `aria-label` = "Classification workspace",
@@ -87,19 +100,6 @@ build_app_ui <- function() {
             )
           )
         )
-      ),
-      tags$footer(class = "app-footer",
-        tags$div(class = "footer-brand", tags$img(src = "branding/lincoln_uni.jpg", alt = "Lincoln University"),
-                  tags$span("Soil texture classification")),
-        tags$details(class = "about-details",
-          tags$summary("About & methodology"),
-          tags$div(class = "about-content",
-          tags$p("This research prototype supports New Zealand, USDA, and Australian texture polygons. Scientific source verification is ongoing, and a known overlap remains in the Australian data."),
-          tags$p("Boundary and overlap reporting is a software policy. It does not resolve the underlying scientific conventions."),
-          tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
-          )
-        ),
-        tags$a("Contact Josie Mazzetto", href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz")
       )
     )
   )

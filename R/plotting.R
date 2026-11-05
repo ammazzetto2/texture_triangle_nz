@@ -60,7 +60,7 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE)
                   legend.position = "none",
                   plot.background = ggplot2::element_rect(fill = "white", colour = NA),
                   tern.panel.expand = 0.16,
-                  plot.margin = ggplot2::margin(10, 20, 40, 20)) +
+                  plot.margin = ggplot2::margin(6, 12, 8, 12)) +
     ggtern::scale_T_continuous(breaks = seq(0.1, 1, by = 0.1)) +
     ggtern::scale_L_continuous(breaks = seq(0.1, 1, by = 0.1)) +
     ggtern::scale_R_continuous(breaks = seq(0.1, 1, by = 0.1)) +
