@@ -56,7 +56,11 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE)
                   text = ggplot2::element_text(family = "sans", colour = "#25392f"),
                   tern.axis.arrow = ggplot2::element_line(colour = "#4a554c", linewidth = 0.6),
                   tern.axis.text = ggplot2::element_text(size = 11 * text_scale, colour = "#4a554c"),
-                  tern.axis.arrow.text = ggplot2::element_text(size = 12 * text_scale),
+                  # Move text outward from each arrow. The horizontal bottom
+                  # axis needs the opposite justification to the sloping axes.
+                  tern.axis.arrow.text = ggplot2::element_text(size = 12 * text_scale, vjust = 0),
+                  tern.axis.arrow.text.L = ggplot2::element_text(vjust = if (system == "New Zealand") 0 else 1),
+                  tern.axis.arrow.text.R = ggplot2::element_text(vjust = if (system == "New Zealand") 1 else 0),
                   legend.position = "none",
                   plot.background = ggplot2::element_rect(fill = "white", colour = NA),
                   tern.panel.expand = 0.16,
