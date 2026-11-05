@@ -55,6 +55,7 @@ ui <- fluidPage(
   
   
   titlePanel("Soil Classification Tool"),
+  tags$p("Downloads flag shared boundaries and overlapping regions and list candidate classes."),
   sidebarLayout(
     sidebarPanel(
       style = "min-width: 450px; max-width: 600px; width: 40%; font-size: 18px;", # Adjusted width & font size

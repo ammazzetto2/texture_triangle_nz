@@ -29,12 +29,16 @@ for (system in systems) {
             identical(result[names(fixtures)], fixtures))
   empty <- classify_soil_data(fixtures[FALSE, ], system)
   stopifnot(nrow(empty) == 0L,
-            identical(names(empty), c(names(fixtures), "classification", "classification_system")),
+            identical(names(empty), c(names(fixtures), "classification", "classification_system",
+                                     "classification_status", "classification_candidates")),
             is.character(empty$classification), is.character(empty$classification_system))
 
-  # Record the existing boundary limitation, not a scientific endorsement.
+  # Unique outer boundaries, including all three corners, have a single class.
   corners <- data.frame(sand = c(100, 0, 0), clay = c(0, 100, 0))
-  stopifnot(all(is.na(classify_points(corners, polygons))))
+  details <- classification_details(corners, polygons)
+  stopifnot(identical(details$classification, c("Sand", "Clay",
+              if (system == "Australian") "Silty Loam" else "Silt")),
+            all(details$classification_status == "boundary"))
   areas <- vapply(polygons, function(p) {
     next_vertex <- c(2:nrow(p), 1)
     abs(sum(p$Sand * p$Clay[next_vertex] - p$Sand[next_vertex] * p$Clay)) / 2
@@ -43,14 +47,58 @@ for (system in systems) {
   cat(system, "classification checks: PASS; polygon area total:", sum(areas), "\n")
 }
 
-# Confirm the known Australian overlap and the existing last-match outcome.
+# Confirm the known Australian overlap is reported instead of resolved by order.
 overlap <- data.frame(soil = "Overlap", sand = 90.5, silt = 1.3, clay = 8.2)
 polygons <- classification_polygons("Australian")
 matches <- names(polygons)[vapply(polygons, function(p) {
   pracma::inpolygon(overlap$sand / 100, overlap$clay / 100, p$Sand, p$Clay)
 }, logical(1))]
+details <- classify_soil_data(overlap, "Australian")
 stopifnot(identical(matches, c("Sand", "Sandy Loam")),
-          classify_soil_data(overlap, "Australian")$classification == "Sandy Loam")
+          is.na(details$classification), details$classification_status == "overlap",
+          details$classification_candidates == "Sand; Sandy Loam",
+          identical(classification_details(overlap, polygons),
+                    classification_details(overlap, rev(polygons))))
+
+# Exact and near shared boundaries must be stable despite floating-point noise.
+boundary <- data.frame(soil = "Boundary", sand = 20, silt = 20, clay = 60)
+details <- classify_soil_data(boundary, "New Zealand")
+stopifnot(is.na(details$classification), details$classification_status == "boundary",
+          details$classification_candidates == "Clay; Loamy Clay")
+near <- boundary
+near$clay <- near$clay + 1e-10
+near$silt <- near$silt - 1e-10
+stopifnot(identical(classify_soil_data(near, "New Zealand")$classification_candidates,
+                    details$classification_candidates))
+for (offset in c(-1e-5, 1e-5)) {
+  near$clay <- 60 + offset
+  near$silt <- 20 - offset
+  details <- classify_soil_data(near, "New Zealand")
+  stopifnot(details$classification_status == "classified",
+            details$classification == if (offset < 0) "Loamy Clay" else "Clay")
+}
+# No polygon match remains explicit, including when a geometry gap is present.
+gap <- classification_details(data.frame(sand = 200, clay = 200), polygons)
+stopifnot(is.na(gap$classification), gap$classification_status == "unclassified",
+          gap$classification_candidates == "")
+for (system in systems) {
+  polygons <- classification_polygons(system)
+  stopifnot(identical(classification_details(fixtures, polygons),
+                      classification_details(fixtures, rev(polygons))))
+}
+
+# Sample the complete triangle at whole-percentage resolution. This checks
+# coverage at these points only; it cannot prove the absence of small gaps.
+grid <- expand.grid(sand = 0:100, clay = 0:100)
+grid <- grid[grid$sand + grid$clay <= 100, ]
+for (system in systems) {
+  details <- classification_details(grid, classification_polygons(system))
+  ambiguous <- grepl("; ", details$classification_candidates, fixed = TRUE)
+  stopifnot(nrow(details) == 5151L,
+            !any(details$classification_status == "unclassified"),
+            all(is.na(details$classification[ambiguous])),
+            all(!is.na(details$classification[!ambiguous])))
+}
 error <- tryCatch(classification_polygons("Unknown"), error = conditionMessage)
 stopifnot(identical(error, "Unknown classification system: Unknown"))
 
@@ -63,8 +111,11 @@ shiny::testServer(app_env$server, {
     # Exercise actual Shiny download handlers, not just the shared helper.
     manual <- read.csv(output$downloadDataBtn_manual)
     upload <- read.csv(output$downloadDataBtn_upload)
+    expected_export <- classify_soil_data(fixtures, system)
     stopifnot(identical(manual, upload),
               identical(manual$classification, expected[[system]]),
+              identical(manual$classification_status, expected_export$classification_status),
+              identical(manual$classification_candidates, expected_export$classification_candidates),
               all(manual$classification_system == system))
   }
   soil_data(fixtures[FALSE, ])

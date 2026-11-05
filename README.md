@@ -86,22 +86,17 @@ This repository is a prototype. The polygon coordinates and class names are
 stored in `R/classification_data.R`; authoritative source references and boundary
 conventions still need to be documented and verified for each system.
 
-Classification uses point-in-polygon checks in sand/clay coordinates. When a
-sample matches more than one polygon, the last matching class in the current
-iteration order wins. Exact polygon edges are excluded by the current
-point-in-polygon settings, so samples on boundaries can have no classification
-(exported as `NA`). This includes pure sand, clay, and silt in all three systems.
-Boundary assignments therefore need explicit review.
-Some exported class labels contain line breaks used for plot formatting.
+Classification now reports uncertainty explicitly. A unique polygon match receives
+that class, including outer edges and pure-component corners. Shared boundaries
+and overlapping regions receive no single class (`NA`) and list all candidate
+classes. Downloads include `classification_status` (`classified`, `boundary`,
+`overlap`, or `unclassified`) and `classification_candidates` in addition to the
+original columns. Polygon order never resolves an ambiguous result.
 
-Initial structural checks found that polygon vertices are within 0–1 and sum
-to 1. The Australian polygons have a combined area of 0.50025 compared with
-0.5 for the full triangle. A sample with 90.5% sand, 1.3% silt, and 8.2% clay
-matches both the Australian Sand and Sandy Loam interiors; the existing iteration
-order assigns Sandy Loam. This confirms an overlap, but the complete geometry
-still needs investigation. Area totals alone do not establish that a system has
-no gaps or overlaps. These behaviors are documented in tests to make future
-corrections reviewable, not to endorse their scientific accuracy.
+The original coordinates have not changed. The Australian polygons still have a
+confirmed Sand / Sandy Loam overlap. Sources, numerical tolerances, examples,
+limitations, and remaining verification work are documented in
+[`docs/classification.md`](docs/classification.md).
 
 ## Repository layout
 
@@ -117,6 +112,7 @@ corrections reviewable, not to endorse their scientific accuracy.
 | `tests/classification.R` | Classification, geometry, and download checks |
 | `WWW/` | Existing logo images; static asset serving needs verification |
 | `examples/` | Example input data |
+| `docs/classification.md` | Classification policy, source review, and known geometry issues |
 | `old_files/` | Earlier scripts, an R Markdown draft, and reference workbooks |
 
 The files named `*_tests.R` in `old_files/` are historical app prototypes,
@@ -141,7 +137,7 @@ The dependency checks simulate installation and failure paths without downloads
 or changes to your actual R library paths.
 
 Classification checks cover every class's vertex mean, example samples, export
-columns, empty exports, known boundary and overlap behavior, and both Shiny
+columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and both Shiny
 download handlers under all three systems. These are regression checks of the
 current polygons, not validation against authoritative scientific references.
 
