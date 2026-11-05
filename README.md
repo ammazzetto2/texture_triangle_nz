@@ -8,7 +8,7 @@ triangle, and download the samples with their classifications.
 
 ## Run locally
 
-Install R, then open R or RStudio in this repository's root folder and run:
+Install R (4.1 or newer), then open R or RStudio in this repository's root folder and run:
 
 ```r
 source("run_app.R")
@@ -113,10 +113,12 @@ limitations, and remaining verification work are documented in
 | `soil_triangle.R` | Shiny UI, server, plotting, and download handlers |
 | `R/classification_data.R` | Polygon coordinates and class labels |
 | `R/classification.R` | Shared classification and export preparation |
+| `R/plotting.R` | Ternary plot construction, labels, and styling |
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |
+| `tests/plotting.R` | Rendered text, graphics, and Shiny plot checks |
 | `WWW/` | Existing logo images; static asset serving needs verification |
 | `examples/` | Example input data |
 | `docs/classification.md` | Classification policy, source review, and known geometry issues |
@@ -134,6 +136,7 @@ Rscript --vanilla tests/validation.R
 Rscript --vanilla tests/dependencies.R
 Rscript --vanilla tests/classification.R
 Rscript --vanilla tests/results.R
+Rscript --vanilla tests/plotting.R
 ```
 
 The script uses base R assertions and Shiny's `testServer()`; no separate test
@@ -153,6 +156,13 @@ Results checks verify the empty state, ambiguous results, system switching,
 export consistency, CSV template schema, clearing, and safe display of sample
 names as text.
 
+Plotting checks build and draw all three systems with samples and with an empty
+dataset. They check the rendered graphics for every class label, sample name,
+and axis label, and fail on rendering warnings or messages. They also exercise
+the Shiny plot output. Class and sample text use explicit identity positioning
+for compatibility with ggplot2 4 and ggtern 4. Crowded sample labels may still
+overlap; automatic label collision avoidance is not implemented.
+
 ## Initial verification
 
 On 5 November 2026, checks using R 4.6.0, Shiny 1.14.0, ggplot2 4.0.3,
@@ -163,10 +173,12 @@ ggtern 4.0.0, dplyr 1.2.1, and pracma 2.4.6 confirmed:
   manual sample.
 - The example CSV has the required columns, valid ranges, and totals of 100.
 
-Plot rendering emits warnings, including ignored `xarrow`, `yarrow`, and
-`zarrow` labels. These checks do not establish visual correctness or cover
-browser interactions or scientific accuracy. Subsequent integration checks
-cover valid and rejected uploads and both CSV download handlers.
+The initial plotting warnings and dropped text layers have since been fixed.
+The plotting checks now confirm warning-free rendering with visible text layers
+on the versions listed above; rendered previews of all three systems were
+visually inspected. Subsequent integration checks cover valid and rejected
+uploads, results, both CSV download handlers, and plotting. These checks do not
+establish scientific accuracy or complete browser coverage.
 
 ## Planned improvements
 
