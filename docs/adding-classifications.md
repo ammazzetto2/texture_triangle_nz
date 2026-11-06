@@ -12,6 +12,7 @@ R/
     brazil_groups.R
     canada.R
     fao_1974.R
+    uk_tin037.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -21,9 +22,11 @@ tests/
     brazil.csv                 # Independent reference compositions and classes
     canada.csv
     fao_1974.csv
+    uk_tin037.csv
   brazil.R                     # Country-specific scientific checks
   canada.R
   fao_1974.R
+  uk_tin037.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -32,6 +35,7 @@ docs/
     brazil.md
     canada.md
     fao_1974.md
+    uk_tin037.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```

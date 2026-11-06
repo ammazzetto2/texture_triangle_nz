@@ -1,0 +1,14 @@
+soil,sand,silt,clay,expected
+Sand sample,95,2,3,Sand
+Loamy sand sample,82,10,8,Loamy Sand
+Sandy loam sample,60,28,12,Sandy Loam
+Sandy silt loam sample,35,55,10,Sandy Silt Loam
+Silt loam sample,10,80,10,Silt Loam
+Sandy clay loam sample,60,16,24,Sandy Clay Loam
+Clay loam sample,35,40,25,Clay Loam
+Silty clay loam sample,10,65,25,Silty Clay Loam
+Sandy clay sample,55,5,40,Sandy Clay
+Clay sample,25,25,50,Clay
+Silty clay sample,5,50,45,Silty Clay
+Sandy clay shoulder,50,18,32,Sandy Clay
+Clay loam shoulder,47,21,32,Clay Loam

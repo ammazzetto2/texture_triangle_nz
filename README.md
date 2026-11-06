@@ -89,6 +89,15 @@ with an 18% clay step and 35% clay fine limit, rather than the later detailed
 FAO texture triangle. See [source and validation notes](docs/classifications/fao_1974.md)
 and [example samples](examples/fao_1974_samples.csv).
 
+## UK mineral-soil classification
+
+**UK · 11 classes (TIN037 2008)** follows Natural England's mineral-soil
+triangle, including Sandy Silt Loam. Its **0.06 mm sand/silt cutoff** differs
+from the 0.05 mm convention used by several other views; switching systems
+cannot convert laboratory fractions. Organic, peat and calcareous variants
+are excluded. See [UK source and validation notes](docs/classifications/uk_tin037.md)
+and [example samples](examples/uk_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -123,7 +132,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada and FAO–UNESCO have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO and the UK have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
@@ -153,7 +162,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R` | Country-specific analytical references and integration checks |
+| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R` | Country-specific analytical references and integration checks |
 | `tests/fixtures/` | Independent reference compositions and expected classes |
 | `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |

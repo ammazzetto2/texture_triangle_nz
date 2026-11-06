@@ -91,3 +91,10 @@ The remaining provenance work below concerns the original three systems.
 The historical three-group view is sourced to the 1974 Soil Map of the World
 legend. Its definition, fraction convention, step boundary and checks are
 recorded in [FAO–UNESCO source notes](classifications/fao_1974.md).
+
+## UK mineral-soil classes
+
+The 11-class UK view follows Natural England TIN037 (first edition, 2008).
+Its 0.06 mm sand/silt cutoff differs from several other views. See
+[UK source and validation notes](classifications/uk_tin037.md) for scope,
+polygon derivation and checks.

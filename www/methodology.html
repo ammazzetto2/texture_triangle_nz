@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, and FAO–UNESCO texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, and UK texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -22,6 +22,11 @@
 <p>Use fine-earth percentages with sand 0.05–2 mm, silt 0.002–0.05 mm and clay &lt;0.002 mm. Changing systems does not convert particle-size measurements. Shared edges follow the candidate policy below.</p>
 <p>Exports identify <code>FAO-UNESCO (1974, 3 groups)</code>. Full notes are in <code>docs/classifications/fao_1974.md</code>.</p>
 <p><a href="https://www.fao.org/4/as360e/as360e.pdf">FAO–UNESCO — 1974 Legend, printed pages 4–5</a></p>
+<h2>UK — mineral soils (TIN037, 2008)</h2>
+<p>The UK view follows Natural England TIN037, first edition (21 February 2008), Figure 1. It contains the 11 main mineral-soil classes, including Sandy Silt Loam. Organic mineral, peat and calcareous variants, sand-size prefixes and medium/heavy clay-loam subdivisions are excluded. The app does not infer organic matter or carbonate content from the supplied composition.</p>
+<p><strong>Use sand 0.06–2 mm, silt 0.002–0.06 mm and clay &lt;0.002 mm.</strong> This sand/silt cutoff differs from 0.05 mm systems; changing the selector does not convert laboratory measurements. Shared boundaries retain the candidate policy below.</p>
+<p>Exports identify <code>UK (TIN037 2008, 11 classes)</code>. Full notes are in <code>docs/classifications/uk_tin037.md</code>.</p>
+<p><a href="https://publications.naturalengland.org.uk/file/83081">Natural England — TIN037, Soil texture (2008)</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>
