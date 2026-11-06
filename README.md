@@ -1,7 +1,8 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-New Zealand, USDA, Australian, Brazilian, and Canadian classification polygons.
+19 current and historic classification views, including New Zealand, USDA,
+Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
 triangle, and download the samples with their classifications.
@@ -370,14 +371,14 @@ or changes to your actual R library paths.
 
 Classification checks cover every class's vertex mean, example samples, export
 columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and the shared Shiny
-download handler under all three systems. These are regression checks of the
+download handler under the original three systems. These are regression checks of the
 current polygons, not validation against authoritative scientific references.
 
 Results checks verify the empty state, ambiguous results, system switching,
 export consistency, CSV template schema, clearing, and safe display of sample
 names as text. They also check the live composition total and status badges.
 
-Plotting checks build and draw all three systems with samples and with an empty
+Plotting checks build and draw the original three systems with samples and with an empty
 dataset. They check the rendered graphics for every class label, sample name,
 and axis label, and fail on rendering warnings or messages. They also exercise
 the Shiny plot output. Class and sample text use explicit identity positioning
@@ -410,13 +411,31 @@ visually inspected. Subsequent integration checks cover valid and rejected
 uploads, results, the CSV download handler, and plotting. These checks do not
 establish scientific accuracy or complete browser coverage.
 
-## Planned improvements
+## Completed workspace improvements
 
-1. Verify scientific sources, polygon geometry, and shared-boundary rules.
-2. Separate data, validation, classification, plotting, and app code.
-3. Add focused automated tests and reproducible dependency management.
-4. Improve upload feedback, results display, and responsive layout.
-5. Document deployment, licensing, and attribution before wider distribution.
+The app separates definitions, validation, import inspection, classification,
+plotting and UI code. Automated regression checks cover these modules and the
+Shiny server. The workspace includes reversible sample edits, reviewed CSV
+imports with column mapping and error downloads, search/sort/pagination, chart
+highlighting and PNG export, and responsive layouts.
+
+Keyboard users can skip to the workspace and focus scrollable results and CSV
+preview tables. Chart images describe their system and sample count and direct
+users to the equivalent Results table. Status labels supplement colour.
+
+See [workspace quality checks](docs/workspace-quality.md) for the tested scope
+and outstanding manual coverage.
+
+## Remaining work
+
+- Verify scientific sources, legacy polygon geometry and boundary conventions.
+- Lock dependency versions and document reproducible deployment.
+- Resolve licensing and attribution before wider distribution.
+- Complete testing with assistive technology and across browsers. Semantic HTML
+  and automated checks do not establish screen-reader compatibility or WCAG
+  conformance. Large datasets can still make classification and chart rendering
+  slow; pagination limits table rows, not the number of plotted samples. Hide
+  sample labels for dense charts and use Results for exact values and long names.
 
 The classification selector separates **Current** and **Historic** views and
 sorts each group alphabetically. The Historic group contains FAO–UNESCO 1974,

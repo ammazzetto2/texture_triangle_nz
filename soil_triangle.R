@@ -425,10 +425,10 @@ server <- function(input, output, session) {
     tagList(tags$h3("Preview before import"),
       tags$p(class = "field-help", paste(nrow(inspected$samples), "rows;", length(unique(inspected$issues$row)), "rows need correction. Preview shows the first 10 rows.")),
       if (length(inspected$ignored)) tags$p(class = "field-help", paste("Excluded columns:", paste(inspected$ignored, collapse = ", "))),
-      tags$div(class = "upload-preview-table", build_plain_table(head(inspected$preview, 10))),
+      tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV preview; scroll for more columns", build_plain_table(head(inspected$preview, 10))),
       if (nrow(inspected$issues)) tagList(
         tags$p(class = "entry-error", "Fix the source CSV and select it again. Nothing has been imported. Errors below show sample row numbers, excluding the header; first 25 issues shown."),
-        tags$div(class = "upload-preview-table", build_plain_table(head(inspected$issues, 25))),
+        tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV validation errors; scroll for more rows and columns", build_plain_table(head(inspected$issues, 25))),
         downloadButton("downloadUploadErrors", "Download all errors", class = "btn-outline-primary")),
       radioButtons("importAction", "Import into workspace", c("Append to current samples" = "append", "Replace all current samples" = "replace"), selected = "append"),
       tags$p(class = "field-help", "Import applies to every row; invalid files are never partially imported. Undo restores the dataset before this import."),
@@ -491,10 +491,17 @@ server <- function(input, output, session) {
       ggplot2::ggsave(file, plot = plot, device = "png", width = 10, height = 9, units = "in", dpi = 300, bg = "white")
     }
   )
+  plot_description <- reactive({
+    req(input$dataset)
+    paste("Soil texture triangle for", classification_definition(input$dataset)$display,
+      "with", nrow(soil_data()), "sample points. Axes show sand, silt and clay percentages.",
+      "Open the Results tab for sample names, exact percentages, classifications and review status.",
+      "The Class key lists region names. Coincident points and overlapping labels may be hidden.")
+  })
   output$enlargedPlot <- renderPlot({
     req(input$dataset)
     print(current_plot())
-  })
+  }, alt = plot_description)
   output$ternaryPlot <- renderPlot({
     req(input$dataset)
     width <- session$clientData$output_ternaryPlot_width
@@ -503,7 +510,7 @@ server <- function(input, output, session) {
     text_scale <- if (length(dimensions) != 2L || any(!is.finite(dimensions))) 1 else
       max(0.65, min(1, width / 750, height / 560))
     print(current_plot(text_scale))
-  })
+  }, alt = plot_description)
 
   
 }

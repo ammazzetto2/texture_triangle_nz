@@ -10,6 +10,7 @@ build_app_ui <- function() {
       "border-radius" = "0.5rem", "font-size-base" = "0.9375rem"
     ),
     tags$head(tags$link(rel = "stylesheet", href = "app.css")),
+    tags$a(class = "skip-link", href = "#classification-workspace", "Skip to texture workspace"),
     tags$div(class = "app-shell",
       tags$header(class = "app-header",
         tags$div(class = "brand",
@@ -101,7 +102,7 @@ build_app_ui <- function() {
             tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University")
           )
         ),
-        tags$section(id = "classification-workspace", class = "visual-panel panel", `aria-label` = "Classification workspace",
+        tags$section(id = "classification-workspace", tabindex = "-1", class = "visual-panel panel", `aria-label` = "Classification workspace",
           tags$div(class = "panel-heading visual-heading",
             tags$div(tags$p(class = "eyebrow", "02 / EXPLORE"), tags$h2("Texture workspace")),
             tags$span(class = "sample-key", tags$span(class = "sample-dot", `aria-hidden` = "true"), "Your samples")
