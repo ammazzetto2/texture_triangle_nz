@@ -17,12 +17,12 @@ data <- texture_polygons(list(
 ))
 
 
-definition <- list(id = "Brazil (SiBCS 2025, 5 groups)", display = "Brazil (SiBCS) · 2025 · 5 groups",
+definition <- list(id = "Brazil (SiBCS 2025, 5 groups)", display = "Brazil (Lemos & Santos) · 1996 · 5 groups",
     order = 50, clockwise = TRUE, colours = c(`Muito argilosa` = "#b9a28b",
     Argilosa = "#d8c8b1", Média = "#dedab9", Arenosa = "#efe4c7",
     Siltosa = "#cadcd4"), label_size = 4, label_overrides = list(
         `Muito argilosa` = list(text = "Muito\nargilosa"), Siltosa = list(
-            angle = 60)), source = "SiBCS, 6th edition (2025), Figure 1.2 and texture-group definitions, printed pages 55–56",
+            angle = 60)), source = "Reference year: Lemos and Santos (1996), five texture groups, also reproduced in IBGE Manual técnico de pedologia, Figure 10. Implemented geometry: SiBCS, 6th edition (2025), Figure 1.2, printed pages 55–56",
     source_url = "https://www.infoteca.cnptia.embrapa.br/handle/doc/1176834",
     fractions = "Sand 0.05–2 mm; silt 0.002–0.05 mm; clay <0.002 mm.")
 

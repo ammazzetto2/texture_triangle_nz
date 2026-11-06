@@ -1,6 +1,20 @@
 # Brazilian texture classifications
 
-## Source and edition
+## Selector reference years
+
+The 13-class selector uses **2013** (SiBCS), and the five-group
+selector uses **1996** (Lemos and Santos). These reference dates are
+separate from the 2025 manual used to construct the current polygons.
+
+- [SiBCS 2013 publication record](https://binagri.agro.gov.br/cgi-bin/koha/opac-detail.pl?biblionumber=79006)
+- [IBGE Manual técnico de pedologia, Figure 10](https://biblioteca.ibge.gov.br/visualizacao/livros/liv37318.pdf)
+  reproduces the five groups with the attribution “Adaptado de Lemos e Santos (1996)”.
+
+The display changes do not relabel the implemented geometry as a verified
+transcription of either earlier edition. Export identifiers retain their
+2025 implementation provenance.
+
+## Implementation source and edition
 
 Both options use *Sistema Brasileiro de Classificação de Solos* (SiBCS),
 6th revised and expanded edition, Santos et al., Embrapa, 2025.

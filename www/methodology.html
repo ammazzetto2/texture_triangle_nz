@@ -8,7 +8,8 @@
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
 <p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, SEA74 and TGL85, Belgian, European HYPRES, Romanian SRTS 2003, ISSS, and historical USDA 1911 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
-<h2>Brazil — SiBCS 2025</h2>
+<h2>Brazil — 13 classes and five groups</h2>
+<p>The selector identifies the detailed view with <strong>2013</strong> (SiBCS) and the five-group view with <strong>1996</strong> (Lemos and Santos). These are reference years; the current polygon implementation and export identifiers retain their documented SiBCS 2025 provenance.</p>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
 <p>These views follow the shared-boundary candidate policy below, rather than forcing a single class at exact published limits such as 60% clay. Full implementation and validation details are in <code>docs/classifications/brazil.md</code>.</p>

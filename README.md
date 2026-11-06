@@ -65,7 +65,8 @@ covering classification behavior and the known Australian polygon overlap.
 
 ## Brazilian classifications
 
-Brazil has two options: **13 classes** and **5 groups**, both based on SiBCS
+Brazil has two options: **13 classes** (2013) and **5 groups**
+(1996). Their current geometry implementation is sourced to SiBCS
 2025. Labels are in Portuguese and exports identify the edition and view.
 The selected Brazilian source and particle-size definitions appear under
 **About & methodology**. Use fine-earth percentages measured with the stated
