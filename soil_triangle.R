@@ -6,6 +6,7 @@ ensure_project_dependencies()
 library(shiny)
 
 source("R/validation.R", local = TRUE)
+source("R/import.R", local = TRUE)
 
 source("R/classification_systems.R", local = TRUE)
 source("R/classification.R", local = TRUE)
@@ -33,6 +34,22 @@ server <- function(input, output, session) {
   review_only <- reactiveVal(FALSE)
   selected_sample <- reactiveVal(NULL)
   results_page <- reactiveVal(1L)
+  manual_error <- reactiveVal("")
+  pending_upload <- reactiveVal(NULL)
+  upload_error <- reactiveVal("")
+  output$manualError <- renderText(manual_error())
+  output$uploadError <- renderText(upload_error())
+  observeEvent(list(input$sampleName, input$sandValue, input$siltValue, input$clayValue), {
+    manual_error("")
+  }, priority = 10)
+  observeEvent(input$calculateRemainderBtn, {
+    tryCatch({
+      values <- c(sand = input$sandValue, silt = input$siltValue, clay = input$clayValue)
+      value <- remaining_percentage(values, input$remainderComponent)
+      updateNumericInput(session, paste0(input$remainderComponent, "Value"), value = value)
+      manual_error("")
+    }, error = function(e) manual_error(conditionMessage(e)))
+  })
   observeEvent(input$openResults, {
     updateTabsetPanel(session, "workspaceView", selected = "results")
   })
@@ -171,10 +188,10 @@ server <- function(input, output, session) {
     if (length(matching_result_rows()) <= results_page_size()) return(NULL)
     tagList(
       actionButton("previousResultsPage", "Previous", class = "btn-outline-primary",
-                   disabled = if (current_results_page() == 1L) "disabled" else NULL),
+                   disabled = current_results_page() == 1L),
       tags$span(role = "status", paste("Page", current_results_page(), "of", results_page_count())),
       actionButton("nextResultsPage", "Next", class = "btn-outline-primary",
-                   disabled = if (current_results_page() == results_page_count()) "disabled" else NULL))
+                   disabled = current_results_page() == results_page_count()))
   })
   output$resultsFilterSummary <- renderText({
     paste0("Showing ", length(visible_result_rows()), " of ", nrow(soil_data()),
@@ -315,7 +332,8 @@ server <- function(input, output, session) {
     tags$div(class = paste("composition-total", if (valid) "total-valid" else "total-invalid"),
       tags$span("Composition total"),
       tags$strong(paste0(format(round(total, 6), trim = TRUE), "%")),
-      tags$small(if (!valid) "Must total 100%" else if (
+      tags$small(if (!valid) paste0("Must total 100%. Difference: ", format(100 - total, digits = 10),
+        " percentage points. Check rounding; values are not normalized.") else if (
         is.null(input$sampleName) || !nzchar(trimws(input$sampleName))
       ) "Enter a sample name to continue" else "Ready to add")
     )
@@ -326,11 +344,7 @@ server <- function(input, output, session) {
     samples <- tryCatch(
       read_samples(),
       error = function(e) {
-        showModal(modalDialog(
-          title = "Check sample data",
-          conditionMessage(e),
-          easyClose = TRUE
-        ))
+        manual_error(conditionMessage(e))
         NULL
       }
     )
@@ -339,12 +353,16 @@ server <- function(input, output, session) {
         all(soil_data()[i, ] == samples[1, ])
       }, logical(1)))) {
         sample_feedback("This sample name and composition already exist. Use a different name for a replicate.")
+        manual_error("This sample name and composition already exist. Use a different name for a replicate.")
         return(invisible(FALSE))
       }
       description <- if (manual) paste("Added", samples$soil) else
         paste("Imported", nrow(samples), "sample(s)")
       change_samples(rbind(soil_data(), samples), description)
-      if (manual) updateTextInput(session, "sampleName", value = "")
+      if (manual) {
+        manual_error("")
+        updateTextInput(session, "sampleName", value = "")
+      }
       return(invisible(TRUE))
     }
     invisible(FALSE)
@@ -366,14 +384,70 @@ server <- function(input, output, session) {
     }, manual = TRUE)
   })
 
+  observeEvent(input$csvFormat, {
+    pending_upload(NULL)
+    upload_error("")
+  }, priority = 10, ignoreInit = TRUE)
   observeEvent(input$fileUpload, {
     req(input$fileUpload)
+    pending_upload(NULL)
+    upload_error("")
     format <- if (is.null(input$csvFormat)) "samples" else input$csvFormat
-    added <- add_samples(function() read_soil_csv(input$fileUpload$datapath, format = format))
-    if (added && identical(format, "results")) {
-      sample_feedback(paste0(sample_feedback(), "; classifications recalculated using ", input$dataset, "."))
-    }
+    tryCatch({
+      raw <- read_upload_table(input$fileUpload$datapath, format)
+      pending_upload(list(data = raw, format = format))
+    }, error = function(e) upload_error(conditionMessage(e)))
   })
+  output$uploadMapping <- renderUI({
+    pending <- pending_upload()
+    if (is.null(pending) || pending$format == "results") return(NULL)
+    defaults <- default_upload_mapping(pending$data)
+    tagList(tags$p(class = "field-help", "Map four different columns. Unselected columns will not be imported."),
+      lapply(names(defaults), function(column) selectInput(paste0("map_", column), paste("Column for", column),
+        choices = c("Choose a column" = "", stats::setNames(names(pending$data), names(pending$data))),
+        selected = defaults[[column]], selectize = FALSE)))
+  })
+  upload_inspection <- reactive({
+    pending <- pending_upload()
+    if (is.null(pending)) return(NULL)
+    defaults <- default_upload_mapping(pending$data)
+    mapping <- if (pending$format == "results") stats::setNames(names(defaults), names(defaults)) else
+      stats::setNames(vapply(names(defaults), function(column) {
+        value <- input[[paste0("map_", column)]]
+        if (is.null(value)) defaults[[column]] else value
+      }, character(1)), names(defaults))
+    tryCatch(inspect_upload(pending$data, mapping), error = function(e) list(error = conditionMessage(e)))
+  })
+  output$uploadPreview <- renderUI({
+    inspected <- upload_inspection()
+    if (is.null(inspected)) return(NULL)
+    if (!is.null(inspected$error)) return(tags$p(class = "entry-error", role = "alert", inspected$error))
+    tagList(tags$h3("Preview before import"),
+      tags$p(class = "field-help", paste(nrow(inspected$samples), "rows;", length(unique(inspected$issues$row)), "rows need correction. Preview shows the first 10 rows.")),
+      if (length(inspected$ignored)) tags$p(class = "field-help", paste("Excluded columns:", paste(inspected$ignored, collapse = ", "))),
+      tags$div(class = "upload-preview-table", build_plain_table(head(inspected$preview, 10))),
+      if (nrow(inspected$issues)) tagList(
+        tags$p(class = "entry-error", "Fix the source CSV and select it again. Nothing has been imported. Errors below show sample row numbers, excluding the header; first 25 issues shown."),
+        tags$div(class = "upload-preview-table", build_plain_table(head(inspected$issues, 25))),
+        downloadButton("downloadUploadErrors", "Download all errors", class = "btn-outline-primary")),
+      radioButtons("importAction", "Import into workspace", c("Append to current samples" = "append", "Replace all current samples" = "replace"), selected = "append"),
+      tags$p(class = "field-help", "Import applies to every row; invalid files are never partially imported. Undo restores the dataset before this import."),
+      actionButton("confirmImportBtn", "Import reviewed samples", class = "btn-primary",
+                   disabled = nrow(inspected$issues) > 0L))
+  })
+  output$downloadUploadErrors <- downloadHandler(filename = function() "soil_import_errors.csv",
+    content = function(file) { inspected <- upload_inspection(); req(inspected$issues); write.csv(inspected$issues, file, row.names = FALSE) })
+  observeEvent(input$confirmImportBtn, {
+    pending <- pending_upload()
+    inspected <- upload_inspection()
+    req(pending, inspected, is.null(inspected$error), nrow(inspected$issues) == 0L)
+    samples <- validate_soil_data(inspected$samples)
+    replace <- identical(input$importAction, "replace")
+    change_samples(if (replace) samples else rbind(soil_data(), samples),
+      paste(if (replace) "Replaced dataset with" else "Imported", nrow(samples), "sample(s)"))
+    if (pending$format == "results") sample_feedback(paste0(sample_feedback(), "; classifications recalculated using ", input$dataset, "."))
+    pending_upload(NULL)
+  }, ignoreInit = TRUE)
 
   observeEvent(input$clearDataBtn, {
     if (!nrow(soil_data())) return()

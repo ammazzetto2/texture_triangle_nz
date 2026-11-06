@@ -70,6 +70,12 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .total-invalid strong, .total-invalid small { color: #9f4035; }
 .add-sample { width: 100%; }
 .field-help { color: var(--soil-muted); font-size: 12px; line-height: 1.7; }
+.entry-error { color: #9f4035; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.remaining-helper { font-size: 12px; margin-bottom: 12px; }
+.remaining-helper .shiny-input-container { margin-top: 10px; }
+.upload-preview-table { overflow: auto; max-height: 240px; font-size: 12px; margin-bottom: 12px; }
+.upload-preview-table td { min-width: 60px; overflow-wrap: anywhere; }
+.entry-content h3 { font-size: 15px; margin: 16px 0 8px; }
 .session-note { margin: 0 24px; padding-top: 20px; border-top: 1px solid var(--soil-line); }
 .session-note p { font-size: 12px; color: var(--soil-muted); line-height: 1.7; margin-bottom: 6px; }
 .session-note .sample-feedback { color: var(--soil-green); overflow-wrap: anywhere; }

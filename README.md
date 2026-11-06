@@ -45,9 +45,13 @@ runs the dependency check when sourced directly.
    retain their source-verification notice. Australia also shows its known overlap.
 2. Under **Add samples**, use **Manual entry** to enter a name and sand, silt,
    and clay percentages, then select **Add sample**. The live composition total
-   indicates whether the percentages add up to 100.
+   indicates whether the percentages add up to 100 and shows any difference.
+   Errors appear inline. **Calculate a remaining percentage** fills the chosen
+   component with 100 minus the other two; it does not normalize all values.
 3. Alternatively, use **CSV upload**. **Get CSV template** provides the required
-   header; add sample rows before uploading it.
+   header; add sample rows before uploading it. Map columns, review the preview,
+   choose Append or Replace, then select **Import reviewed samples**. Selecting
+   a file alone does not change the workspace.
    To reopen an exported results CSV, choose **Downloaded results (8 columns)**
    before selecting the file. Names and percentages are restored; classifications
    are recalculated using the currently selected system. Choose a system compatible
@@ -97,7 +101,8 @@ triangle include all samples. Mobile screens have sticky **Add samples** and
 **View results** shortcuts.
 
 Manual entries and uploaded samples share one dataset for the current session.
-Uploading appends samples. **Clear all samples** clears the dataset. **Undo**
+Importing appends samples by default; **Replace all current samples** replaces
+the dataset when the reviewed import is submitted. **Clear all samples** clears the dataset. **Undo**
 restores the dataset before the latest successful add, upload, edit, delete, or clear (one
 level, within this session). Invalid input leaves that undo available. Manual
 entry clears the sample name after success and rejects an identical name and
@@ -249,7 +254,7 @@ and [example samples](examples/poland_samples.csv).
 
 ## CSV format
 
-Use exactly these column names (the order may vary):
+The template uses these column names (the order may vary):
 
 ```csv
 soil,sand,silt,clay
@@ -264,23 +269,32 @@ A ready-to-upload file is available at
 - `soil`: a nonblank sample name. Surrounding whitespace is removed.
 - `sand`, `silt`, `clay`: numeric percentages from 0 to 100, adding up to 100
   for each sample. Use percentages, not fractions between 0 and 1.
-- In **Samples (4 columns)** mode, include all four columns, with no extra
-  columns or missing values.
+- In **Samples (map columns)** mode, choose four distinct source columns for
+  the sample name and percentages. Other columns are explicitly listed as
+  excluded in the preview. Headers must be nonblank and unique.
 - Use a comma separator and a decimal point for fractional percentages.
 
 **Downloaded results (8 columns)** mode accepts exactly the four sample columns
 plus `classification`, `classification_system`, `classification_status`, and
 `classification_candidates`, in any order. The four saved classification fields
 are discarded, and current results are recalculated. This restores sample data,
-not the previous system selection or undo history. Uploads append in both modes;
-clear the current samples first if you want to reopen a file in an empty workspace.
+not the previous system selection or undo history. Both modes offer Append and
+Replace, with single-step Undo after import.
 Sample names such as `001` and `NA` are preserved as text.
 
-Manual entries and uploads use the same measurement validation rules. Missing or duplicate
-columns, extra columns, empty tables, blank sample names, nonnumeric percentages,
+The preview shows the first 10 rows and up to 25 issues. **Download all errors**
+exports every issue with its sample row number (excluding the header), field,
+original value and explanation. Correct the source file and select it again;
+no subset of an invalid file is imported. Changing CSV contents clears the staged
+preview and requires selecting the file again.
+
+Manual entries and uploads use the same measurement validation rules. Invalid
+mappings, empty tables, blank sample names, nonnumeric percentages,
 missing or infinite values, and percentages outside 0–100 are rejected. Invalid
 totals report sample row numbers (excluding the CSV header). Rejected input
 leaves existing samples intact; an upload is accepted only if all rows are valid.
+The internal `read_soil_csv()` helper retains its strict four/eight-column schema
+for programmatic callers; the interactive preview handles custom column mapping.
 
 Totals use an absolute tolerance of `1e-8` percentage points to accommodate
 floating-point arithmetic. Values are not normalized or rounded automatically.

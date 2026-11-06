@@ -55,6 +55,8 @@ shiny::testServer(app_env$server, {
   session$setInputs(sandValue = NA_real_, addManualDataBtn = 3)
   stopifnot(identical(soil_data(), original))
   session$setInputs(fileUpload = list(datapath = normalizePath("examples/soil_samples.csv")))
+  stopifnot(identical(soil_data(), original))
+  session$setInputs(confirmImportBtn = 1)
   stopifnot(nrow(soil_data()) == 4)
   original <- soil_data()
   invalid_csv <- tempfile(fileext = ".csv")

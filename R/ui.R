@@ -50,19 +50,25 @@ build_app_ui <- function() {
                   numericInput("clayValue", "Clay (%)", value = 25, min = 0, max = 100)
                 ),
                 tags$div(`aria-live` = "polite", uiOutput("compositionTotal")),
+                tags$details(class = "remaining-helper", tags$summary("Calculate a remaining percentage"),
+                  selectInput("remainderComponent", "Calculate", choices = c("Clay (%)" = "clay", "Silt (%)" = "silt", "Sand (%)" = "sand"), selectize = FALSE),
+                  actionButton("calculateRemainderBtn", "Use 100 minus the other two", class = "btn-outline-primary")),
+                tags$p(class = "entry-error", role = "alert", textOutput("manualError", inline = TRUE)),
                 actionButton("addManualDataBtn", "Add sample", class = "btn-primary add-sample")
               )
             ),
             tabPanel("CSV upload", value = "upload",
               tags$div(class = "entry-content",
                 radioButtons("csvFormat", "CSV contents",
-                             choices = c("Samples (4 columns)" = "samples",
+                             choices = c("Samples (map columns)" = "samples",
                                          "Downloaded results (8 columns)" = "results"),
                              selected = "samples"),
-                tags$p(class = "field-help", "Choose the CSV contents before selecting a file. Uploads append to your current samples; Undo removes the latest upload."),
+                tags$p(class = "field-help", "Choose CSV contents, then select a file. Review the preview and choose Append or Replace before importing. Changing CSV contents clears the preview; select the file again."),
                 fileInput("fileUpload", "Choose a CSV file", accept = ".csv",
                           buttonLabel = "Browse", placeholder = "No file selected"),
-                tags$p(class = "field-help", "Samples need soil, sand, silt, and clay columns. Percentages must total 100 for every sample."),
+                tags$p(class = "field-help", "Map sample name, sand, silt and clay columns. Percentages must total 100; rounded totals are not automatically normalized."),
+                tags$p(class = "entry-error", role = "alert", textOutput("uploadError", inline = TRUE)),
+                uiOutput("uploadMapping"), uiOutput("uploadPreview"),
                 conditionalPanel("input.csvFormat === 'results'",
                   tags$p(class = "field-help", "Downloaded results restore names and percentages only. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
                 downloadButton("downloadTemplateBtn", "Get CSV template", class = "btn-outline-primary")
@@ -137,6 +143,12 @@ build_app_ui <- function() {
       )
     )
   )
+}
+
+build_plain_table <- function(data) {
+  tags$table(class = "table table-sm",
+    tags$thead(tags$tr(lapply(names(data), function(name) tags$th(scope = "col", name)))),
+    tags$tbody(lapply(seq_len(nrow(data)), function(i) tags$tr(lapply(data[i, , drop = FALSE], function(value) tags$td(as.character(value)))))))
 }
 
 build_system_requirements <- function(definition) {
