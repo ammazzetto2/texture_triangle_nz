@@ -81,6 +81,21 @@ runs the dependency check when sourced directly.
   hidden. **Clear highlight** removes the selection. Changes to sample data,
   including Undo, clear the highlight so it cannot move to another row.
 
+### Results navigation
+
+Search sample names using a case-insensitive, literal substring. **Sort by**
+orders names, percentages, classes, status or candidates; **Descending order**
+reverses the direction. Missing classes remain last. **Entry order** returns to
+the original row sequence. Search combines with the review filter; clicking the
+top **need review** count clears the name search.
+
+Results show 25 rows per page by default, with 50 and 100 available. Use
+**Previous** and **Next** to browse. Changing search, sorting, page size, review
+filter or classification system returns to page one. View, Edit and Delete
+always target the original sample, regardless of table order. Exports and the
+triangle include all samples. Mobile screens have sticky **Add samples** and
+**View results** shortcuts.
+
 Manual entries and uploaded samples share one dataset for the current session.
 Uploading appends samples. **Clear all samples** clears the dataset. **Undo**
 restores the dataset before the latest successful add, upload, edit, delete, or clear (one

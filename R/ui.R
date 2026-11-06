@@ -29,8 +29,12 @@ build_app_ui <- function() {
         downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
         tags$div(class = "system-context", `aria-live` = "polite", uiOutput("systemRequirements"))
       ),
+      tags$nav(class = "mobile-workspace-nav", `aria-label` = "Workspace shortcuts",
+        tags$a(href = "#sample-entry", "Add samples"),
+        tags$a(href = "#classification-workspace", "View results",
+          onclick = "Shiny.setInputValue('openResults', Date.now(), {priority: 'event'});")),
       tags$main(class = "workspace-grid",
-        tags$aside(class = "sample-panel panel", `aria-label` = "Sample entry",
+        tags$aside(id = "sample-entry", class = "sample-panel panel", `aria-label` = "Sample entry",
           tags$div(class = "panel-heading",
             tags$p(class = "eyebrow", "01 / YOUR DATA"),
             tags$h2("Add samples"),
@@ -91,7 +95,7 @@ build_app_ui <- function() {
             tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University")
           )
         ),
-        tags$section(class = "visual-panel panel", `aria-label` = "Classification workspace",
+        tags$section(id = "classification-workspace", class = "visual-panel panel", `aria-label` = "Classification workspace",
           tags$div(class = "panel-heading visual-heading",
             tags$div(tags$p(class = "eyebrow", "02 / EXPLORE"), tags$h2("Texture workspace")),
             tags$span(class = "sample-key", tags$span(class = "sample-dot", `aria-hidden` = "true"), "Your samples")
@@ -112,10 +116,20 @@ build_app_ui <- function() {
               tags$div(class = "results-content",
                 tags$p(class = "results-summary", `aria-live` = "polite", textOutput("resultsSummary", inline = TRUE)),
                 tags$div(class = "results-controls",
-                  checkboxInput("reviewOnly", "Only samples needing review", value = FALSE),
+                  tags$div(class = "results-search-sort",
+                    textInput("sampleSearch", "Search samples", placeholder = "Sample name contains…"),
+                    selectInput("resultsSort", "Sort by", choices = c("Entry order" = "input", "Sample name" = "soil",
+                      "Sand (%)" = "sand", "Silt (%)" = "silt", "Clay (%)" = "clay", "Class" = "classification",
+                      "Status" = "classification_status", "Candidate classes" = "classification_candidates"), selectize = FALSE),
+                    selectInput("resultsPageSize", "Rows per page", choices = c(25, 50, 100), selected = 25, selectize = FALSE)),
+                  tags$div(class = "results-flags",
+                    checkboxInput("sortDescending", "Descending order", value = FALSE),
+                    checkboxInput("reviewOnly", "Only samples needing review", value = FALSE)),
                   tags$p(class = "field-help", `aria-live` = "polite", textOutput("resultsFilterSummary", inline = TRUE))),
                 tags$div(class = "results-table", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
-                tags$p(class = "field-help", "Use Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes.")
+                tags$div(class = "results-pagination", uiOutput("resultsPagination", inline = TRUE)),
+                tags$details(class = "results-help field-help", tags$summary("Results help"),
+                  tags$p("Use View, Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes."))
               )
             )
           )

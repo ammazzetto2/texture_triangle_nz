@@ -32,12 +32,17 @@ server <- function(input, output, session) {
   edit_error <- reactiveVal("")
   review_only <- reactiveVal(FALSE)
   selected_sample <- reactiveVal(NULL)
+  results_page <- reactiveVal(1L)
+  observeEvent(input$openResults, {
+    updateTabsetPanel(session, "workspaceView", selected = "results")
+  })
 
   observeEvent(input$reviewOnly, {
     review_only(isTRUE(input$reviewOnly))
   })
   observeEvent(input$reviewSamplesBtn, {
     review_only(TRUE)
+    updateTextInput(session, "sampleSearch", value = "")
     updateCheckboxInput(session, "reviewOnly", value = TRUE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
   }, ignoreInit = TRUE)
@@ -125,20 +130,64 @@ server <- function(input, output, session) {
     )
   })
 
-  visible_result_rows <- reactive({
+  matching_result_rows <- reactive({
     results <- classified_data()
-    if (review_only()) which(is.na(results$classification)) else seq_len(nrow(results))
+    rows <- if (review_only()) which(is.na(results$classification)) else seq_len(nrow(results))
+    search <- if (is.null(input$sampleSearch)) "" else trimws(input$sampleSearch)
+    if (nzchar(search)) rows <- rows[grepl(tolower(search), tolower(results$soil[rows]), fixed = TRUE)]
+    column <- input$resultsSort
+    allowed <- c("soil", "sand", "silt", "clay", "classification", "classification_status", "classification_candidates")
+    if (length(column) == 1L && column %in% allowed) {
+      values <- results[[column]][rows]
+      if (is.character(values)) values <- tolower(values)
+      rows <- rows[order(values, decreasing = isTRUE(input$sortDescending), na.last = TRUE, method = "radix")]
+    } else if (isTRUE(input$sortDescending)) {
+      rows <- rev(rows)
+    }
+    rows
+  })
+  results_page_size <- reactive({
+    size <- suppressWarnings(as.integer(input$resultsPageSize))
+    if (length(size) != 1L || is.na(size) || !size %in% c(25L, 50L, 100L)) 25L else size
+  })
+  results_page_count <- reactive(max(1L, ceiling(length(matching_result_rows()) / results_page_size())))
+  current_results_page <- reactive(min(results_page(), results_page_count()))
+  observeEvent(list(input$sampleSearch, input$resultsSort, input$sortDescending,
+                    input$resultsPageSize, review_only(), input$dataset), {
+    results_page(1L)
+  }, priority = 10)
+  observeEvent(input$previousResultsPage, {
+    results_page(max(1L, current_results_page() - 1L))
+  }, ignoreInit = TRUE)
+  observeEvent(input$nextResultsPage, {
+    results_page(min(results_page_count(), current_results_page() + 1L))
+  }, ignoreInit = TRUE)
+  visible_result_rows <- reactive({
+    rows <- matching_result_rows()
+    start <- (current_results_page() - 1L) * results_page_size() + 1L
+    head(rows[seq_along(rows) >= start], results_page_size())
+  })
+  output$resultsPagination <- renderUI({
+    if (length(matching_result_rows()) <= results_page_size()) return(NULL)
+    tagList(
+      actionButton("previousResultsPage", "Previous", class = "btn-outline-primary",
+                   disabled = if (current_results_page() == 1L) "disabled" else NULL),
+      tags$span(role = "status", paste("Page", current_results_page(), "of", results_page_count())),
+      actionButton("nextResultsPage", "Next", class = "btn-outline-primary",
+                   disabled = if (current_results_page() == results_page_count()) "disabled" else NULL))
   })
   output$resultsFilterSummary <- renderText({
     paste0("Showing ", length(visible_result_rows()), " of ", nrow(soil_data()),
-           " samples. CSV downloads include all samples.")
+           " samples (", length(matching_result_rows()), " match filters). CSV downloads include all samples.")
   })
   output$resultsTable <- renderUI({
     rows <- visible_result_rows()
-    if (review_only() && nrow(soil_data()) && !length(rows)) {
+    if (nrow(soil_data()) && !length(rows)) {
+      has_search <- !is.null(input$sampleSearch) && nzchar(trimws(input$sampleSearch))
       return(tags$div(class = "empty-state",
-        tags$h3("No samples need review"),
-        tags$p("Every sample has a single assigned class in this system. Turn off the filter to view all samples.")))
+        tags$h3(if (has_search) "No matching samples" else "No samples need review"),
+        tags$p(if (has_search) "Try another sample name or turn off the review filter." else
+          "Every sample has a single assigned class in this system. Turn off the filter to view all samples.")))
     }
     build_results_table(results_table()[rows, , drop = FALSE],
                         revision = data_revision(), row_indices = rows)
