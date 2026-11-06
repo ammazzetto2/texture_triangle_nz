@@ -65,7 +65,8 @@ covering classification behavior and the known Australian polygon overlap.
 
 ## Brazilian classifications
 
-Brazil has two options: **13 classes** and **5 groups**, both based on SiBCS
+Brazil has two options: **13 classes** (2013) and **5 groups**
+(1996). Their current geometry implementation is sourced to SiBCS
 2025. Labels are in Portuguese and exports identify the edition and view.
 The selected Brazilian source and particle-size definitions appear under
 **About & methodology**. Use fine-earth percentages measured with the stated
@@ -180,6 +181,15 @@ Its historical fractions use **clay <0.005 mm**, silt 0.005–0.05 mm and sand
 are retained, including a documented silt-side `SaCL` naming issue awaiting
 historical review. See [USDA 1911 source and implementation notes](docs/classifications/usda_1911.md)
 and [example samples](examples/usda_1911_samples.csv).
+
+## Polish PTG classification
+
+**Poland (PTG) · 2008 · 16 classes** implements the PTG 2008 triangle, adopted
+in 2008 and published in 2009. Plot codes link to Polish names in the key;
+exports preserve diacritics. Inputs require a **0.05 mm sand/silt cutoff**.
+This is separate from the older Polish schemes also found in soiltexture.
+See [Polish source and implementation notes](docs/classifications/poland_ptg2008.md)
+and [example samples](examples/poland_samples.csv).
 
 ## CSV format
 

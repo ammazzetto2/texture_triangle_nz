@@ -27,6 +27,8 @@ stopifnot(classification_definition("Germany (BK94 1994, 31 classes)")$display =
             "Germany (BK94) · 1994 · 31 classes")
 # Verified reference dates must stay distinct from an asserted edition year.
 reference_years <- c(
+  "Brazil (SiBCS 2025, 13 classes)" = "2013",
+  "Brazil (SiBCS 2025, 5 groups)" = "1996",
   "New Zealand" = "1995 reference", "USDA" = "1951 reference",
   "Australian" = "2018 reference", "Belgium (BE.TT 1.5.3, 7 classes)" = "1984 reference",
   "France (Aisne-Jamagne, FR.AISNE.TT 1.5.3, 15 classes)" = "1967 reference")

@@ -25,7 +25,7 @@ data <- texture_polygons(list(
 ))
 
 
-definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil (SiBCS) · 2025 · 13 classes",
+definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil (SiBCS) · 2013 · 13 classes",
     order = 40, clockwise = TRUE, colours = c(`Muito argilosa` = "#b9a28b",
     Argila = "#d8c8b1", Argilossiltosa = "#c7cbd9", Argiloarenosa = "#d3b49d",
     Francoargilosa = "#d4c8a0", `Franco-argilossiltosa` = "#c6d1bd",
@@ -35,7 +35,7 @@ definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil (Si
         `Muito argilosa` = list(text = "Muito\nargilosa"), `Franco-argilossiltosa` = list(
             text = "Franco-\nargilossiltosa"), `Franco-argiloarenosa` = list(
             text = "Franco-\nargiloarenosa"), `Areia franca` = list(
-            angle = 330)), source = "SiBCS, 6th edition (2025), Figure 1.1, printed page 55",
+            angle = 330)), source = "Reference year: SiBCS 2013. Implemented geometry: SiBCS, 6th edition (2025), Figure 1.1, printed page 55",
     source_url = "https://www.infoteca.cnptia.embrapa.br/handle/doc/1176834",
     fractions = "Sand 0.05–2 mm; silt 0.002–0.05 mm; clay <0.002 mm.")
 

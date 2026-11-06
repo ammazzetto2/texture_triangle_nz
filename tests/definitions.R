@@ -16,11 +16,10 @@ for (system in names(classification_systems)) {
   # Explicitly retain the documented original Australian geometry defect.
   expected_area <- if (system == "Australian") 0.50025 else 0.5
   stopifnot(abs(area - expected_area) < 1e-12)
-  centers <- do.call(rbind, lapply(polygons, function(p) {
-    data.frame(sand = mean(p$Sand) * 100, clay = mean(p$Clay) * 100)
-  }))
-  stopifnot(identical(classify_points(centers, polygons), names(polygons)))
   details <- classification_details(grid, polygons)
+  # Concave polygons need not contain their vertex average. Check that every
+  # class has a covered interior instead of imposing a convexity assumption.
+  stopifnot(all(names(polygons) %in% details$classification[details$classification_status == "classified"]))
   stopifnot(!any(details$classification_status == "unclassified"),
             identical(details, classification_details(grid, rev(polygons))))
   if (system != "Australian") stopifnot(!any(details$classification_status == "overlap"))
@@ -45,6 +44,10 @@ expect_error(validate_classification_definition(bad), "Source metadata")
 bad <- valid; bad$label_szie <- 3
 expect_error(validate_classification_definition(bad), "unknown fields")
 expect_error(texture_polygons(list("Invalid" = c(1, 2, 3))), "three finite")
+bad <- valid; bad$label_overrides[[names(bad$colours)[1]]] <- list(sand = 70)
+expect_error(validate_classification_definition(bad), "sand and clay percentages")
+bad <- valid; bad$label_overrides[[names(bad$colours)[1]]] <- list(sand = 80, clay = 30)
+expect_error(validate_classification_definition(bad), "sand and clay percentages")
 
 # Loading a new file discovers it without a registry/UI/renderer edit. Order is
 # controlled by metadata, not filenames; duplicate IDs fail before app startup.
