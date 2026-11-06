@@ -141,6 +141,15 @@ names in the expandable key; exports retain both. Inputs use a **0.05 mm
 sand/silt cutoff**. See [Aisne/Jamagne source and implementation notes](docs/classifications/france_aisne.md)
 and [example samples](examples/france_aisne_samples.csv).
 
+## Romanian SRTS 2003 texture view
+
+**Romania · SRTS 2003 (15 regions)** uses Romanian codes and names. Three
+regions combine coarse/medium/fine sand subclasses because the input totals
+cannot distinguish them. Inputs require a **0.02 mm sand/silt cutoff**;
+switching views cannot convert laboratory fractions. See [Romanian source,
+grouping and implementation notes](docs/classifications/romania_srts2003.md)
+and [example samples](examples/romania_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -175,7 +184,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany, Belgium and HYPRES have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany, Belgium, HYPRES and Romania have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives

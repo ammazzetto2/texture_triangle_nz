@@ -133,3 +133,10 @@ The modified 15-class Aisne/Jamagne view is separate from GEPPA. Its export
 ID identifies the pinned numerical transcription; it does not claim to be
 the unmodified 1967 triangle. See [Aisne/Jamagne source and implementation
 notes](classifications/france_aisne.md). Package comparison remains deferred.
+
+## Romanian SRTS 2003 texture regions
+
+The Romanian view follows a pinned ROM.TT transcription with 15 regions,
+including three combined sets of sand-size subclasses. Inputs require a
+0.02 mm sand/silt cutoff. See [Romanian source and grouping
+notes](classifications/romania_srts2003.md). Package comparison remains deferred.

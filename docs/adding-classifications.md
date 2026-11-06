@@ -18,6 +18,7 @@ R/
     belgium.R
     europe_hypres.R
     france_aisne.R
+    romania_srts2003.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -33,6 +34,7 @@ tests/
     belgium.csv
     europe_hypres.csv
     france_aisne.csv
+    romania_srts2003.csv
   brazil.R                     # Country-specific scientific checks
   canada.R
   fao_1974.R
@@ -42,6 +44,7 @@ tests/
   belgium.R
   europe_hypres.R
   france_aisne.R
+  romania_srts2003.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -56,6 +59,7 @@ docs/
     belgium.md
     europe_hypres.md
     france_aisne.md
+    romania_srts2003.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```

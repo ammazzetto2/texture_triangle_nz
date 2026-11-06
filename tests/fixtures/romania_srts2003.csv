@@ -1,0 +1,16 @@
+soil,sand,silt,clay,expected
+Fine clay,10,10,80,AF · Argilă fină
+Medium clay,15,20,65,AA · Argilă medie
+Silty clay,5,45,50,AP · Argilă prăfoasă
+Loamy clay,30,20,50,AL · Argilă lutoasă
+Silty clay loam,10,50,40,TP · Lut argilo-prăfos
+Medium clay loam,35,25,40,TT · Lut argilos mediu
+Sandy clay,55,5,40,TN · Argilă nisipoasă
+Silty loam,20,55,25,LP · Lut prăfos
+Medium loam,50,25,25,LL · Lut mediu
+Sandy clay loam,70,5,25,LN · Lut nisipo-argilos
+Silt,10,80,10,SP · Praf
+Silty sandy loam,50,40,10,SS · Lut nisipos prăfos
+Combined sandy loam,65,20,15,SG+SM+SF · Lut nisipos
+Combined loamy sand,72,20,8,UG+UM+UF · Nisip lutos
+Combined sand,85,12,3,NG+NM+NF · Nisip
