@@ -39,6 +39,10 @@ runs the dependency check when sourced directly.
 ## Use the app
 
 1. Choose the shared **Classification system** at the top of the workspace.
+   The toolbar shows the selected system's documented particle-size requirements
+   and reminds you that switching systems does not convert measurements. Where
+   requirements are undocumented, the app says so; original project polygons
+   retain their source-verification notice. Australia also shows its known overlap.
 2. Under **Add samples**, use **Manual entry** to enter a name and sand, silt,
    and clay percentages, then select **Add sample**. The live composition total
    indicates whether the percentages add up to 100.

@@ -71,6 +71,11 @@ server <- function(input, output, session) {
     classify_soil_data(soil_data(), input$dataset)
   })
 
+  output$systemRequirements <- renderUI({
+    req(input$dataset)
+    build_system_requirements(classification_definition(input$dataset))
+  })
+
   output$classificationReference <- renderUI({
     req(input$dataset)
     definition <- classification_definition(input$dataset)

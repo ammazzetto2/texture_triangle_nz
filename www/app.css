@@ -10,7 +10,7 @@
 }
 body { background: var(--soil-bg); color: var(--soil-ink); }
 .app-shell { max-width: 1480px; padding: 32px 28px 20px; margin: 0 auto; }
-.app-header, .brand, .workspace-bar, .visual-heading { display: flex; align-items: center; }
+.app-header, .brand, .visual-heading { display: flex; align-items: center; }
 .app-header { justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .brand { gap: 14px; }
 .brand-mark { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #bdcdbd; background: #e7ede1; border-radius: 13px; font-size: 36px; line-height: 1; color: var(--soil-green); }
@@ -18,14 +18,21 @@ body { background: var(--soil-bg); color: var(--soil-ink); }
 h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; font-weight: 650; }
 h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .header-note { margin: 0; font-size: 14px; color: var(--soil-muted); }
-.workspace-bar { gap: 24px; padding: 16px 20px; margin-bottom: 24px; border: 1px solid var(--soil-line); border-radius: var(--soil-radius); background: #edf0e8; }
-.classification-control { min-width: 220px; }
+.workspace-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 12px 16px; min-width: 0; padding: 16px 20px; margin-bottom: 24px; border: 1px solid var(--soil-line); border-radius: var(--soil-radius); background: #edf0e8; }
+.classification-control { min-width: 0; }
 .classification-control .shiny-input-container { width: 100%; margin: 0; }
+.classification-control .form-select { width: 100%; min-width: 0; }
+.workspace-bar > .btn { white-space: nowrap; }
+.system-context { grid-column: 1 / -1; border-top: 1px solid #d3dccf; padding-top: 8px; min-width: 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.system-context p { display: inline; margin: 0 8px 0 0; }
+.system-context .system-selected { display: block; margin-bottom: 3px; font-weight: 650; }
+.system-note { color: var(--soil-muted); }
+.system-warning { color: #795515; }
 .control-label, .form-label { font-size: 12px; font-weight: 650; margin-bottom: 7px; }
 .form-control, .form-select { min-height: 42px; border-color: #cfd8cd; border-radius: 8px; font-size: 14px; background-color: white; }
 .form-control:focus, .form-select:focus { border-color: var(--soil-green); box-shadow: 0 0 0 3px #24574420; }
-.workspace-stats { flex: 1; }
-.stat-chip { display: inline-block; margin-right: 18px; color: var(--soil-muted); font-size: 13px; }
+.workspace-stats > .shiny-html-output { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.stat-chip { display: inline-block; margin: 0; color: var(--soil-muted); font-size: 13px; white-space: nowrap; }
 .stat-chip strong { color: var(--soil-ink); font-size: 16px; margin-right: 3px; }
 .review-count.btn { background: transparent; border: 1px solid #bdcdbd; color: var(--soil-green); padding: 6px 9px; white-space: nowrap; }
 .review-count.btn:hover { background: #e0e8dc; border-color: var(--soil-green); }
@@ -115,10 +122,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .brand-mark { width: 42px; height: 42px; font-size: 32px; }
   h1 { font-size: 25px; }
   .workspace-bar { margin: 0; padding: 10px 16px; }
-  .classification-control { min-width: 340px; }
-  .classification-control .shiny-input-container { display: flex; align-items: center; gap: 12px; }
-  .classification-control label { margin: 0; white-space: nowrap; }
-  .classification-control .form-select { width: 180px; }
   .workspace-grid { height: 100%; min-height: 0; align-items: stretch; gap: 16px; }
   .sample-panel { min-height: 0; overflow-y: auto; scrollbar-width: thin; }
   .visual-panel { display: flex; flex-direction: column; min-height: 0; }
@@ -152,12 +155,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
     grid-template-rows: auto minmax(0, 1fr);
     padding: 12px 20px 10px;
   }
-  .app-header { grid-column: 1; grid-row: 1; }
+  .app-header { grid-column: 1; grid-row: 1; align-self: start; padding-top: 12px; }
   .app-header .header-note { display: none; }
   .workspace-bar { grid-column: 2; grid-row: 1; gap: 16px; }
-  .classification-control { min-width: 300px; }
-  .classification-control .form-select { width: 155px; }
   .workspace-grid { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (min-width: 1201px) {
+  .system-context .system-selected { display: none; }
 }
 @media (min-width: 761px) and (max-height: 800px) {
   .visual-heading { padding: 12px 20px; }
@@ -175,29 +179,34 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .panel .nav-tabs { padding: 0 20px; }
   .session-note { margin: 0 20px; }
   .help-details { margin-left: 20px; margin-right: 20px; }
-  .stat-chip { margin-right: 10px; }
   .header-note { max-width: 220px; text-align: right; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
   .app-shell { padding: 12px 16px; }
   .workspace-bar { gap: 12px; }
-  .classification-control { min-width: 0; }
-  .classification-control .shiny-input-container { display: block; }
-  .classification-control .form-select { width: 180px; }
-  .classification-control label { margin-bottom: 4px; }
   .panel-heading, .entry-content { padding: 14px 16px; }
 }
 @media (max-width: 760px) {
   .app-shell { padding: 20px 12px; }
   .app-header { margin-bottom: 20px; }
   .header-note { display: none; }
-  .workspace-bar { flex-wrap: wrap; gap: 14px; padding: 16px; margin-bottom: 16px; }
-  .classification-control { flex: 1 1 100%; min-width: 0; }
-  .workspace-stats { flex: 1; }
+  .workspace-bar { grid-template-columns: minmax(0, 1fr) auto; gap: 14px; padding: 16px; margin-bottom: 16px; }
+  .classification-control { grid-column: 1 / -1; }
   .workspace-grid { grid-template-columns: minmax(0, 1fr); }
   .composition-inputs { gap: 12px; }
   .sample-key { display: none; }
   .plot-frame { height: max(390px, 92vw); }
   .plot-caption { padding: 0 16px 18px; }
   .results-content { min-height: 340px; padding: 16px; }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  .workspace-bar { grid-template-columns: minmax(0, 1fr) auto; }
+  .classification-control { grid-column: 1 / -1; }
+}
+/* Short windows need page scrolling so the requirements cannot squeeze the
+   chart or controls out of view. This also accommodates browser zoom. */
+@media (min-width: 761px) and (max-height: 650px) {
+  html, body { height: auto; overflow: auto; }
+  .app-shell { height: auto; min-height: 100dvh; }
+  .workspace-grid { min-height: 500px; }
 }

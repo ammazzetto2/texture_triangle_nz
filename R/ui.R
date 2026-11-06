@@ -26,7 +26,8 @@ build_app_ui <- function() {
                       selected = "New Zealand", selectize = FALSE)
         ),
         tags$div(class = "workspace-stats", `aria-live` = "polite", uiOutput("workspaceStats", inline = TRUE)),
-        downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary")
+        downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
+        tags$div(class = "system-context", `aria-live` = "polite", uiOutput("systemRequirements"))
       ),
       tags$main(class = "workspace-grid",
         tags$aside(class = "sample-panel panel", `aria-label` = "Sample entry",
@@ -115,6 +116,23 @@ build_app_ui <- function() {
         )
       )
     )
+  )
+}
+
+build_system_requirements <- function(definition) {
+  # Show the measurement sentence verbatim; detailed scope notes remain in About.
+  fractions <- if (is.null(definition$fractions)) {
+    "Requirements not yet documented for these polygons; check source methodology against your laboratory fractions."
+  } else {
+    sentence <- strsplit(definition$fractions, ". ", fixed = TRUE)[[1]][1]
+    if (endsWith(sentence, ".")) sentence else paste0(sentence, ".")
+  }
+  tagList(
+    tags$p(class = "system-selected", definition$display),
+    tags$p(tags$strong("Measurements: "), fractions),
+    tags$p(class = "system-note", "Changing systems does not convert measurements."),
+    if (is.null(definition$source)) tags$p(class = "system-warning", "Source verification pending for these project polygons."),
+    if (identical(definition$id, "Australian")) tags$p(class = "system-warning", "Known Sand / Sandy Loam overlap: some samples have multiple candidate classes.")
   )
 }
 
