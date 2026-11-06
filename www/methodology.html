@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, Belgian, European HYPRES, and Romanian SRTS 2003 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, Belgian, European HYPRES, Romanian SRTS 2003, and ISSS texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -57,6 +57,11 @@
 <p>Use fine-earth percentages with <strong>sand (nisip) 0.02–2 mm, silt (praf) 0.002–0.02 mm and clay (argilă) &lt;0.002 mm</strong>. Switching systems does not convert measurements. Plot codes link to Romanian names in the expandable key. This option supplies texture only, not full SRTS soil taxonomy.</p>
 <p>Exports identify <code>Romania (SRTS 2003, ROM.TT 1.5.3, 15 regions)</code>. Source, grouping and continuous-boundary notes are in <code>docs/classifications/romania_srts2003.md</code>. The original 2003 publication has not been independently retrieved; package comparisons remain future work.</p>
 <p><a href="https://horticultura-bucuresti.ro/site-vechi/images/pdf/Pedologia.pdf#page=39">USAMV Bucharest — Romanian names, fractions and sand-size subclasses</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L1201">Pinned numerical coordinate source</a></p>
+<h2>ISSS — 12 texture classes</h2>
+<p>This view follows the ISSS.TT numerical transcription in Moeys and contributors' soiltexture 1.5.3, contributed by Wei Shangguan after Verheye and Ameryckx (1984). Its 12 classes include Heavy clay and Light clay. Standard plot codes link to full English names in the expandable key; results and exports preserve both.</p>
+<p>Use fine-earth percentages with <strong>sand 0.02–2 mm, silt 0.002–0.02 mm and clay &lt;0.002 mm</strong>. Switching systems does not convert laboratory measurements. This is a distinct texture triangle, not a USDA alias or merely a particle-size convention.</p>
+<p>Exports identify <code>ISSS (ISSS.TT 1.5.3, 12 classes)</code>. Source and scope notes are in <code>docs/classifications/isss.md</code>. The original 1984 article has not been independently retrieved; package comparison remains future work. Shared edges follow the candidate policy below.</p>
+<p><a href="https://www.julienmoeys.info/2015/02/06/texture-triangle-gallery/">Package author's gallery — ISSS diagram</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L1146">Pinned numerical coordinate source</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

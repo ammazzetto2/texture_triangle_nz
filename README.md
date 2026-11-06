@@ -150,6 +150,15 @@ switching views cannot convert laboratory fractions. See [Romanian source,
 grouping and implementation notes](docs/classifications/romania_srts2003.md)
 and [example samples](examples/romania_samples.csv).
 
+## ISSS classification
+
+**ISSS · 12 classes** adds a separate international texture triangle, including
+Heavy clay and Light clay. Plot codes link to full English names in the key;
+results and exports retain both. Inputs require a **0.02 mm sand/silt cutoff**.
+This is a distinct classification, not USDA with different fraction metadata.
+See [ISSS source and implementation notes](docs/classifications/isss.md) and
+[example samples](examples/isss_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -184,7 +193,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany, Belgium, HYPRES and Romania have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany, Belgium, HYPRES, Romania and ISSS have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives

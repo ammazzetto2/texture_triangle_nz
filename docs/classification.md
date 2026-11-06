@@ -140,3 +140,10 @@ The Romanian view follows a pinned ROM.TT transcription with 15 regions,
 including three combined sets of sand-size subclasses. Inputs require a
 0.02 mm sand/silt cutoff. See [Romanian source and grouping
 notes](classifications/romania_srts2003.md). Package comparison remains deferred.
+
+## ISSS classes
+
+The 12-class ISSS view follows a pinned numerical transcription. It requires
+a 0.02 mm sand/silt cutoff and has its own geometry, distinct from USDA and
+Romania. See [ISSS source and implementation notes](classifications/isss.md).
+Package comparison remains deferred.
