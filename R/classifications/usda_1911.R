@@ -24,8 +24,9 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "USDA 1911 (Whitney, USDA1911 1.5.3, 8 classes)",
-  display = "USDA · Whitney 1911 (8 classes)",
+  display = "USDA (Whitney) · 1911 · 8 classes",
   order = 180,
+  category = "Historic",
   clockwise = TRUE,
   data = texture_polygons(polygons),
   colours = c("C · Clay" = "#d8c8b1", "SaC · Sandy Clay" = "#d3b49d",

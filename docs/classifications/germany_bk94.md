@@ -25,7 +25,7 @@ checks below do not substitute for independent scientific verification.
 
 ## Identity, display and input convention
 
-Selector: **Germany · BK94 31 classes (1994)**.
+Selector: **Germany (BK94) · 1994 · 31 classes**.
 Stable export ID: `Germany (BK94 1994, 31 classes)`.
 
 Use fine-earth percentages (<2 mm): **sand 0.063–2 mm**, **silt (Schluff)

@@ -31,8 +31,9 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "Germany (TGL85 1985, DE.TGL85.TT 1.5.3, 14 classes)",
-  display = "Germany · TGL85 1985 (14 classes)",
+  display = "Germany (TGL85) · 1985 · 14 classes",
   order = 170,
+  category = "Historic",
   clockwise = TRUE,
   data = texture_polygons(polygons),
   colours = c(

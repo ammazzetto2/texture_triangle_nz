@@ -23,7 +23,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "Belgium (BE.TT 1.5.3, 7 classes)",
-  display = "Belgium · 7 classes",
+  display = "Belgium · 1984 reference · 7 classes",
   order = 110,
   clockwise = TRUE,
   data = texture_polygons(polygons),

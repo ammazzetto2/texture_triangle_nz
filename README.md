@@ -75,7 +75,7 @@ See [Brazilian source and validation notes](docs/classifications/brazil.md) and
 
 ## Canadian classification
 
-**Canada · 13 classes** uses the Canadian System of Soil Classification, third
+**Canada (CSSC) · 1998 · 13 classes** uses the Canadian System of Soil Classification, third
 edition (1998), with AAFC numerical class definitions. It includes Heavy Clay
 above 60% clay. Shared boundaries retain the app's candidate-class policy.
 See [Canadian source and validation notes](docs/classifications/canada.md) and
@@ -83,7 +83,7 @@ See [Canadian source and validation notes](docs/classifications/canada.md) and
 
 ## FAO–UNESCO texture groups
 
-**FAO–UNESCO · 3 groups (1974)** implements Coarse, Medium and Fine from the
+**FAO–UNESCO · 1974 · 3 groups** implements Coarse, Medium and Fine from the
 original Soil Map of the World legend. This is the historical map grouping,
 with an 18% clay step and 35% clay fine limit, rather than the later detailed
 FAO texture triangle. See [source and validation notes](docs/classifications/fao_1974.md)
@@ -91,7 +91,7 @@ and [example samples](examples/fao_1974_samples.csv).
 
 ## UK mineral-soil classification
 
-**UK · 11 classes (TIN037 2008)** follows Natural England's mineral-soil
+**UK (TIN037) · 2008 · 11 classes** follows Natural England's mineral-soil
 triangle, including Sandy Silt Loam. Its **0.06 mm sand/silt cutoff** differs
 from the 0.05 mm convention used by several other views; switching systems
 cannot convert laboratory fractions. Organic, peat and calcareous variants
@@ -100,7 +100,7 @@ and [example samples](examples/uk_samples.csv).
 
 ## French GEPPA classification
 
-**France · GEPPA 17 classes (1963)** uses French class codes and names,
+**France (GEPPA) · 1963 · 17 classes** uses French class codes and names,
 including distinct case-sensitive codes such as `As` and `AS`. The source's
 right-triangle compositions use the app's usual equilateral display.
 Inputs use a 0.05 mm sand/silt cutoff. See [French source and implementation
@@ -109,7 +109,7 @@ transcription and deferred package comparison, and [example samples](examples/fr
 
 ## German BK94 classification
 
-**Germany · BK94 31 classes (1994)** implements the fourth-edition German
+**Germany (BK94) · 1994 · 31 classes** implements the fourth-edition German
 texture triangle. Short codes keep its 31 regions readable; expand **Class
 label key** under **About & methodology** for German names. Results and exports
 retain both code and name. Inputs require a **0.063 mm sand/silt cutoff**;
@@ -118,7 +118,7 @@ implementation notes](docs/classifications/germany_bk94.md) and [example samples
 
 ## Belgian classification
 
-**Belgium · 7 classes** implements the Belgian mineral-soil triangle using
+**Belgium · 1984 reference · 7 classes** implements the Belgian mineral-soil triangle using
 codes Z, S, P, L, A, E and U. The expandable class label key and exports retain
 French and Dutch names. Inputs use a **0.05 mm sand/silt cutoff**. The export
 ID identifies the numerical transcription version. See [Belgian source and
@@ -126,7 +126,7 @@ implementation notes](docs/classifications/belgium.md) and [example samples](exa
 
 ## European HYPRES classification
 
-**Europe · HYPRES 5 classes** provides Coarse, Medium, Medium fine, Fine and
+**Europe (HYPRES) · 1999 reference · 5 classes** provides Coarse, Medium, Medium fine, Fine and
 Very fine mineral texture classes. It is separate from the FAO–UNESCO 1974
 three-group option. Inputs use a **0.05 mm sand/silt cutoff**; organic horizons,
 topsoil/subsoil distinctions and hydraulic-property estimates are outside this
@@ -135,7 +135,7 @@ and [example samples](examples/europe_hypres_samples.csv).
 
 ## French Aisne/Jamagne classification
 
-**France · Aisne/Jamagne 15 classes** implements the modified detailed Aisne
+**France (Aisne/Jamagne) · 1967 reference · 15 classes** implements the modified detailed Aisne
 triangle as a separate option from GEPPA. Plot codes link to full French
 names in the expandable key; exports retain both. Inputs use a **0.05 mm
 sand/silt cutoff**. See [Aisne/Jamagne source and implementation notes](docs/classifications/france_aisne.md)
@@ -143,7 +143,7 @@ and [example samples](examples/france_aisne_samples.csv).
 
 ## Romanian SRTS 2003 texture view
 
-**Romania · SRTS 2003 (15 regions)** uses Romanian codes and names. Three
+**Romania (SRTS) · 2003 · 15 regions** uses Romanian codes and names. Three
 regions combine coarse/medium/fine sand subclasses because the input totals
 cannot distinguish them. Inputs require a **0.02 mm sand/silt cutoff**;
 switching views cannot convert laboratory fractions. See [Romanian source,
@@ -152,7 +152,7 @@ and [example samples](examples/romania_samples.csv).
 
 ## ISSS classification
 
-**ISSS · 12 classes** adds a separate international texture triangle, including
+**ISSS · 1984 reference · 12 classes** adds a separate international texture triangle, including
 Heavy clay and Light clay. Plot codes link to full English names in the key;
 results and exports retain both. Inputs require a **0.02 mm sand/silt cutoff**.
 This is a distinct classification, not USDA with different fraction metadata.
@@ -163,8 +163,8 @@ See [ISSS source and implementation notes](docs/classifications/isss.md) and
 
 Two additional German options are available separately from BK94:
 
-- **Germany · SEA74 1974 (13 classes)** — historical forest-soil triangle.
-- **Germany · TGL85 1985 (14 classes)** — historical agricultural-soil triangle.
+- **Germany (SEA74) · 1974 · 13 classes** — historical forest-soil triangle.
+- **Germany (TGL85) · 1985 · 14 classes** — historical agricultural-soil triangle.
 
 Both use a **0.063 mm sand/silt cutoff**, with distinct geometries and codes.
 TGL85 preserves the difference between `l''S`, `l'S` and `lS`. Code keys and
@@ -174,7 +174,7 @@ and [TGL85 notes](docs/classifications/germany_tgl85.md), plus
 
 ## Historical USDA 1911 classification
 
-**USDA · Whitney 1911 (8 classes)** is separate from the existing USDA option.
+**USDA (Whitney) · 1911 · 8 classes** is separate from the existing USDA option.
 Its historical fractions use **clay <0.005 mm**, silt 0.005–0.05 mm and sand
 0.05–2 mm; switching views cannot convert modern measurements. Source labels
 are retained, including a documented silt-side `SaCL` naming issue awaiting
@@ -327,3 +327,17 @@ establish scientific accuracy or complete browser coverage.
 3. Add focused automated tests and reproducible dependency management.
 4. Improve upload feedback, results display, and responsive layout.
 5. Document deployment, licensing, and attribution before wider distribution.
+
+The classification selector separates **Current** and **Historic** views and
+sorts each group alphabetically. The Historic group contains FAO–UNESCO 1974,
+SEA74, TGL85 and USDA 1911. Export IDs and the New Zealand default are unchanged.
+
+Selector labels consistently show **main name (scheme) · year · class/group
+count**. `Year unverified` marks definitions without an established edition
+year; reference years are explicitly labelled. Romania retains `15 regions`
+because its sand-size subclasses are grouped.
+
+The five previously undated options now show verified **reference publication
+years**: New Zealand 1995, USDA 1951, Belgium 1984, Aisne/Jamagne 1967 and
+Australia 2018. These do not establish the exact provenance of legacy polygon
+coordinates. See [year evidence and limitations](docs/classification-years.md).

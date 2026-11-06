@@ -16,7 +16,7 @@ or executed. The source package identifies its license as AGPL (>=3).
 The original HYPRES report's numerical diagram has not been independently
 retrieved for this implementation. Package-wide comparison remains deferred.
 
-Selector: **Europe · HYPRES 5 classes**.
+Selector: **Europe (HYPRES) · 1999 reference · 5 classes**.
 Stable export ID: `Europe (HYPRES.TT 1.5.3, 5 classes)`.
 The version identifies the numerical transcription, not a claimed scientific
 publication year or latest edition of the European Soil Map.

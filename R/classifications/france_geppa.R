@@ -36,7 +36,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "France (GEPPA 1963, 17 classes)",
-  display = "France · GEPPA 17 classes (1963)",
+  display = "France (GEPPA) · 1963 · 17 classes",
   order = 90,
   clockwise = TRUE,
   data = texture_polygons(polygons),

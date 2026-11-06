@@ -28,7 +28,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "ISSS (ISSS.TT 1.5.3, 12 classes)",
-  display = "ISSS · 12 classes",
+  display = "ISSS · 1984 reference · 12 classes",
   order = 150,
   clockwise = TRUE,
   data = texture_polygons(polygons),

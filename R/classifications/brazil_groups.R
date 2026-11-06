@@ -17,7 +17,7 @@ data <- texture_polygons(list(
 ))
 
 
-definition <- list(id = "Brazil (SiBCS 2025, 5 groups)", display = "Brazil · 5 groups",
+definition <- list(id = "Brazil (SiBCS 2025, 5 groups)", display = "Brazil (SiBCS) · 2025 · 5 groups",
     order = 50, clockwise = TRUE, colours = c(`Muito argilosa` = "#b9a28b",
     Argilosa = "#d8c8b1", Média = "#dedab9", Arenosa = "#efe4c7",
     Siltosa = "#cadcd4"), label_size = 4, label_overrides = list(

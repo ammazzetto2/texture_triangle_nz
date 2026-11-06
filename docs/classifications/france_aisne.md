@@ -17,7 +17,7 @@ Only factual coordinates and class membership are transcribed; package
 functions are not bundled or executed. The source package identifies its
 license as AGPL (>=3). French accents in `léger` follow INRAE's legend.
 
-Selector: **France · Aisne/Jamagne 15 classes**.
+Selector: **France (Aisne/Jamagne) · 1967 reference · 15 classes**.
 Stable export ID: `France (Aisne-Jamagne, FR.AISNE.TT 1.5.3, 15 classes)`.
 The version identifies the numerical transcription, not an original scientific
 publication year. This ID is distinct from the app's GEPPA option.

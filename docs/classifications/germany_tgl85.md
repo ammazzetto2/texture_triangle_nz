@@ -17,7 +17,7 @@ authority here is the pinned transcription. This is a separate option from
 BK94 and the other historical German view, not a claim to represent a current
 national standard or a full soil classification.
 
-Selector: **Germany · TGL85 1985 (14 classes)**.
+Selector: **Germany (TGL85) · 1985 · 14 classes**.
 Stable export ID: `Germany (TGL85 1985, DE.TGL85.TT 1.5.3, 14 classes)`.
 The year identifies the historical scheme; 1.5.3 identifies its numerical
 transcription.

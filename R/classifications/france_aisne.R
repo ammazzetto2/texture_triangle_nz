@@ -33,7 +33,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "France (Aisne-Jamagne, FR.AISNE.TT 1.5.3, 15 classes)",
-  display = "France · Aisne/Jamagne 15 classes",
+  display = "France (Aisne/Jamagne) · 1967 reference · 15 classes",
   order = 130,
   clockwise = TRUE,
   data = texture_polygons(polygons),

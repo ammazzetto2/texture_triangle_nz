@@ -73,6 +73,9 @@
 <p><strong>Source-label caveat:</strong> the package calls its silt-side SaCL region “Sandy Clay Loam.” This implementation retains that source code, name and geometry pending review of the original historical publication. The key, results and exports preserve source names.</p>
 <p>Exports identify <code>USDA 1911 (Whitney, USDA1911 1.5.3, 8 classes)</code>. Full notes are in <code>docs/classifications/usda_1911.md</code>. Shared edges follow the candidate policy below; package comparison remains future work.</p>
 <p><a href="https://www.julienmoeys.info/2015/02/06/texture-triangle-gallery/">Package author's gallery — USDA 1911</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L1371">Pinned numerical coordinate source</a></p>
+<h2>Years in the classification selector</h2>
+<p>The formerly undated options now show reference publication years: New Zealand 1995 (Milne et al.), USDA 1951 (Soil Survey Staff), Belgium 1984 (Verheye and Ameryckx), Aisne/Jamagne 1967, and Australia 2018 (Pluske, Boggs and Leopold). These are explicitly marked “reference” in the selector.</p>
+<p>Reference dates do not certify the exact edition behind legacy polygon coordinates. The 15-class Aisne view includes later modifications, and the 2018 Australian published diagram differs from this app's legacy coordinates. The precise Australian variant year remains unresolved. Full evidence is recorded in <code>docs/classification-years.md</code>; the coordinates and export IDs are unchanged.</p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

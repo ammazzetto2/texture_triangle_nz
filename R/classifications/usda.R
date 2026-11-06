@@ -54,7 +54,7 @@ data <- data.frame (Clay=c(1,0.55,0.4,0.4,0.6,
 )
 
 
-definition <- list(id = "USDA", display = "USDA", order = 20, clockwise = TRUE,
+definition <- list(id = "USDA", display = "USDA · 1951 reference · 12 classes", order = 20, clockwise = TRUE,
     colours = c(Clay = "#d8c8b1", `Sandy Clay` = "#d3b49d", `Sandy Clay Loam` = "#e0c9a6",
     `Sandy Loam` = "#e8d7b7", `Loamy Sand` = "#dfd1a7", Sand = "#efe4c7",
     `Clay Loam` = "#d4c8a0", Loam = "#dedab9", `Silt Loam` = "#cbd5ba",

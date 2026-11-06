@@ -30,8 +30,9 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "Germany (SEA74 1974, DE.SEA74.TT 1.5.3, 13 classes)",
-  display = "Germany · SEA74 1974 (13 classes)",
+  display = "Germany (SEA74) · 1974 · 13 classes",
   order = 160,
+  category = "Historic",
   clockwise = TRUE,
   data = texture_polygons(polygons),
   colours = c(

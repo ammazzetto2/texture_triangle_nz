@@ -93,8 +93,9 @@ leak into another definition. Use `canada.R` as a readable starting point.
 | Field | Purpose |
 | --- | --- |
 | `id` | Stable exported identifier, including edition for newly sourced systems |
-| `display` | Unique short label in the app selector |
-| `order` | Numeric selector order; independent of filenames |
+| `display` | Unique selector label: main name (scheme) · year · number of classes/groups |
+| `order` | Numeric registry order for internal iteration; independent of filenames |
+| `category` | Optional selector group: `Current` (default) or `Historic`; each group sorts alphabetically by display name |
 | `clockwise` | Axis progression direction |
 | `data` | Polygon rows: numeric `Sand`, `Silt`, `Clay` fractions and character `Label` |
 | `colours` | One named hex colour per canonical class label |
@@ -162,3 +163,10 @@ scientific correctness. Interior comparisons use independent analytical rules;
 the app's shared-edge candidate policy intentionally leaves ambiguous borders
 without a single class. Changes to that policy belong in the shared classifier
 with explicit tests and documentation, rather than hidden country branches.
+
+Selector labels mark a cited publication date as `YYYY reference` when the
+implemented definition's exact edition year is not established. The current
+reference years and their evidence are in [Year references](classification-years.md).
+New definitions without supporting dates should use `Year unverified` until
+researched. In particular, Aisne's 1967 reference does not date its later
+15-class modifications. Display-label changes preserve export IDs.

@@ -51,7 +51,7 @@ data <- data.frame (Clay=c(0, 0, 0.09, 0.08,
 )
 
 
-definition <- list(id = "Australian", display = "Australian", order = 30, clockwise = TRUE,
+definition <- list(id = "Australian", display = "Australia · 2018 reference · 11 classes", order = 30, clockwise = TRUE,
     colours = c(Sand = "#efe4c7", Loam = "#dedab9", `Silty Clay` = "#c7cbd9",
     `Sandy Loam` = "#e8d7b7", `Sandy Clay` = "#d3b49d", Clay = "#d8c8b1",
     `Silty Clay Loam` = "#c6d1bd", `Silty Loam` = "#cadcd4",

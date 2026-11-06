@@ -6,7 +6,7 @@
 # Coordinates are (sand %, clay %) pairs. Shared edges retain the app policy.
 list(
   id = "Canada (CSSC 1998, 13 classes)",
-  display = "Canada · 13 classes",
+  display = "Canada (CSSC) · 1998 · 13 classes",
   order = 60,
   clockwise = TRUE,
   data = texture_polygons(list(

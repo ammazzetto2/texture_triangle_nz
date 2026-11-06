@@ -12,7 +12,7 @@ no third-party software or digitised package dataset is copied or required.
 
 ## Supported view
 
-The option is **Canada · 13 classes**, exported as
+The option is **Canada (CSSC) · 1998 · 13 classes**, exported as
 `Canada (CSSC 1998, 13 classes)`:
 
 Heavy Clay, Clay, Silty Clay, Sandy Clay, Clay Loam, Silty Clay Loam,

@@ -18,7 +18,7 @@ it is supporting background, not independent proof of the exact ROM.TT
 polygon limits or a reproduction of the original 2003 publication. The
 original SRTS 2003 publication has not been independently retrieved here.
 
-Selector: **Romania · SRTS 2003 (15 regions)**.
+Selector: **Romania (SRTS) · 2003 · 15 regions**.
 Stable export ID: `Romania (SRTS 2003, ROM.TT 1.5.3, 15 regions)`.
 The edition and numerical transcription are both identified. This is a
 texture view, not a complete implementation of Romanian soil taxonomy.

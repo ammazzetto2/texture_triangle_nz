@@ -52,7 +52,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "Germany (BK94 1994, 31 classes)",
-  display = "Germany · BK94 31 classes (1994)",
+  display = "Germany (BK94) · 1994 · 31 classes",
   order = 100,
   clockwise = TRUE,
   data = texture_polygons(polygons),

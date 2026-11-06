@@ -15,7 +15,7 @@ Only factual coordinates and class membership are transcribed; package
 functions are not bundled or executed. The source package identifies its
 license as AGPL (>=3). The French spelling `léger` retains its accent here.
 
-Selector: **Belgium · 7 classes**.
+Selector: **Belgium · 1984 reference · 7 classes**.
 Stable export ID: `Belgium (BE.TT 1.5.3, 7 classes)`.
 The version identifies the numerical transcription; it is not a publication
 year or an asserted edition of the Belgian classification. No earlier

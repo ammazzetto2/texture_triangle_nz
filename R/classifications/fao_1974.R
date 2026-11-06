@@ -3,8 +3,9 @@
 # Coordinates are (sand %, clay %) pairs; shared edges retain the app policy.
 list(
   id = "FAO-UNESCO (1974, 3 groups)",
-  display = "FAO–UNESCO · 3 groups (1974)",
+  display = "FAO–UNESCO · 1974 · 3 groups",
   order = 70,
+  category = "Historic",
   clockwise = TRUE,
   data = texture_polygons(list(
     "Coarse" = c(65, 0, 100, 0, 82, 18, 65, 18),

@@ -18,7 +18,7 @@ retrieved for this implementation. Numerical authority here is the pinned
 ISSS.TT transcription, rather than a claim of independently verified original
 publication limits.
 
-Selector: **ISSS · 12 classes**.
+Selector: **ISSS · 1984 reference · 12 classes**.
 Stable export ID: `ISSS (ISSS.TT 1.5.3, 12 classes)`.
 The version identifies the numerical transcription, not a scientific
 publication year. This option is distinct from USDA and the Romanian view.

@@ -29,13 +29,17 @@ validate_classification_definition <- function(definition) {
   if (!is.list(definition) || !all(required %in% names(definition))) {
     fail(paste("Definition requires:", paste(required, collapse = ", ")))
   }
-  allowed <- c(required, "label_size", "label_overrides", "source", "source_url", "fractions", "definition_file")
+  allowed <- c(required, "label_size", "label_overrides", "source", "source_url", "fractions", "definition_file", "category")
   if (anyNA(names(definition)) || anyDuplicated(names(definition)) ||
       any(!names(definition) %in% allowed)) fail("Definition contains duplicate or unknown fields.")
   if (!scalar_text(definition$id) || !scalar_text(definition$display)) fail("id and display must be nonempty strings.")
   if (!scalar_number(definition$order)) fail("order must be a finite number.")
   if (!is.logical(definition$clockwise) || length(definition$clockwise) != 1L || is.na(definition$clockwise)) {
     fail("clockwise must be TRUE or FALSE.")
+  }
+  if (is.null(definition$category)) definition$category <- "Current"
+  if (!scalar_text(definition$category) || !definition$category %in% c("Current", "Historic")) {
+    fail("category must be Current or Historic.")
   }
   data <- definition$data
   fractions <- c("Sand", "Silt", "Clay")
@@ -117,8 +121,14 @@ classification_definition <- function(system) {
 }
 
 classification_choices <- function() {
-  stats::setNames(names(classification_systems),
-    vapply(classification_systems, function(definition) definition$display, character(1)))
+  groups <- lapply(c("Current", "Historic"), function(category) {
+    definitions <- Filter(function(definition) definition$category == category, classification_systems)
+    displays <- vapply(definitions, function(definition) definition$display, character(1))
+    ids <- names(definitions)
+    alphabetical <- order(tolower(displays), method = "radix")
+    stats::setNames(ids[alphabetical], displays[alphabetical])
+  })
+  stats::setNames(groups, c("Current", "Historic"))
 }
 
 # Only shortened labels need a key; ordinary wrapping keeps the same name.

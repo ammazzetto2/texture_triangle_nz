@@ -17,7 +17,7 @@ authority here is the pinned transcription. This is a separate option from
 BK94 and the other historical German view, not a claim to represent a current
 national standard or a full soil classification.
 
-Selector: **Germany · SEA74 1974 (13 classes)**.
+Selector: **Germany (SEA74) · 1974 · 13 classes**.
 Stable export ID: `Germany (SEA74 1974, DE.SEA74.TT 1.5.3, 13 classes)`.
 The year identifies the historical scheme; 1.5.3 identifies its numerical
 transcription.

@@ -27,7 +27,7 @@ soiltexture package is explicitly deferred; it is not a project dependency.
 
 ## Identity and scope
 
-Selector: **France · GEPPA 17 classes (1963)**.
+Selector: **France (GEPPA) · 1963 · 17 classes**.
 Stable export ID: `France (GEPPA 1963, 17 classes)`.
 
 This is GEPPA's detailed triangle, not the separate French Aisne/Jamagne

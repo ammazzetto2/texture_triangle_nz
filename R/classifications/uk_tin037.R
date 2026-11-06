@@ -3,7 +3,7 @@
 # Coordinates are (sand %, clay %) pairs; shared edges retain the app policy.
 list(
   id = "UK (TIN037 2008, 11 classes)",
-  display = "UK · 11 classes (TIN037 2008)",
+  display = "UK (TIN037) · 2008 · 11 classes",
   order = 80,
   clockwise = TRUE,
   data = texture_polygons(list(

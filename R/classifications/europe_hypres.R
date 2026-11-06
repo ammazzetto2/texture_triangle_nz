@@ -5,7 +5,7 @@
 # Coordinates are (sand %, clay %) pairs; shared edges retain the app policy.
 list(
   id = "Europe (HYPRES.TT 1.5.3, 5 classes)",
-  display = "Europe · HYPRES 5 classes",
+  display = "Europe (HYPRES) · 1999 reference · 5 classes",
   order = 120,
   clockwise = TRUE,
   data = texture_polygons(list(

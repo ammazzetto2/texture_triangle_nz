@@ -25,7 +25,7 @@ data <- texture_polygons(list(
 ))
 
 
-definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil · 13 classes",
+definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil (SiBCS) · 2025 · 13 classes",
     order = 40, clockwise = TRUE, colours = c(`Muito argilosa` = "#b9a28b",
     Argila = "#d8c8b1", Argilossiltosa = "#c7cbd9", Argiloarenosa = "#d3b49d",
     Francoargilosa = "#d4c8a0", `Franco-argilossiltosa` = "#c6d1bd",

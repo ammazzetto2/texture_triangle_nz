@@ -14,7 +14,7 @@ as are sand-size prefixes and medium/heavy clay-loam subdivisions. Sand, silt
 and clay alone cannot determine these modifiers. The app does not test organic
 matter or carbonate content to establish sample suitability.
 
-Selector: **UK · 11 classes (TIN037 2008)**.
+Selector: **UK (TIN037) · 2008 · 11 classes**.
 Stable export ID: `UK (TIN037 2008, 11 classes)`.
 
 ## Particle-size convention

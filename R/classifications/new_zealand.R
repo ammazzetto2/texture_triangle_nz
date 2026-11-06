@@ -50,7 +50,7 @@ data <- data.frame (Clay=c(1,0.6,0.6,
 )
 
 
-definition <- list(id = "New Zealand", display = "New Zealand", order = 10,
+definition <- list(id = "New Zealand", display = "New Zealand · 1995 reference · 11 classes", order = 10,
     clockwise = FALSE, colours = c(Clay = "#d8c8b1", `Loamy Clay` = "#c6d2ae",
     `Silt Clay` = "#c1d0d5", `Sandy Clay Loam` = "#e0c9a6", `Clay Loam` = "#d4c8a0",
     `Silt Loam` = "#cbd5ba", `Sandy Loam` = "#e8d7b7", Sand = "#efe4c7",

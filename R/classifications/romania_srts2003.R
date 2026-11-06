@@ -32,7 +32,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "Romania (SRTS 2003, ROM.TT 1.5.3, 15 regions)",
-  display = "Romania · SRTS 2003 (15 regions)",
+  display = "Romania (SRTS) · 2003 · 15 regions",
   order = 140,
   clockwise = TRUE,
   data = texture_polygons(polygons),
