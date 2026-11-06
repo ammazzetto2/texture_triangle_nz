@@ -159,6 +159,19 @@ This is a distinct classification, not USDA with different fraction metadata.
 See [ISSS source and implementation notes](docs/classifications/isss.md) and
 [example samples](examples/isss_samples.csv).
 
+## Historical German classifications
+
+Two additional German options are available separately from BK94:
+
+- **Germany · SEA74 1974 (13 classes)** — historical forest-soil triangle.
+- **Germany · TGL85 1985 (14 classes)** — historical agricultural-soil triangle.
+
+Both use a **0.063 mm sand/silt cutoff**, with distinct geometries and codes.
+TGL85 preserves the difference between `l''S`, `l'S` and `lS`. Code keys and
+exports retain German names. See [SEA74 notes](docs/classifications/germany_sea74.md)
+and [TGL85 notes](docs/classifications/germany_tgl85.md), plus
+[SEA74 samples](examples/germany_sea74_samples.csv) and [TGL85 samples](examples/germany_tgl85_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):

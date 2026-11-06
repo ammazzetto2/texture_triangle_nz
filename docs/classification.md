@@ -147,3 +147,11 @@ The 12-class ISSS view follows a pinned numerical transcription. It requires
 a 0.02 mm sand/silt cutoff and has its own geometry, distinct from USDA and
 Romania. See [ISSS source and implementation notes](classifications/isss.md).
 Package comparison remains deferred.
+
+## Historical German SEA74 and TGL85 classes
+
+SEA74 provides 13 forest-soil classes; TGL85 provides 14 agricultural-soil
+classes. Both use a 0.063 mm sand/silt cutoff and are separate from BK94.
+See [SEA74 notes](classifications/germany_sea74.md) and
+[TGL85 notes](classifications/germany_tgl85.md). Apostrophe codes in TGL85 are
+preserved literally. Package comparison remains deferred.

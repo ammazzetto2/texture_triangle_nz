@@ -1,0 +1,14 @@
+soil,sand,silt,clay,expected
+Loam,46,30,24,L · Lehm
+Sandy clay loam,75,5,20,stL · Sandig-toniger Lehm
+Sandy loam,53,35,12,sL · Sandiger Lehm
+Sand,97,1,2,S · Sand
+Slightly loamy sand,90,4,6,alS · Anlehmiger Sand
+Loamy sand,78,15,7,lS · Lehmiger Sand
+Clay,20,10,70,T · Ton
+Silty clay,10,55,35,uT · Schluffiger Ton
+Loamy clay,45,20,35,lT · Lehmiger Ton
+Sandy clay,60,5,35,sT · Sandiger Ton
+Silt,7,90,3,U · Schluff
+Silt loam,16,60,24,UL · Schlufflehm
+Loamy silt,20,70,10,lU · Lehmiger Schluff
