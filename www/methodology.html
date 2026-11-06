@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, and UK texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, and French GEPPA texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -27,6 +27,11 @@
 <p><strong>Use sand 0.06–2 mm, silt 0.002–0.06 mm and clay &lt;0.002 mm.</strong> This sand/silt cutoff differs from 0.05 mm systems; changing the selector does not convert laboratory measurements. Shared boundaries retain the candidate policy below.</p>
 <p>Exports identify <code>UK (TIN037 2008, 11 classes)</code>. Full notes are in <code>docs/classifications/uk_tin037.md</code>.</p>
 <p><a href="https://publications.naturalengland.org.uk/file/83081">Natural England — TIN037, Soil texture (2008)</a></p>
+<h2>France — GEPPA 17 classes (1963)</h2>
+<p>The French view uses the detailed GEPPA diagram reproduced by INRAE, with numerical vertices transcribed from Moeys and contributors' soiltexture 1.5.3 definition. The original right-triangle coordinates are shown in the app's equilateral layout. The original 1963 publication has not been independently retrieved; source and numerical precision notes are recorded in <code>docs/classifications/france_geppa.md</code>.</p>
+<p>Labels and exports preserve French names and case-sensitive codes: <code>As</code> (Argile sableuse) and <code>AS</code> (Argilo-sableux) are distinct. This is not the Aisne/Jamagne triangle or the grouped GEPPA views.</p>
+<p>Use fine-earth percentages with sand 0.05–2 mm, silt 0.002–0.05 mm and clay &lt;0.002 mm. Switching systems does not convert laboratory fractions. Shared edges retain the candidate policy below. Exports identify <code>France (GEPPA 1963, 17 classes)</code>.</p>
+<p><a href="https://mots-agronomie.inrae.fr/index.php?title=Granulom%C3%A9trie_et_diagrammes_de_texture">INRAE — GEPPA diagram, Figure 3</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

@@ -98,3 +98,10 @@ The 11-class UK view follows Natural England TIN037 (first edition, 2008).
 Its 0.06 mm sand/silt cutoff differs from several other views. See
 [UK source and validation notes](classifications/uk_tin037.md) for scope,
 polygon derivation and checks.
+
+## French GEPPA classes
+
+The 17-class French view uses GEPPA (1963), as reproduced by INRAE, with a
+pinned numerical coordinate transcription. French codes are case-sensitive.
+See [French source and implementation notes](classifications/france_geppa.md).
+Independent comparisons against the soiltexture package remain deferred.

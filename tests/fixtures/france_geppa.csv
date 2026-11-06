@@ -1,0 +1,18 @@
+soil,sand,silt,clay,expected
+Heavy clay,10,10,80,AA · Argile lourde
+Clay,25,25,50,A · Argileux
+Sandy clay,50,12,38,As · Argile sableuse
+Silty sandy clay,30,35,35,Als · Argile limono-sableuse
+Silty clay,5,60,35,Al · Argile limoneuse
+Clay sand,60,12,28,AS · Argilo-sableux
+Sandy clay silt,35,40,25,LAS · Limon argilo-sableux
+Clay silt,5,70,25,La · Limon argileux
+Clay-rich sand,70,13,17,Sa · Sable argileux
+Clay silt sand,53,30,17,Sal · Sable argilo-limoneux
+Sandy clay-rich silt,35,50,15,Lsa · Limon sablo-argileux
+Silt,5,80,15,L · Limon
+Sandy,80,12,8,S · Sableux
+Sand,90,8,2,SS · Sable
+Silty sand,62,32,6,Sl · Sable limoneux
+Sandy silt,43,52,5,Ls · Limon sableux
+Pure silt,5,92,3,LL · Limon pur

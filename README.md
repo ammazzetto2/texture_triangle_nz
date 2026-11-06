@@ -98,6 +98,15 @@ cannot convert laboratory fractions. Organic, peat and calcareous variants
 are excluded. See [UK source and validation notes](docs/classifications/uk_tin037.md)
 and [example samples](examples/uk_samples.csv).
 
+## French GEPPA classification
+
+**France · GEPPA 17 classes (1963)** uses French class codes and names,
+including distinct case-sensitive codes such as `As` and `AS`. The source's
+right-triangle compositions use the app's usual equilateral display.
+Inputs use a 0.05 mm sand/silt cutoff. See [French source and implementation
+notes](docs/classifications/france_geppa.md), including the pinned coordinate
+transcription and deferred package comparison, and [example samples](examples/france_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -132,7 +141,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada, FAO–UNESCO and the UK have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO, the UK and France have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
@@ -162,7 +171,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R` | Country-specific analytical references and integration checks |
+| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R`, `tests/france_geppa.R` | Country-specific analytical references and integration checks |
 | `tests/fixtures/` | Independent reference compositions and expected classes |
 | `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |
