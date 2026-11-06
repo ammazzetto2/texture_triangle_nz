@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA, and German BK94 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA, German BK94, and Belgian texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -37,6 +37,11 @@
 <p>Use fine-earth percentages with <strong>sand 0.063–2 mm, silt (Schluff) 0.002–0.063 mm and clay (Ton) &lt;0.002 mm</strong>. Switching systems does not convert particle-size measurements. The plot uses short codes for readability; expand the class label key under About &amp; methodology for German names. Results and exports retain both.</p>
 <p>Exports identify <code>Germany (BK94 1994, 31 classes)</code>. Source, precision and scope notes are in <code>docs/classifications/germany_bk94.md</code>. Shared edges follow the candidate policy below; package comparison remains future work.</p>
 <p><a href="https://www.hypersoil.uni-muenster.de/0/03/06.htm">University of Münster — fraction definitions and BK94 background</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L680">Pinned numerical coordinate source</a></p>
+<h2>Belgium — seven mineral-soil classes</h2>
+<p>The Belgian triangle contains Z, S, P, L, A, E and U. The Flemish field guide's Figure 4.8 documents the diagram; numerical coordinates are transcribed from Moeys and contributors' soiltexture 1.5.3, BE.TT. The plot shows codes; the expandable class label key, results and exports retain French and Dutch names.</p>
+<p>Use fine-earth percentages with <strong>sand 0.05–2 mm, silt (limon / leem) 0.002–0.05 mm and clay &lt;0.002 mm</strong>. Switching systems does not convert measurements. This view does not infer drainage, profile development, peat or other soil-map attributes.</p>
+<p>Exports identify <code>Belgium (BE.TT 1.5.3, 7 classes)</code>; the version identifies the numerical transcription, not a publication year. Source and scope notes are in <code>docs/classifications/belgium.md</code>. Shared edges follow the candidate policy below; package comparisons remain future work.</p>
+<p><a href="https://publicaties.onroerenderfgoed.be/HAOE-29-BeschrijvenBodems/04_bodembeschrijving.html#fig-04-08">Flemish field guide — Belgian texture triangle</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L928">Pinned numerical coordinate source</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

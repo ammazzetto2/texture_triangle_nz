@@ -112,3 +112,10 @@ The 31-class German view implements the 1994 fourth-edition triangle through
 a pinned numerical transcription. Inputs require a 0.063 mm sand/silt cutoff.
 See [German source and implementation notes](classifications/germany_bk94.md).
 Package comparison remains deferred.
+
+## Belgian classes
+
+The seven-class Belgian view uses a pinned numerical transcription, with
+French and Dutch names. Its input sand/silt cutoff is 0.05 mm. See
+[Belgian source and implementation notes](classifications/belgium.md).
+Package comparison remains deferred.
