@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, SEA74 and TGL85, Belgian, European HYPRES, Romanian SRTS 2003, and ISSS texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, SEA74 and TGL85, Belgian, European HYPRES, Romanian SRTS 2003, ISSS, and historical USDA 1911 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -67,6 +67,12 @@
 <p>Use fine-earth percentages with <strong>sand 0.063–2 mm, silt 0.002–0.063 mm and clay &lt;0.002 mm</strong>. Switching systems does not convert measurements. The plot uses codes; the key, results and CSV preserve German names. TGL85 distinguishes <code>l''S</code>, <code>l'S</code> and <code>lS</code>.</p>
 <p>Exports identify each scheme, historical year and numerical transcription version. SEA74's upper Ton region begins above 45% clay, while TGL85 uses 50%. Both retain their transcribed 18% clay breaks. Source and scope notes are in <code>docs/classifications/germany_sea74.md</code> and <code>docs/classifications/germany_tgl85.md</code>. Shared boundaries retain the candidate policy below; package comparisons remain future work.</p>
 <p><a href="https://www.julienmoeys.info/2015/02/06/texture-triangle-gallery/">Package author's gallery — historical German diagrams</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L1262">Pinned numerical coordinate source</a></p>
+<h2>USDA — historical Whitney 1911 (eight classes)</h2>
+<p>This historical option follows the USDA1911 numerical transcription in Moeys and contributors' soiltexture 1.5.3, credited to Nic Jelinski. It is separate from the existing USDA option. The original Whitney publication has not been independently retrieved.</p>
+<p><strong>Use historical clay &lt;0.005 mm, silt 0.005–0.05 mm and sand 0.05–2 mm.</strong> The clay/silt cutoff differs from modern USDA's 0.002 mm. Switching systems does not convert laboratory measurements.</p>
+<p><strong>Source-label caveat:</strong> the package calls its silt-side SaCL region “Sandy Clay Loam.” This implementation retains that source code, name and geometry pending review of the original historical publication. The key, results and exports preserve source names.</p>
+<p>Exports identify <code>USDA 1911 (Whitney, USDA1911 1.5.3, 8 classes)</code>. Full notes are in <code>docs/classifications/usda_1911.md</code>. Shared edges follow the candidate policy below; package comparison remains future work.</p>
+<p><a href="https://www.julienmoeys.info/2015/02/06/texture-triangle-gallery/">Package author's gallery — USDA 1911</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L1371">Pinned numerical coordinate source</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

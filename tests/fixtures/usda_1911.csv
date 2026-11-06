@@ -1,0 +1,9 @@
+soil,sand,silt,clay,expected
+Clay sample,20,20,60,C · Clay
+Sandy clay sample,65,5,30,SaC · Sandy Clay
+Clay loam sample,35,40,25,CL · Clay Loam
+Source SaCL region,10,65,25,SaCL · Sandy Clay Loam
+Loam sample,40,45,15,L · Loam
+Silt loam sample,10,80,10,SiL · Silt Loam
+Sandy loam sample,65,20,15,SaL · Sandy Loam
+Sand sample,90,5,5,Sa · Sand

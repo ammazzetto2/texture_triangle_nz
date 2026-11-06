@@ -155,3 +155,11 @@ classes. Both use a 0.063 mm sand/silt cutoff and are separate from BK94.
 See [SEA74 notes](classifications/germany_sea74.md) and
 [TGL85 notes](classifications/germany_tgl85.md). Apostrophe codes in TGL85 are
 preserved literally. Package comparison remains deferred.
+
+## Historical USDA 1911 classes
+
+The eight-class Whitney 1911 view retains a pinned numerical transcription
+and its source labels, including the documented silt-side SaCL naming issue.
+It uses a 0.005 mm clay/silt cutoff, distinct from modern USDA. See
+[USDA 1911 source notes](classifications/usda_1911.md). Historical source
+review and package comparison remain deferred.

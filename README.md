@@ -172,6 +172,15 @@ exports retain German names. See [SEA74 notes](docs/classifications/germany_sea7
 and [TGL85 notes](docs/classifications/germany_tgl85.md), plus
 [SEA74 samples](examples/germany_sea74_samples.csv) and [TGL85 samples](examples/germany_tgl85_samples.csv).
 
+## Historical USDA 1911 classification
+
+**USDA · Whitney 1911 (8 classes)** is separate from the existing USDA option.
+Its historical fractions use **clay <0.005 mm**, silt 0.005–0.05 mm and sand
+0.05–2 mm; switching views cannot convert modern measurements. Source labels
+are retained, including a documented silt-side `SaCL` naming issue awaiting
+historical review. See [USDA 1911 source and implementation notes](docs/classifications/usda_1911.md)
+and [example samples](examples/usda_1911_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
