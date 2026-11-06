@@ -1,0 +1,8 @@
+soil,sand,silt,clay,expected
+Sandy sample,90,5,5,Coarse
+Below clay step,70,13,17,Coarse
+Below sand step,64,26,10,Medium
+Above clay step,70,11,19,Medium
+Below fine limit,20,46,34,Medium
+Clay-rich sample,20,30,50,Fine
+Silt-rich sample,5,90,5,Medium

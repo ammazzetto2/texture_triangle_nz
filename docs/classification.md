@@ -2,9 +2,11 @@
 
 ## Current software policy
 
-The app uses the existing polygon coordinates in `R/classification_data.R`.
+The app discovers per-view definitions from `R/classifications/`. The original
+NZ, USDA, and Australian coordinates are preserved there alongside the
+source-derived Brazilian and Canadian definitions.
 The following is a transparent software policy, not a claim that the exact
-boundary conventions of all three scientific systems have been verified.
+boundary conventions of all supported scientific systems have been verified.
 
 | Matches | Classification | Status |
 | --- | --- | --- |
@@ -31,7 +33,8 @@ Points within it are treated as on the edge; percentages are never adjusted.
 
 ## Verified software examples
 
-- Pure sand and pure clay now classify as Sand and Clay in every system.
+- Pure sand and pure clay classify as Sand and Clay in the original three systems.
+  Canada uses Heavy Clay for pure clay; Brazil uses its Portuguese class names.
 - Pure silt is Silt in the existing NZ and USDA polygons, and Silty Loam in the
   existing Australian polygons. The latter is a property of this dataset and
   still needs scientific verification.
@@ -68,6 +71,12 @@ provenance for the repository's original coordinate arrays.
 
 ## Remaining scientific work
 
+The two Brazilian views added on 6 November 2026 have separate source and
+validation notes in [Brazilian classifications](classifications/brazil.md). Both use SiBCS
+2025 and retain the shared-boundary candidate policy described above. The
+Canadian source and validation notes are in [Canadian classification](classifications/canada.md).
+The remaining provenance work below concerns the original three systems.
+
 1. Identify the original diagram, edition, and particle-size definitions for
    each system, including the reference workbooks in `old_files/excel/`.
 2. Compare every coordinate and class label against those sources. In
@@ -76,3 +85,81 @@ provenance for the repository's original coordinate arrays.
    when a single-class result is required.
 4. Add independent reference samples and exhaustive geometry checks before
    describing the data as scientifically verified.
+
+## FAO–UNESCO map groups
+
+The historical three-group view is sourced to the 1974 Soil Map of the World
+legend. Its definition, fraction convention, step boundary and checks are
+recorded in [FAO–UNESCO source notes](classifications/fao_1974.md).
+
+## UK mineral-soil classes
+
+The 11-class UK view follows Natural England TIN037 (first edition, 2008).
+Its 0.06 mm sand/silt cutoff differs from several other views. See
+[UK source and validation notes](classifications/uk_tin037.md) for scope,
+polygon derivation and checks.
+
+## French GEPPA classes
+
+The 17-class French view uses GEPPA (1963), as reproduced by INRAE, with a
+pinned numerical coordinate transcription. French codes are case-sensitive.
+See [French source and implementation notes](classifications/france_geppa.md).
+Independent comparisons against the soiltexture package remain deferred.
+
+## German BK94 classes
+
+The 31-class German view implements the 1994 fourth-edition triangle through
+a pinned numerical transcription. Inputs require a 0.063 mm sand/silt cutoff.
+See [German source and implementation notes](classifications/germany_bk94.md).
+Package comparison remains deferred.
+
+## Belgian classes
+
+The seven-class Belgian view uses a pinned numerical transcription, with
+French and Dutch names. Its input sand/silt cutoff is 0.05 mm. See
+[Belgian source and implementation notes](classifications/belgium.md).
+Package comparison remains deferred.
+
+## European HYPRES classes
+
+The five-class HYPRES mineral texture view uses a pinned numerical
+transcription and a 0.05 mm sand/silt cutoff. It is separate from the 1974
+FAO–UNESCO three-group triangle. See [HYPRES source and implementation
+notes](classifications/europe_hypres.md). Package comparison remains deferred.
+
+## French Aisne/Jamagne classes
+
+The modified 15-class Aisne/Jamagne view is separate from GEPPA. Its export
+ID identifies the pinned numerical transcription; it does not claim to be
+the unmodified 1967 triangle. See [Aisne/Jamagne source and implementation
+notes](classifications/france_aisne.md). Package comparison remains deferred.
+
+## Romanian SRTS 2003 texture regions
+
+The Romanian view follows a pinned ROM.TT transcription with 15 regions,
+including three combined sets of sand-size subclasses. Inputs require a
+0.02 mm sand/silt cutoff. See [Romanian source and grouping
+notes](classifications/romania_srts2003.md). Package comparison remains deferred.
+
+## ISSS classes
+
+The 12-class ISSS view follows a pinned numerical transcription. It requires
+a 0.02 mm sand/silt cutoff and has its own geometry, distinct from USDA and
+Romania. See [ISSS source and implementation notes](classifications/isss.md).
+Package comparison remains deferred.
+
+## Historical German SEA74 and TGL85 classes
+
+SEA74 provides 13 forest-soil classes; TGL85 provides 14 agricultural-soil
+classes. Both use a 0.063 mm sand/silt cutoff and are separate from BK94.
+See [SEA74 notes](classifications/germany_sea74.md) and
+[TGL85 notes](classifications/germany_tgl85.md). Apostrophe codes in TGL85 are
+preserved literally. Package comparison remains deferred.
+
+## Historical USDA 1911 classes
+
+The eight-class Whitney 1911 view retains a pinned numerical transcription
+and its source labels, including the documented silt-side SaCL naming issue.
+It uses a 0.005 mm clay/silt cutoff, distinct from modern USDA. See
+[USDA 1911 source notes](classifications/usda_1911.md). Historical source
+review and package comparison remain deferred.

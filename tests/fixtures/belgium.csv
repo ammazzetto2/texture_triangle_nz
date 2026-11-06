@@ -1,0 +1,8 @@
+soil,sand,silt,clay,expected
+Heavy clay,20,20,60,U · Argile lourde / Zware klei
+Clay,40,35,25,E · Argile / Klei
+Silt,5,85,10,A · Limon / Leem
+Published zandleem example,30,60,10,L · Limon sableux / Zandleem
+Light sandy silt,60,35,5,P · Limon sableux léger / Licht zandleem
+Silty sand,75,15,10,S · Sable limoneux / Lemig zand
+Sand,95,3,2,Z · Sable / Zand

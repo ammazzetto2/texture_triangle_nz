@@ -1,0 +1,15 @@
+soil,sand,silt,clay,expected
+Pure sand,94,5,1,rS · Reiner Sand
+Very slightly loamy sand,82,15,3,l''S · Sehr schwach lehmiger Sand
+Slightly loamy sand,79,15,6,l'S · Schwach lehmiger Sand
+Strongly loamy sand,76,15,9,lS · Stark lehmiger Sand
+Silty sand,57,40,3,uS · Schluffiger Sand
+Silt,7,90,3,U · Schluff
+Loamy silt,28,60,12,lU · Lehmiger Schluff
+Sandy loam,58,30,12,sL · Sandiger Lehm
+Loam,46,30,24,L · Lehm
+Silt loam,16,60,24,UL · Schlufflehm
+Silty clay,10,50,40,uT · Schluffiger Ton
+Loamy clay,40,20,40,lT · Lehmiger Ton
+Sandy clay,55,5,40,sT · Sandiger Ton
+Clay,20,10,70,T · Ton

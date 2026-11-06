@@ -1,0 +1,9 @@
+soil,sand,silt,clay,expected
+Very fine sample,10,10,80,Very fine
+Fine sample,20,30,50,Fine
+Medium sample,40,40,20,Medium
+Medium fine sample,5,75,20,Medium fine
+Coarse sample,90,5,5,Coarse
+Below coarse clay step,70,13,17,Coarse
+Above coarse clay step,70,11,19,Medium
+Silt-rich sample,5,90,5,Medium fine

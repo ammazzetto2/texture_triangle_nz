@@ -1,0 +1,13 @@
+soil,sand,silt,clay,expected
+Heavy clay,10,10,80,HCl · Heavy clay
+Sandy clay,65,5,30,SaCl · Sandy clay
+Light clay,35,30,35,LCl · Light clay
+Silty clay,5,60,35,SiCl · Silty clay
+Sandy clay loam,70,10,20,SaClLo · Sandy clay loam
+Clay loam,45,35,20,ClLo · Clay loam
+Silty clay loam,5,75,20,SiClLo · Silty clay loam
+Loamy sand,90,2,8,LoSa · Loamy sand
+Sand,95,3,2,Sa · Sand
+Sandy loam,75,15,10,SaLo · Sandy loam
+Loam,55,35,10,Lo · Loam
+Silt loam,10,80,10,SiLo · Silt loam

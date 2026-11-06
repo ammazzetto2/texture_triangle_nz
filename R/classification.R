@@ -1,11 +1,6 @@
-# This module expects classification_data.R to have been sourced first.
+# Source data and classification_systems.R before this module.
 classification_polygons <- function(system) {
-  data <- switch(system,
-    "New Zealand" = nz_data,
-    "USDA" = usda_data,
-    "Australian" = australian_data,
-    stop("Unknown classification system: ", system, call. = FALSE)
-  )
+  data <- classification_definition(system)$data
   # Retain the original display labels; match order never resolves ambiguity.
   split(data[c("Sand", "Silt", "Clay")], data$Label)
 }

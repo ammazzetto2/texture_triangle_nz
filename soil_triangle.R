@@ -7,7 +7,7 @@ library(shiny)
 
 source("R/validation.R", local = TRUE)
 
-source("R/classification_data.R", local = TRUE)
+source("R/classification_systems.R", local = TRUE)
 source("R/classification.R", local = TRUE)
 
 source("R/plotting.R", local = TRUE)
@@ -30,6 +30,29 @@ server <- function(input, output, session) {
   classified_data <- reactive({
     req(input$dataset)
     classify_soil_data(soil_data(), input$dataset)
+  })
+
+  output$classificationReference <- renderUI({
+    req(input$dataset)
+    definition <- classification_definition(input$dataset)
+    if (is.null(definition$source)) {
+      return(tags$p("The selected system uses the original project polygons; their source provenance remains under review."))
+    }
+    key <- classification_label_key(input$dataset)
+    label_key <- if (nrow(key)) tags$details(
+      tags$summary("Class label key"),
+      tags$table(class = "table table-sm",
+        tags$thead(tags$tr(tags$th("Plot label"), tags$th("Class"))),
+        tags$tbody(lapply(seq_len(nrow(key)), function(i) {
+          tags$tr(tags$td(key$Label[i]), tags$td(key$Class[i]))
+        })))
+    )
+    tagList(
+      label_key,
+      tags$p(tags$strong(definition$source)),
+      tags$p(definition$fractions, " Enter percentages for the fine-earth fraction. Changing the system does not convert laboratory particle-size measurements."),
+      tags$p(tags$a("View source publication", href = definition$source_url, target = "_blank", rel = "noopener"))
+    )
   })
 
   output$resultsSummary <- renderText({
