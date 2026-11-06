@@ -1,0 +1,32 @@
+soil,sand,silt,clay,expected
+Ss sample,94,3,3,Ss · Reiner Sand
+Su2 sample,80,17,3,Su2 · Schwach schluffiger Sand
+Sl2 sample,76,17,7,Sl2 · Schwach lehmiger Sand
+Sl3 sample,70,20,10,Sl3 · Mittel lehmiger Sand
+St2 sample,85,5,10,St2 · Schwach toniger Sand
+Su3 sample,65,32,3,Su3 · Mittel schluffiger Sand
+Su4 sample,52,45,3,Su4 · Stark schluffiger Sand
+Slu sample,41,45,14,Slu · Schluffig-lehmiger Sand
+Sl4 sample,65,20,15,Sl4 · Stark lehmiger Sand
+St3 sample,75,5,20,St3 · Mittel toniger Sand
+Ls2 sample,35,45,20,Ls2 · Schwach sandiger Lehm
+Ls3 sample,45,35,20,Ls3 · Mittel sandiger Lehm
+Ls4 sample,60,20,20,Ls4 · Stark sandiger Lehm
+Lt2 sample,30,40,30,Lt2 · Schwach toniger Lehm
+Lts sample,45,20,35,Lts · Sandig-toniger Lehm
+Ts4 sample,65,5,30,Ts4 · Stark sandiger Ton
+Ts3 sample,55,5,40,Ts3 · Mittel sandiger Ton
+Uu sample,7,90,3,Uu · Reiner Schluff
+Us sample,32,65,3,Us · Sandiger Schluff
+Ut2 sample,10,80,10,Ut2 · Schwach toniger Schluff
+Ut3 sample,5,80,15,Ut3 · Mittel toniger Schluff
+Uls sample,28,60,12,Uls · Sandig-lehmiger Schluff
+Ut4 sample,5,75,20,Ut4 · Stark toniger Schluff
+Lu sample,20,60,20,Lu · Schluffiger Lehm
+Lt3 sample,20,40,40,Lt3 · Mittel toniger Lehm
+Tu3 sample,5,55,40,Tu3 · Mittel schluffiger Ton
+Tu4 sample,2,68,30,Tu4 · Stark schluffiger Ton
+Ts2 sample,40,5,55,Ts2 · Schwach sandiger Ton
+Tl sample,25,20,55,Tl · Lehmiger Ton
+Tu2 sample,5,40,55,Tu2 · Schwach schluffiger Ton
+Tt sample,10,10,80,Tt · Reiner Ton

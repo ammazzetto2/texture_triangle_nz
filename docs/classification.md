@@ -105,3 +105,10 @@ The 17-class French view uses GEPPA (1963), as reproduced by INRAE, with a
 pinned numerical coordinate transcription. French codes are case-sensitive.
 See [French source and implementation notes](classifications/france_geppa.md).
 Independent comparisons against the soiltexture package remain deferred.
+
+## German BK94 classes
+
+The 31-class German view implements the 1994 fourth-edition triangle through
+a pinned numerical transcription. Inputs require a 0.063 mm sand/silt cutoff.
+See [German source and implementation notes](classifications/germany_bk94.md).
+Package comparison remains deferred.

@@ -14,6 +14,7 @@ R/
     fao_1974.R
     uk_tin037.R
     france_geppa.R
+    germany_bk94.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -25,11 +26,13 @@ tests/
     fao_1974.csv
     uk_tin037.csv
     france_geppa.csv
+    germany_bk94.csv
   brazil.R                     # Country-specific scientific checks
   canada.R
   fao_1974.R
   uk_tin037.R
   france_geppa.R
+  germany_bk94.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -40,6 +43,7 @@ docs/
     fao_1974.md
     uk_tin037.md
     france_geppa.md
+    germany_bk94.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```
@@ -83,6 +87,12 @@ line wrapping, so new CSV class names remain clean. Palette and override keys
 use labels with repeated whitespace collapsed to single spaces; this also
 supports the original legacy plot labels. The loader adds `definition_file`
 for diagnostics; definitions do not need to set it themselves.
+
+Dense triangles can use short codes in `label_overrides$text` while retaining
+full names in `Label` for results and exports. `classification_label_key()`
+automatically supplies an expandable full-name key under About & methodology
+when display labels differ beyond ordinary line wrapping. Germany's BK94
+file demonstrates this; no country-specific UI logic is needed.
 
 ## Workflow for another system
 

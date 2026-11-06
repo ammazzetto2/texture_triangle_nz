@@ -120,3 +120,17 @@ classification_choices <- function() {
   stats::setNames(names(classification_systems),
     vapply(classification_systems, function(definition) definition$display, character(1)))
 }
+
+# Only shortened labels need a key; ordinary wrapping keeps the same name.
+classification_label_key <- function(system) {
+  definition <- classification_definition(system)
+  normalize <- function(x) canonical_texture_label(gsub("-[[:space:]]+", "-", x))
+  rows <- lapply(names(definition$label_overrides), function(label) {
+    text <- definition$label_overrides[[label]]$text
+    if (is.null(text) || normalize(text) == normalize(label)) return(NULL)
+    data.frame(Label = text, Class = label, stringsAsFactors = FALSE)
+  })
+  rows <- Filter(Negate(is.null), rows)
+  if (!length(rows)) return(data.frame(Label = character(), Class = character()))
+  do.call(rbind, rows)
+}

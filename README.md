@@ -107,6 +107,15 @@ Inputs use a 0.05 mm sand/silt cutoff. See [French source and implementation
 notes](docs/classifications/france_geppa.md), including the pinned coordinate
 transcription and deferred package comparison, and [example samples](examples/france_samples.csv).
 
+## German BK94 classification
+
+**Germany · BK94 31 classes (1994)** implements the fourth-edition German
+texture triangle. Short codes keep its 31 regions readable; expand **Class
+label key** under **About & methodology** for German names. Results and exports
+retain both code and name. Inputs require a **0.063 mm sand/silt cutoff**;
+switching views cannot convert laboratory fractions. See [German source and
+implementation notes](docs/classifications/germany_bk94.md) and [example samples](examples/germany_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -141,7 +150,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada, FAO–UNESCO, the UK and France have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France and Germany have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
@@ -171,7 +180,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R`, `tests/france_geppa.R` | Country-specific analytical references and integration checks |
+| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R`, `tests/france_geppa.R`, `tests/germany_bk94.R` | Country-specific analytical references and integration checks |
 | `tests/fixtures/` | Independent reference compositions and expected classes |
 | `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |

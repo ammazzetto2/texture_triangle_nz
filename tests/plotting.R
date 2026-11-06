@@ -25,6 +25,12 @@ for (system in names(classification_systems)) {
       rendered_labels <- text_labels(grob)
       clean <- function(x) gsub("-[[:space:]]+", "-", gsub("[[:space:]]+", " ", x))
       expected_classes <- unique(plot$data$Label)
+      # Definition overrides may use short codes; full names stay in the key.
+      definition <- classification_definition(system)
+      expected_classes <- vapply(expected_classes, function(label) {
+        text <- definition$label_overrides[[canonical_texture_label(label)]]$text
+        if (is.null(text)) label else text
+      }, character(1))
       stopifnot(all(clean(expected_classes) %in% clean(rendered_labels)),
                 all(points$soil %in% rendered_labels),
                 all(c("Sand (%)", "Silt (%)", "Clay (%)") %in% rendered_labels),

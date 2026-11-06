@@ -38,7 +38,17 @@ server <- function(input, output, session) {
     if (is.null(definition$source)) {
       return(tags$p("The selected system uses the original project polygons; their source provenance remains under review."))
     }
+    key <- classification_label_key(input$dataset)
+    label_key <- if (nrow(key)) tags$details(
+      tags$summary("Class label key"),
+      tags$table(class = "table table-sm",
+        tags$thead(tags$tr(tags$th("Plot label"), tags$th("Class"))),
+        tags$tbody(lapply(seq_len(nrow(key)), function(i) {
+          tags$tr(tags$td(key$Label[i]), tags$td(key$Class[i]))
+        })))
+    )
     tagList(
+      label_key,
       tags$p(tags$strong(definition$source)),
       tags$p(definition$fractions, " Enter percentages for the fine-earth fraction. Changing the system does not convert laboratory particle-size measurements."),
       tags$p(tags$a("View source publication", href = definition$source_url, target = "_blank", rel = "noopener"))
