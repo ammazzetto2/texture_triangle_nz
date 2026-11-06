@@ -124,6 +124,15 @@ French and Dutch names. Inputs use a **0.05 mm sand/silt cutoff**. The export
 ID identifies the numerical transcription version. See [Belgian source and
 implementation notes](docs/classifications/belgium.md) and [example samples](examples/belgium_samples.csv).
 
+## European HYPRES classification
+
+**Europe · HYPRES 5 classes** provides Coarse, Medium, Medium fine, Fine and
+Very fine mineral texture classes. It is separate from the FAO–UNESCO 1974
+three-group option. Inputs use a **0.05 mm sand/silt cutoff**; organic horizons,
+topsoil/subsoil distinctions and hydraulic-property estimates are outside this
+view. See [HYPRES source and implementation notes](docs/classifications/europe_hypres.md)
+and [example samples](examples/europe_hypres_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -158,7 +167,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany and Belgium have separate source notes.
+systems remains under review; Brazil, Canada, FAO–UNESCO, the UK, France, Germany, Belgium and HYPRES have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
@@ -188,7 +197,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R`, `tests/uk_tin037.R`, `tests/france_geppa.R`, `tests/germany_bk94.R`, `tests/belgium.R` | Country-specific analytical references and integration checks |
+| `tests/<system>.R` | System-specific reference cases and integration checks |
 | `tests/fixtures/` | Independent reference compositions and expected classes |
 | `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |

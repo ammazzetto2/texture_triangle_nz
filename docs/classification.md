@@ -119,3 +119,10 @@ The seven-class Belgian view uses a pinned numerical transcription, with
 French and Dutch names. Its input sand/silt cutoff is 0.05 mm. See
 [Belgian source and implementation notes](classifications/belgium.md).
 Package comparison remains deferred.
+
+## European HYPRES classes
+
+The five-class HYPRES mineral texture view uses a pinned numerical
+transcription and a 0.05 mm sand/silt cutoff. It is separate from the 1974
+FAO–UNESCO three-group triangle. See [HYPRES source and implementation
+notes](classifications/europe_hypres.md). Package comparison remains deferred.

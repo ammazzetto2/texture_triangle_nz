@@ -16,6 +16,7 @@ R/
     france_geppa.R
     germany_bk94.R
     belgium.R
+    europe_hypres.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -29,6 +30,7 @@ tests/
     france_geppa.csv
     germany_bk94.csv
     belgium.csv
+    europe_hypres.csv
   brazil.R                     # Country-specific scientific checks
   canada.R
   fao_1974.R
@@ -36,6 +38,7 @@ tests/
   france_geppa.R
   germany_bk94.R
   belgium.R
+  europe_hypres.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -48,6 +51,7 @@ docs/
     france_geppa.md
     germany_bk94.md
     belgium.md
+    europe_hypres.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```
