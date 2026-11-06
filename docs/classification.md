@@ -2,10 +2,11 @@
 
 ## Current software policy
 
-The app uses the original polygon coordinates in `R/classification_data.R`
-and the source-derived Brazilian definitions in `R/brazil_data.R`.
+The app discovers per-view definitions from `R/classifications/`. The original
+NZ, USDA, and Australian coordinates are preserved there alongside the
+source-derived Brazilian and Canadian definitions.
 The following is a transparent software policy, not a claim that the exact
-boundary conventions of all three scientific systems have been verified.
+boundary conventions of all supported scientific systems have been verified.
 
 | Matches | Classification | Status |
 | --- | --- | --- |
@@ -32,7 +33,8 @@ Points within it are treated as on the edge; percentages are never adjusted.
 
 ## Verified software examples
 
-- Pure sand and pure clay now classify as Sand and Clay in every system.
+- Pure sand and pure clay classify as Sand and Clay in the original three systems.
+  Canada uses Heavy Clay for pure clay; Brazil uses its Portuguese class names.
 - Pure silt is Silt in the existing NZ and USDA polygons, and Silty Loam in the
   existing Australian polygons. The latter is a property of this dataset and
   still needs scientific verification.
@@ -70,9 +72,10 @@ provenance for the repository's original coordinate arrays.
 ## Remaining scientific work
 
 The two Brazilian views added on 6 November 2026 have separate source and
-validation notes in [Brazilian classifications](brazil.md). Both use SiBCS
+validation notes in [Brazilian classifications](classifications/brazil.md). Both use SiBCS
 2025 and retain the shared-boundary candidate policy described above. The
-remaining provenance work below concerns the original three systems.
+Canadian source and validation notes are in [Canadian classification](classifications/canada.md).
+The remaining provenance work below concerns the original three systems.
 
 1. Identify the original diagram, edition, and particle-size definitions for
    each system, including the reference workbooks in `old_files/excel/`.

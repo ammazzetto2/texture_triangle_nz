@@ -2,23 +2,14 @@
 source("R/dependencies.R")
 ensure_project_dependencies()
 source("R/validation.R")
-source("R/classification_data.R")
-source("R/brazil_data.R")
 source("R/classification_systems.R")
 source("R/classification.R")
 
 detailed <- "Brazil (SiBCS 2025, 13 classes)"
 grouped <- "Brazil (SiBCS 2025, 5 groups)"
-samples <- data.frame(
-  soil = paste("Reference", 1:13),
-  sand = c(10, 25, 5, 50, 30, 10, 60, 40, 65, 15, 5, 85, 95),
-  clay = c(75, 50, 50, 45, 33, 33, 25, 20, 10, 20, 5, 5, 3)
-)
-samples$silt <- 100 - samples$sand - samples$clay
-samples <- samples[c("soil", "sand", "silt", "clay")]
-expected <- c("Muito argilosa", "Argila", "Argilossiltosa", "Argiloarenosa",
-  "Francoargilosa", "Franco-argilossiltosa", "Franco-argiloarenosa", "Franca",
-  "Francoarenosa", "Francossiltosa", "Silte", "Areia franca", "Areia")
+cases <- read.csv("tests/fixtures/brazil.csv", stringsAsFactors = FALSE)
+samples <- cases[c("soil", "sand", "silt", "clay")]
+expected <- cases$expected
 stopifnot(identical(classify_soil_data(samples, detailed)$classification, expected))
 
 # Independent inequalities from the 2017 USDA text referenced by SiBCS 2025,

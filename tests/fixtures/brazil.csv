@@ -1,0 +1,14 @@
+soil,sand,silt,clay,expected
+Reference 1,10,15,75,Muito argilosa
+Reference 2,25,25,50,Argila
+Reference 3,5,45,50,Argilossiltosa
+Reference 4,50,5,45,Argiloarenosa
+Reference 5,30,37,33,Francoargilosa
+Reference 6,10,57,33,Franco-argilossiltosa
+Reference 7,60,15,25,Franco-argiloarenosa
+Reference 8,40,40,20,Franca
+Reference 9,65,25,10,Francoarenosa
+Reference 10,15,65,20,Francossiltosa
+Reference 11,5,90,5,Silte
+Reference 12,85,10,5,Areia franca
+Reference 13,95,2,3,Areia

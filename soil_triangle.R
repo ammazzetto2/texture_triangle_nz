@@ -7,8 +7,6 @@ library(shiny)
 
 source("R/validation.R", local = TRUE)
 
-source("R/classification_data.R", local = TRUE)
-source("R/brazil_data.R", local = TRUE)
 source("R/classification_systems.R", local = TRUE)
 source("R/classification.R", local = TRUE)
 
@@ -43,7 +41,7 @@ server <- function(input, output, session) {
     tagList(
       tags$p(tags$strong(definition$source)),
       tags$p(definition$fractions, " Enter percentages for the fine-earth fraction. Changing the system does not convert laboratory particle-size measurements."),
-      tags$p(tags$a("Embrapa source", href = definition$source_url, target = "_blank", rel = "noopener"))
+      tags$p(tags$a("View source publication", href = definition$source_url, target = "_blank", rel = "noopener"))
     )
   })
 

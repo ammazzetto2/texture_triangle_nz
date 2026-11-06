@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-New Zealand, USDA, Australian, and Brazilian classification polygons.
+New Zealand, USDA, Australian, Brazilian, and Canadian classification polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
 triangle, and download the samples with their classifications.
@@ -70,8 +70,16 @@ Brazil has two options: **13 classes** and **5 groups**, both based on SiBCS
 The selected Brazilian source and particle-size definitions appear under
 **About & methodology**. Use fine-earth percentages measured with the stated
 fractions; changing the selector does not convert laboratory measurements.
-See [Brazilian source and validation notes](docs/brazil.md) and
+See [Brazilian source and validation notes](docs/classifications/brazil.md) and
 [example Brazilian samples](examples/brazil_samples.csv).
+
+## Canadian classification
+
+**Canada · 13 classes** uses the Canadian System of Soil Classification, third
+edition (1998), with AAFC numerical class definitions. It includes Heavy Clay
+above 60% clay. Shared boundaries retain the app's candidate-class policy.
+See [Canadian source and validation notes](docs/classifications/canada.md) and
+[example Canadian samples](examples/canada_samples.csv).
 
 ## CSV format
 
@@ -106,8 +114,9 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 ## Scientific status
 
 This repository is a prototype. The polygon coordinates and class names are
-stored in `R/classification_data.R`; authoritative source references and boundary
-conventions still need to be documented and verified for each system.
+stored per view in `R/classifications/`. Provenance for the original three
+systems remains under review; Brazil and Canada have separate source notes.
+The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
 that class, including outer edges and pure-component corners. Shared boundaries
@@ -129,20 +138,23 @@ limitations, and remaining verification work are documented in
 | `R/dependencies.R` | Shared package checks and installation |
 | `soil_triangle.R` | Shiny server and shared download handler |
 | `R/ui.R` | Page structure, Bootstrap theme, and accessible results table |
-| `R/classification_data.R` | Polygon coordinates and class labels |
+| `R/classifications/` | One definition per view: polygons, metadata, colours, and label settings |
 | `R/classification.R` | Shared classification and export preparation |
-| `R/classification_systems.R` | Available systems, display names, orientation, and source metadata |
-| `R/brazil_data.R` | SiBCS 2025 polygons for the 13-class and five-group views |
+| `R/classification_systems.R` | Definition discovery, schema validation, and polygon construction helper |
 | `R/plotting.R` | Ternary plot construction, labels, and styling |
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R` | Brazilian analytical references, geometry, metadata, and exports |
+| `tests/brazil.R`, `tests/canada.R` | Country-specific analytical references and integration checks |
+| `tests/fixtures/` | Independent reference compositions and expected classes |
+| `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |
 | `tests/plotting.R` | Rendered text, graphics, and Shiny plot checks |
 | `www/` | Stylesheet, methodology page, and branding assets served by Shiny |
 | `examples/` | Example input data |
 | `docs/classification.md` | Classification policy, source review, and known geometry issues |
+| `docs/classifications/` | Country/view-specific source and validation notes |
+| `docs/adding-classifications.md` | Definition schema and steps for adding another system |
 | `old_files/` | Earlier scripts, an R Markdown draft, and reference workbooks |
 
 The files named `*_tests.R` in `old_files/` are historical app prototypes,
@@ -153,13 +165,11 @@ not an automated test suite. A deployment procedure is not yet documented.
 From the repository root (missing app dependencies are installed automatically):
 
 ```sh
-Rscript --vanilla tests/validation.R
-Rscript --vanilla tests/dependencies.R
-Rscript --vanilla tests/classification.R
-Rscript --vanilla tests/results.R
-Rscript --vanilla tests/plotting.R
-Rscript --vanilla tests/brazil.R
+Rscript --vanilla tests/run_all.R
 ```
+
+The runner discovers test scripts and runs each in a separate R session.
+Individual scripts, such as `Rscript --vanilla tests/canada.R`, can also be run.
 
 The script uses base R assertions and Shiny's `testServer()`; no separate test
 package is needed. It checks valid samples, invalid values and schemas, malformed
@@ -184,6 +194,14 @@ and axis label, and fail on rendering warnings or messages. They also exercise
 the Shiny plot output. Class and sample text use explicit identity positioning
 for compatibility with ggplot2 4 and ggtern 4. Crowded sample labels may still
 overlap; automatic label collision avoidance is not implemented. Sample labels can be hidden without removing points.
+
+## Adding another classification
+
+Add a definition in `R/classifications/`, independent reference fixtures and
+tests, and a source note under `docs/classifications/`. The app, shared renderer,
+exports, and common tests discover it automatically; the classifier needs no
+country-specific code. Follow [the maintenance guide](docs/adding-classifications.md)
+for the field contract, validation requirements, and workflow.
 
 ## Initial verification
 

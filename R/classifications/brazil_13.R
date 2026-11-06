@@ -7,17 +7,8 @@
 # Original implementation of these published definitions; no soiltexture code
 # or digitised package data is copied. Vertices below are (sand %, clay %).
 # The app retains its shared-edge candidate policy, not an inequality tie-break.
-make_brazil_polygons <- function(vertices) {
-  data <- lapply(names(vertices), function(label) {
-    xy <- matrix(vertices[[label]], ncol = 2, byrow = TRUE)
-    data.frame(Sand = xy[, 1] / 100, Clay = xy[, 2] / 100,
-               Silt = (100 - xy[, 1] - xy[, 2]) / 100,
-               Label = label, stringsAsFactors = FALSE)
-  })
-  do.call(rbind, data)
-}
 
-brazil_data <- make_brazil_polygons(list(
+data <- texture_polygons(list(
   "Muito argilosa" = c(0, 60, 40, 60, 0, 100),
   "Argila" = c(45, 40, 45, 55, 40, 60, 0, 60, 20, 40),
   "Argilossiltosa" = c(0, 40, 20, 40, 0, 60),
@@ -33,12 +24,20 @@ brazil_data <- make_brazil_polygons(list(
   "Areia" = c(85, 0, 100, 0, 90, 10)
 ))
 
-# Group boundaries are independent of the detailed class polygons: e.g. Siltosa
-# uses sand <=15% and clay <35%, rather than simply merging Silte polygons.
-brazil_groups_data <- make_brazil_polygons(list(
-  "Muito argilosa" = c(0, 60, 40, 60, 0, 100),
-  "Argilosa" = c(0, 35, 65, 35, 40, 60, 0, 60),
-  "Média" = c(15, 0, 70, 0, 85, 15, 65, 35, 15, 35),
-  "Arenosa" = c(70, 0, 100, 0, 85, 15),
-  "Siltosa" = c(0, 0, 15, 0, 15, 35, 0, 35)
-))
+
+definition <- list(id = "Brazil (SiBCS 2025, 13 classes)", display = "Brazil · 13 classes",
+    order = 40, clockwise = TRUE, colours = c(`Muito argilosa` = "#b9a28b",
+    Argila = "#d8c8b1", Argilossiltosa = "#c7cbd9", Argiloarenosa = "#d3b49d",
+    Francoargilosa = "#d4c8a0", `Franco-argilossiltosa` = "#c6d1bd",
+    `Franco-argiloarenosa` = "#e0c9a6", Franca = "#dedab9", Francoarenosa = "#e8d7b7",
+    Francossiltosa = "#cbd5ba", Silte = "#d8e2d9", `Areia franca` = "#dfd1a7",
+    Areia = "#efe4c7"), label_size = 3.5, label_overrides = list(
+        `Muito argilosa` = list(text = "Muito\nargilosa"), `Franco-argilossiltosa` = list(
+            text = "Franco-\nargilossiltosa"), `Franco-argiloarenosa` = list(
+            text = "Franco-\nargiloarenosa"), `Areia franca` = list(
+            angle = 330)), source = "SiBCS, 6th edition (2025), Figure 1.1, printed page 55",
+    source_url = "https://www.infoteca.cnptia.embrapa.br/handle/doc/1176834",
+    fractions = "Sand 0.05–2 mm; silt 0.002–0.05 mm; clay <0.002 mm.")
+
+definition$data <- data
+definition

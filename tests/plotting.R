@@ -4,8 +4,6 @@ ensure_project_dependencies()
 # Grob layout can request a device before explicit drawing. Keep that scratch
 # device in memory instead of creating an Rplots.pdf in the repository.
 options(device = function(...) grDevices::pdf(file = NULL))
-source("R/classification_data.R")
-source("R/brazil_data.R")
 source("R/classification_systems.R")
 source("R/plotting.R")
 

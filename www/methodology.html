@@ -7,12 +7,16 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, and Brazilian texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, and Canadian texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
-<p>These views follow the shared-boundary candidate policy below, rather than forcing a single class at exact published limits such as 60% clay. Full implementation and validation details are in <code>docs/brazil.md</code>.</p>
+<p>These views follow the shared-boundary candidate policy below, rather than forcing a single class at exact published limits such as 60% clay. Full implementation and validation details are in <code>docs/classifications/brazil.md</code>.</p>
 <p><a href="https://www.infoteca.cnptia.embrapa.br/handle/doc/1176834">Embrapa — SiBCS, 6th edition (2025)</a></p>
+<h2>Canada — CSSC third edition (1998)</h2>
+<p>The Canadian view contains 13 main classes, including Heavy Clay above 60% clay, based on Chapter 17, Figure 42 and the AAFC numerical class glossary. It excludes sand-size subclasses and coarse-fragment modifiers. Inputs use fine-earth percentages with a 0.05 mm sand/silt cutoff. Shared boundaries follow the same candidate policy as other views.</p>
+<p>Exports identify <code>Canada (CSSC 1998, 13 classes)</code>. Full notes are in <code>docs/classifications/canada.md</code>.</p>
+<p><a href="https://sis.agr.gc.ca/cansis/taxa/cssc3/chpt17.html">Canadian source diagram</a> · <a href="https://sis.agr.gc.ca/cansis/glossary/t/index.html">AAFC texture-class definitions</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>
