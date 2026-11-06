@@ -1,0 +1,61 @@
+source("R/dependencies.R")
+ensure_project_dependencies()
+app_env <- new.env()
+source("soil_triangle.R", local = app_env)
+
+shiny::testServer(app_env$server, {
+  session$setInputs(dataset = "New Zealand", sampleSearch = "", resultsSort = "input",
+    sortDescending = FALSE, resultsPageSize = "25", reviewOnly = FALSE,
+    previousResultsPage = 0, nextResultsPage = 0, undoDataBtn = 0)
+  samples <- data.frame(soil = sprintf("Sample %03d", 1:61), sand = rep(50, 61),
+                         silt = rep(25, 61), clay = rep(25, 61))
+  samples$soil[30] <- "Duplicate"
+  samples$soil[31] <- "Duplicate"
+  samples$soil[40] <- "Literal [A].*"
+  samples[61, c("sand", "silt", "clay")] <- list(20, 20, 60)
+  change_samples(samples, "Loaded samples")
+  session$flushReact()
+  stopifnot(identical(visible_result_rows(), 1:25), results_page_count() == 3L,
+            nrow(read.csv(output$downloadDataBtn)) == 61L)
+  session$setInputs(nextResultsPage = 1)
+  stopifnot(identical(visible_result_rows(), 26:50),
+            grepl('data-row="26"', output$resultsTable$html, fixed = TRUE))
+  session$setInputs(viewSample = list(row = 30, revision = data_revision()))
+  stopifnot(selected_sample() == 30L)
+  session$setInputs(nextResultsPage = 2)
+  stopifnot(identical(visible_result_rows(), 51:61))
+  session$setInputs(nextResultsPage = 3)
+  stopifnot(current_results_page() == 3L)
+  session$setInputs(previousResultsPage = 1)
+  stopifnot(current_results_page() == 2L)
+  session$setInputs(sampleSearch = "duplicate")
+  stopifnot(current_results_page() == 1L, identical(visible_result_rows(), 30:31))
+  session$setInputs(deleteSample = list(row = 31, revision = data_revision()))
+  stopifnot(nrow(soil_data()) == 60L, identical(visible_result_rows(), 30L))
+  session$setInputs(undoDataBtn = 1)
+  stopifnot(identical(soil_data(), samples), identical(visible_result_rows(), 30:31))
+  session$setInputs(sampleSearch = "[a].*")
+  stopifnot(identical(visible_result_rows(), 40L))
+  session$setInputs(sampleSearch = "not present")
+  stopifnot(length(visible_result_rows()) == 0L,
+            grepl("No matching samples", output$resultsTable$html, fixed = TRUE))
+  session$setInputs(sampleSearch = "", resultsSort = "clay", sortDescending = TRUE)
+  stopifnot(visible_result_rows()[1] == 61L)
+  session$setInputs(resultsSort = "classification")
+  stopifnot(tail(matching_result_rows(), 1) == 61L)
+  session$setInputs(resultsSort = "soil", sortDescending = FALSE)
+  stopifnot(identical(head(matching_result_rows(), 2), 30:31))
+  session$setInputs(resultsSort = "input", sortDescending = TRUE, resultsPageSize = "50")
+  stopifnot(identical(visible_result_rows(), 61:12))
+  session$setInputs(reviewOnly = TRUE)
+  stopifnot(identical(visible_result_rows(), 61L))
+  session$setInputs(reviewOnly = FALSE, resultsPageSize = "100")
+  stopifnot(length(visible_result_rows()) == 61L)
+  session$setInputs(resultsPageSize = "25", sortDescending = FALSE, nextResultsPage = 4)
+  session$setInputs(nextResultsPage = 5)
+  session$setInputs(dataset = "USDA")
+  stopifnot(current_results_page() == 1L)
+  session$setInputs(clearDataBtn = 1)
+  stopifnot(length(visible_result_rows()) == 0L, current_results_page() == 1L)
+})
+cat("Results navigation: literal search, stable sorting, pagination, row actions, exports and resets PASS\n")

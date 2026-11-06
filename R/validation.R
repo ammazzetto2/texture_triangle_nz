@@ -27,12 +27,14 @@ validate_soil_data <- function(data, tolerance = 1e-8) {
   data
 }
 
-read_soil_csv <- function(path) {
+read_soil_csv <- function(path, format = c("samples", "results")) {
+  format <- match.arg(format)
   # Treat parser warnings (for example, an unterminated quoted field) as errors.
   data <- tryCatch(
     withCallingHandlers(
       read.csv(path, check.names = FALSE, stringsAsFactors = FALSE,
-               row.names = NULL, fill = FALSE),
+               row.names = NULL, fill = FALSE, na.strings = character(),
+               colClasses = c(soil = "character")),
       warning = function(w) stop(conditionMessage(w), call. = FALSE)
     ),
     error = function(e) stop(
@@ -40,5 +42,18 @@ read_soil_csv <- function(path) {
       call. = FALSE
     )
   )
+  if (format == "results") {
+    required <- c("soil", "sand", "silt", "clay")
+    exported <- c(required, "classification", "classification_system",
+                  "classification_status", "classification_candidates")
+    if (anyDuplicated(names(data))) stop("Column names must be unique.", call. = FALSE)
+    if (!setequal(names(data), exported)) {
+      stop("Downloaded results must contain exactly these columns: ",
+           paste(exported, collapse = ", "), ". Choose Samples for a four-column CSV.", call. = FALSE)
+    }
+    # Saved classifications are historical output, never trusted input. Only
+    # measurements enter the dataset; the selected system recalculates results.
+    data <- data[, required, drop = FALSE]
+  }
   validate_soil_data(data)
 }

@@ -2,7 +2,7 @@
   --soil-bg: #f5f5ef;
   --soil-paper: #fff;
   --soil-ink: #25392f;
-  --soil-muted: #68756c;
+  --soil-muted: #606d64;
   --soil-green: #245744;
   --soil-line: #dfe4dc;
   --soil-rust: #a3452c;
@@ -10,7 +10,7 @@
 }
 body { background: var(--soil-bg); color: var(--soil-ink); }
 .app-shell { max-width: 1480px; padding: 32px 28px 20px; margin: 0 auto; }
-.app-header, .brand, .workspace-bar, .visual-heading { display: flex; align-items: center; }
+.app-header, .brand, .visual-heading { display: flex; align-items: center; }
 .app-header { justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .brand { gap: 14px; }
 .brand-mark { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid #bdcdbd; background: #e7ede1; border-radius: 13px; font-size: 36px; line-height: 1; color: var(--soil-green); }
@@ -18,15 +18,37 @@ body { background: var(--soil-bg); color: var(--soil-ink); }
 h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; font-weight: 650; }
 h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .header-note { margin: 0; font-size: 14px; color: var(--soil-muted); }
-.workspace-bar { gap: 24px; padding: 16px 20px; margin-bottom: 24px; border: 1px solid var(--soil-line); border-radius: var(--soil-radius); background: #edf0e8; }
-.classification-control { min-width: 220px; }
+.workspace-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 12px 16px; min-width: 0; padding: 16px 20px; margin-bottom: 24px; border: 1px solid var(--soil-line); border-radius: var(--soil-radius); background: #edf0e8; }
+.classification-control { min-width: 0; }
 .classification-control .shiny-input-container { width: 100%; margin: 0; }
+.classification-control .form-select { width: 100%; min-width: 0; }
+.workspace-bar > .btn { white-space: nowrap; }
+.system-context { grid-column: 1 / -1; border-top: 1px solid #d3dccf; padding-top: 8px; min-width: 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.system-context p { display: inline; margin: 0 8px 0 0; }
+.system-context .system-selected { display: block; margin-bottom: 3px; font-weight: 650; }
+.system-note { color: var(--soil-muted); }
+.system-warning { color: #795515; }
 .control-label, .form-label { font-size: 12px; font-weight: 650; margin-bottom: 7px; }
 .form-control, .form-select { min-height: 42px; border-color: #cfd8cd; border-radius: 8px; font-size: 14px; background-color: white; }
 .form-control:focus, .form-select:focus { border-color: var(--soil-green); box-shadow: 0 0 0 3px #24574420; }
-.workspace-stats { flex: 1; }
-.stat-chip { display: inline-block; margin-right: 18px; color: var(--soil-muted); font-size: 13px; }
+.workspace-stats > .shiny-html-output { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.stat-chip { display: inline-block; margin: 0; color: var(--soil-muted); font-size: 13px; white-space: nowrap; }
 .stat-chip strong { color: var(--soil-ink); font-size: 16px; margin-right: 3px; }
+.review-count.btn { background: transparent; border: 1px solid #bdcdbd; color: var(--soil-green); padding: 6px 9px; white-space: nowrap; }
+.review-count.btn:hover { background: #e0e8dc; border-color: var(--soil-green); }
+.results-controls { flex-shrink: 0; margin-bottom: 14px; }
+.results-controls .shiny-input-container { width: 100%; margin-bottom: 6px; }
+.results-controls .field-help { margin: 0; }
+.results-flags { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.results-controls .results-flags .shiny-input-container { width: auto; font-size: 12px; }
+.results-help { flex-shrink: 0; }
+.results-search-sort { display: grid; grid-template-columns: minmax(130px, 2fr) minmax(110px, 1fr) 110px; gap: 10px; }
+.results-pagination { flex-shrink: 0; margin-bottom: 12px; }
+.results-pagination > span { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.results-pagination span[role="status"] { font-size: 12px; }
+.mobile-workspace-nav { display: none; }
+.result-explanation { margin-top: 8px; min-width: 130px; font-size: 11px; font-weight: 400; }
+.result-explanation p { min-width: 180px; max-width: 280px; line-height: 1.6; }
 .btn { font-size: 13px; font-weight: 600; border-radius: 8px; min-height: 40px; padding: 9px 15px; }
 .btn-primary { background: var(--soil-green); border-color: var(--soil-green); }
 .btn-primary:hover { background: #193e30; border-color: #193e30; }
@@ -48,8 +70,16 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .total-invalid strong, .total-invalid small { color: #9f4035; }
 .add-sample { width: 100%; }
 .field-help { color: var(--soil-muted); font-size: 12px; line-height: 1.7; }
+.entry-error { color: #9f4035; font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+.remaining-helper { font-size: 12px; margin-bottom: 12px; }
+.remaining-helper .shiny-input-container { margin-top: 10px; }
+.upload-preview-table { overflow: auto; max-height: 240px; font-size: 12px; margin-bottom: 12px; }
+.upload-preview-table td { min-width: 60px; overflow-wrap: anywhere; }
+.entry-content h3 { font-size: 15px; margin: 16px 0 8px; }
 .session-note { margin: 0 24px; padding-top: 20px; border-top: 1px solid var(--soil-line); }
 .session-note p { font-size: 12px; color: var(--soil-muted); line-height: 1.7; margin-bottom: 6px; }
+.session-note .sample-feedback { color: var(--soil-green); overflow-wrap: anywhere; }
+.undo-samples { width: 100%; margin-bottom: 12px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
 .btn-clear { padding: 4px 0; border: none; background: transparent; color: #985044; min-height: 32px; font-weight: 500; }
 .btn-clear:hover { color: #742d24; text-decoration: underline; }
 .help-details { margin: 16px 24px 24px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
@@ -59,18 +89,29 @@ details p { margin-top: 12px; }
 .sample-key { font-size: 12px; color: var(--soil-muted); white-space: nowrap; }
 .sample-dot { width: 8px; height: 8px; display: inline-block; border-radius: 50%; background: var(--soil-rust); margin-right: 6px; }
 .plot-frame { width: 100%; height: clamp(480px, 53vw, 760px); }
-.plot-options { display: flex; justify-content: flex-end; padding: 12px 24px 0; color: var(--soil-muted); }
+.plot-options { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 12px 20px 4px; color: var(--soil-muted); flex-shrink: 0; }
+.plot-options .btn { padding: 6px 10px; min-height: 36px; }
+.plot-selection { padding: 0 20px 8px; font-size: 12px; flex-shrink: 0; }
+.plot-selection p { margin: 4px 0; overflow-wrap: anywhere; }
+.plot-selection .btn { padding: 4px 8px; min-height: 32px; }
+.modal-dialog:has(.enlarged-plot) { width: 96vw; max-width: 1600px; margin: 12px auto; }
+.modal-dialog:has(.enlarged-plot) .modal-content { max-height: calc(100dvh - 24px); }
+.modal-dialog:has(.enlarged-plot) .modal-body { overflow: auto; }
+.enlarged-plot { height: calc(100dvh - 200px); min-height: 320px; }
 .plot-options .shiny-input-container { width: auto; margin: 0; font-size: 12px; }
 .plot-caption { padding: 0 24px 20px; margin: 0; color: var(--soil-muted); font-size: 11px; text-align: center; }
 .results-content { padding: 24px; min-height: 480px; }
-.results-summary { font-size: 13px; margin: 0 0 20px; }
+.results-summary { font-size: 13px; margin: 0 0 10px; }
 .results-table { overflow-x: auto; overflow-y: hidden; padding-bottom: 2px; margin-bottom: 18px; }
 .sample-results { font-size: 12px; vertical-align: middle; margin: 0; }
 .sample-results th { color: var(--soil-muted); font-weight: 600; font-size: 11px; white-space: nowrap; background: #f6f7f2; }
-.sample-results th, .sample-results td { padding: 13px 12px; border-bottom-color: var(--soil-line); }
+.sample-results th, .sample-results td { padding: 9px 12px; border-bottom-color: var(--soil-line); }
 .sample-results td:first-child { font-weight: 600; min-width: 110px; max-width: 220px; overflow-wrap: anywhere; }
 .sample-results td:last-child { min-width: 130px; }
 .sample-results tbody tr:hover { background: #fafbf8; }
+.sample-row-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.sample-row-actions .btn { padding: 5px 8px; min-height: 36px; font-size: 12px; }
+.edit-sample-error { color: #9f4035; font-size: 13px; }
 .status-badge { display: inline-flex; border-radius: 6px; padding: 4px 7px; font-size: 10px; font-weight: 650; white-space: nowrap; }
 .status-classified { color: #245744; background: #e7f0e7; }
 .status-boundary { color: #795515; background: #faf0d7; }
@@ -86,7 +127,7 @@ details p { margin-top: 12px; }
 .sidebar-resources a { color: var(--soil-green); text-underline-offset: 3px; }
 .sidebar-contact { font-size: 12px; }
 .sidebar-logo { height: 34px; width: auto; max-width: 150px; align-self: flex-start; object-fit: contain; }
-a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:focus-visible { outline: 3px solid #7e9d7c; outline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:focus-visible, .upload-preview-table:focus-visible { outline: 3px solid var(--soil-green); outline-offset: 3px; }
 /* Desktop: allocate the viewport to the workspace, rather than giving the plot
    a fixed height. Only long panel content scrolls; controls stay on screen. */
 @media (min-width: 761px) {
@@ -103,10 +144,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .brand-mark { width: 42px; height: 42px; font-size: 32px; }
   h1 { font-size: 25px; }
   .workspace-bar { margin: 0; padding: 10px 16px; }
-  .classification-control { min-width: 340px; }
-  .classification-control .shiny-input-container { display: flex; align-items: center; gap: 12px; }
-  .classification-control label { margin: 0; white-space: nowrap; }
-  .classification-control .form-select { width: 180px; }
   .workspace-grid { height: 100%; min-height: 0; align-items: stretch; gap: 16px; }
   .sample-panel { min-height: 0; overflow-y: auto; scrollbar-width: thin; }
   .visual-panel { display: flex; flex-direction: column; min-height: 0; }
@@ -122,7 +159,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .visual-panel > .tabbable { display: flex; flex-direction: column; flex: 1; min-height: 0; }
   .visual-panel .tab-content { flex: 1; min-height: 0; position: relative; }
   .visual-panel .tab-pane.active { display: flex; flex-direction: column; height: 100%; min-height: 0; }
-  .plot-options { position: absolute; top: -34px; right: 0; padding: 0 20px; }
   .plot-frame { flex: 1; height: auto; min-height: 0; }
   .plot-caption { display: none; }
   .results-content { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 20px; }
@@ -140,12 +176,13 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
     grid-template-rows: auto minmax(0, 1fr);
     padding: 12px 20px 10px;
   }
-  .app-header { grid-column: 1; grid-row: 1; }
+  .app-header { grid-column: 1; grid-row: 1; align-self: start; padding-top: 12px; }
   .app-header .header-note { display: none; }
   .workspace-bar { grid-column: 2; grid-row: 1; gap: 16px; }
-  .classification-control { min-width: 300px; }
-  .classification-control .form-select { width: 155px; }
   .workspace-grid { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (min-width: 1201px) {
+  .system-context .system-selected { display: none; }
 }
 @media (min-width: 761px) and (max-height: 800px) {
   .visual-heading { padding: 12px 20px; }
@@ -157,35 +194,57 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .help-details { margin-top: 8px; margin-bottom: 12px; }
 }
 @media (max-width: 1000px) {
+  .results-search-sort { grid-template-columns: minmax(0, 1fr) 110px; }
+  .results-search-sort > :first-child { grid-column: 1 / -1; }
   .app-shell { padding: 24px 16px; }
   .workspace-grid { grid-template-columns: 285px minmax(0, 1fr); gap: 16px; }
   .panel-heading, .entry-content, .results-content { padding: 20px; }
   .panel .nav-tabs { padding: 0 20px; }
   .session-note { margin: 0 20px; }
   .help-details { margin-left: 20px; margin-right: 20px; }
-  .stat-chip { margin-right: 10px; }
   .header-note { max-width: 220px; text-align: right; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
   .app-shell { padding: 12px 16px; }
   .workspace-bar { gap: 12px; }
-  .classification-control { min-width: 0; }
-  .classification-control .shiny-input-container { display: block; }
-  .classification-control .form-select { width: 180px; }
-  .classification-control label { margin-bottom: 4px; }
   .panel-heading, .entry-content { padding: 14px 16px; }
 }
 @media (max-width: 760px) {
+  .mobile-workspace-nav { display: flex; position: sticky; top: 0; z-index: 10; gap: 12px; padding: 10px 12px; margin-bottom: 12px; background: var(--soil-bg); border-bottom: 1px solid var(--soil-line); }
+  .mobile-workspace-nav a { color: var(--soil-green); font-weight: 600; padding: 8px; }
+  #sample-entry, #classification-workspace { scroll-margin-top: 70px; }
+  .results-search-sort { grid-template-columns: minmax(0, 1fr) 110px; }
+  .results-search-sort > :first-child { grid-column: 1 / -1; }
   .app-shell { padding: 20px 12px; }
   .app-header { margin-bottom: 20px; }
   .header-note { display: none; }
-  .workspace-bar { flex-wrap: wrap; gap: 14px; padding: 16px; margin-bottom: 16px; }
-  .classification-control { flex: 1 1 100%; min-width: 0; }
-  .workspace-stats { flex: 1; }
+  .workspace-bar { grid-template-columns: minmax(0, 1fr) auto; gap: 14px; padding: 16px; margin-bottom: 16px; }
+  .classification-control { grid-column: 1 / -1; }
   .workspace-grid { grid-template-columns: minmax(0, 1fr); }
   .composition-inputs { gap: 12px; }
   .sample-key { display: none; }
   .plot-frame { height: max(390px, 92vw); }
   .plot-caption { padding: 0 16px 18px; }
   .results-content { min-height: 340px; padding: 16px; }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  .workspace-bar { grid-template-columns: minmax(0, 1fr) auto; }
+  .classification-control { grid-column: 1 / -1; }
+}
+/* Short windows need page scrolling so the requirements cannot squeeze the
+   chart or controls out of view. This also accommodates browser zoom. */
+@media (min-width: 761px) and (max-height: 650px) {
+  html, body { height: auto; overflow: auto; }
+  .app-shell { height: auto; min-height: 100dvh; }
+  .workspace-grid { min-height: 500px; }
+}
+
+/* Keep keyboard shortcuts visible above scrolling panels and modal backdrops. */
+.skip-link { position: fixed; top: 8px; left: 8px; z-index: 1100; padding: 12px 16px; background: white; color: var(--soil-green); transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+/* Long imported headers must wrap inside the narrow upload panel. */
+.upload-preview-table th { overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  .workspace-bar { grid-template-columns: minmax(0, 1fr); }
+  .workspace-bar > .btn { justify-self: start; }
 }

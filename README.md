@@ -1,7 +1,8 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-New Zealand, USDA, Australian, Brazilian, and Canadian classification polygons.
+19 current and historic classification views, including New Zealand, USDA,
+Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
 triangle, and download the samples with their classifications.
@@ -39,22 +40,83 @@ runs the dependency check when sourced directly.
 ## Use the app
 
 1. Choose the shared **Classification system** at the top of the workspace.
+   The toolbar shows the selected system's documented particle-size requirements
+   and reminds you that switching systems does not convert measurements. Where
+   requirements are undocumented, the app says so; original project polygons
+   retain their source-verification notice. Australia also shows its known overlap.
 2. Under **Add samples**, use **Manual entry** to enter a name and sand, silt,
    and clay percentages, then select **Add sample**. The live composition total
-   indicates whether the percentages add up to 100.
+   indicates whether the percentages add up to 100 and shows any difference.
+   Errors appear inline. **Calculate a remaining percentage** fills the chosen
+   component with 100 minus the other two; it does not normalize all values.
 3. Alternatively, use **CSV upload**. **Get CSV template** provides the required
-   header; add sample rows before uploading it.
+   header; add sample rows before uploading it. Map columns, review the preview,
+   choose Append or Replace, then select **Import reviewed samples**. Selecting
+   a file alone does not change the workspace.
+   To reopen an exported results CSV, choose **Downloaded results (8 columns)**
+   before selecting the file. Names and percentages are restored; classifications
+   are recalculated using the currently selected system. Choose a system compatible
+   with your laboratory fractions: importing does not convert measurements.
 4. Explore **Triangle**, or open **Results** to review classes, labelled status
    badges, and candidate classes. The top bar counts samples that need review
    because they have no single assigned class. On narrow screens, scroll the
    table horizontally to see all columns.
+   Click **need review** to open Results with **Only samples needing review**
+   enabled. Turn off the filter to see all rows. **What this means** explains
+   boundary, overlap and unclassified statuses. **Boundary (assigned)** means
+   an edge point has one matching class and is excluded from the review count.
+   Filtering does not change the triangle or CSV export, which still include
+   all samples. Edit, Delete and Undo remain available for filtered rows.
 5. Select **Download CSV** to export all current samples and classification
    details. **Sample labels** on the Triangle tab can be turned off for crowded
    datasets; the points remain visible.
 
+### Chart tools
+
+- **Enlarge** opens a larger chart using the current label controls and highlight.
+- **PNG** downloads a 3000 × 2700 pixel chart with the system name and current
+  highlight. All samples are included, even when Results is filtered.
+- **Class key** opens plot labels and full class names beside the chart workflow.
+- **Hide overlapping labels** suppresses colliding sample labels while keeping
+  all points. It does not move points or prevent collisions with class labels.
+  Turn it off to show every sample label.
+- **View** beside a Results row highlights that exact sample with a blue ring,
+  bold label and composition summary. This also works with duplicate names and
+  filtered results. The highlighted label stays visible when other labels are
+  hidden. **Clear highlight** removes the selection. Changes to sample data,
+  including Undo, clear the highlight so it cannot move to another row.
+
+### Results navigation
+
+Search sample names using a case-insensitive, literal substring. **Sort by**
+orders names, percentages, classes, status or candidates; **Descending order**
+reverses the direction. Missing classes remain last. **Entry order** returns to
+the original row sequence. Search combines with the review filter; clicking the
+top **need review** count clears the name search.
+
+Results show 25 rows per page by default, with 50 and 100 available. Use
+**Previous** and **Next** to browse. Changing search, sorting, page size, review
+filter or classification system returns to page one. View, Edit and Delete
+always target the original sample, regardless of table order. Exports and the
+triangle include all samples. Mobile screens have sticky **Add samples** and
+**View results** shortcuts.
+
 Manual entries and uploaded samples share one dataset for the current session.
-Uploading appends samples. **Clear all samples** clears the dataset. Download
+Importing appends samples by default; **Replace all current samples** replaces
+the dataset when the reviewed import is submitted. **Clear all samples** clears the dataset. **Undo**
+restores the dataset before the latest successful add, upload, edit, delete, or clear (one
+level, within this session). Invalid input leaves that undo available. Manual
+entry clears the sample name after success and rejects an identical name and
+composition already in the dataset; use distinct names for replicate samples.
+CSV uploads preserve all supplied rows, including duplicates. Download
 results before closing the session if you want to keep them.
+
+In **Results**, use **Edit** beside a sample name to correct its name or
+percentages, then **Save changes**. Invalid edits stay in the editor with an
+explanation; **Cancel** leaves the sample unchanged. **Delete** removes only
+that row, even when multiple samples have the same name. Both edits and deletes
+can be undone using the sample panel. Changes update the triangle, results and
+CSV download together.
 
 The interface uses a shared Bootstrap 5 theme, system fonts, and local styles
 and branding assets, with no external font requests. The desktop workspace fits
@@ -193,7 +255,7 @@ and [example samples](examples/poland_samples.csv).
 
 ## CSV format
 
-Use exactly these column names (the order may vary):
+The template uses these column names (the order may vary):
 
 ```csv
 soil,sand,silt,clay
@@ -208,14 +270,32 @@ A ready-to-upload file is available at
 - `soil`: a nonblank sample name. Surrounding whitespace is removed.
 - `sand`, `silt`, `clay`: numeric percentages from 0 to 100, adding up to 100
   for each sample. Use percentages, not fractions between 0 and 1.
-- Include all four columns, with no extra columns or missing values.
+- In **Samples (map columns)** mode, choose four distinct source columns for
+  the sample name and percentages. Other columns are explicitly listed as
+  excluded in the preview. Headers must be nonblank and unique.
 - Use a comma separator and a decimal point for fractional percentages.
 
-Manual entries and uploads use the same validation rules. Missing or duplicate
-columns, extra columns, empty tables, blank sample names, nonnumeric percentages,
+**Downloaded results (8 columns)** mode accepts exactly the four sample columns
+plus `classification`, `classification_system`, `classification_status`, and
+`classification_candidates`, in any order. The four saved classification fields
+are discarded, and current results are recalculated. This restores sample data,
+not the previous system selection or undo history. Both modes offer Append and
+Replace, with single-step Undo after import.
+Sample names such as `001` and `NA` are preserved as text.
+
+The preview shows the first 10 rows and up to 25 issues. **Download all errors**
+exports every issue with its sample row number (excluding the header), field,
+original value and explanation. Correct the source file and select it again;
+no subset of an invalid file is imported. Changing CSV contents clears the staged
+preview and requires selecting the file again.
+
+Manual entries and uploads use the same measurement validation rules. Invalid
+mappings, empty tables, blank sample names, nonnumeric percentages,
 missing or infinite values, and percentages outside 0–100 are rejected. Invalid
 totals report sample row numbers (excluding the CSV header). Rejected input
 leaves existing samples intact; an upload is accepted only if all rows are valid.
+The internal `read_soil_csv()` helper retains its strict four/eight-column schema
+for programmatic callers; the interactive preview handles custom column mapping.
 
 Totals use an absolute tolerance of `1e-8` percentage points to accommodate
 floating-point arithmetic. Values are not normalized or rounded automatically.
@@ -291,19 +371,20 @@ or changes to your actual R library paths.
 
 Classification checks cover every class's vertex mean, example samples, export
 columns, empty exports, boundary candidates, overlap detection, polygon-order independence, grid coverage, and the shared Shiny
-download handler under all three systems. These are regression checks of the
+download handler under the original three systems. These are regression checks of the
 current polygons, not validation against authoritative scientific references.
 
 Results checks verify the empty state, ambiguous results, system switching,
 export consistency, CSV template schema, clearing, and safe display of sample
 names as text. They also check the live composition total and status badges.
 
-Plotting checks build and draw all three systems with samples and with an empty
+Plotting checks build and draw the original three systems with samples and with an empty
 dataset. They check the rendered graphics for every class label, sample name,
 and axis label, and fail on rendering warnings or messages. They also exercise
 the Shiny plot output. Class and sample text use explicit identity positioning
 for compatibility with ggplot2 4 and ggtern 4. Crowded sample labels may still
-overlap; automatic label collision avoidance is not implemented. Sample labels can be hidden without removing points.
+overlap class labels; optional suppression reduces sample-to-sample label collisions.
+Sample labels can also be hidden without removing points.
 
 ## Adding another classification
 
@@ -330,13 +411,31 @@ visually inspected. Subsequent integration checks cover valid and rejected
 uploads, results, the CSV download handler, and plotting. These checks do not
 establish scientific accuracy or complete browser coverage.
 
-## Planned improvements
+## Completed workspace improvements
 
-1. Verify scientific sources, polygon geometry, and shared-boundary rules.
-2. Separate data, validation, classification, plotting, and app code.
-3. Add focused automated tests and reproducible dependency management.
-4. Improve upload feedback, results display, and responsive layout.
-5. Document deployment, licensing, and attribution before wider distribution.
+The app separates definitions, validation, import inspection, classification,
+plotting and UI code. Automated regression checks cover these modules and the
+Shiny server. The workspace includes reversible sample edits, reviewed CSV
+imports with column mapping and error downloads, search/sort/pagination, chart
+highlighting and PNG export, and responsive layouts.
+
+Keyboard users can skip to the workspace and focus scrollable results and CSV
+preview tables. Chart images describe their system and sample count and direct
+users to the equivalent Results table. Status labels supplement colour.
+
+See [workspace quality checks](docs/workspace-quality.md) for the tested scope
+and outstanding manual coverage.
+
+## Remaining work
+
+- Verify scientific sources, legacy polygon geometry and boundary conventions.
+- Lock dependency versions and document reproducible deployment.
+- Resolve licensing and attribution before wider distribution.
+- Complete testing with assistive technology and across browsers. Semantic HTML
+  and automated checks do not establish screen-reader compatibility or WCAG
+  conformance. Large datasets can still make classification and chart rendering
+  slow; pagination limits table rows, not the number of plotted samples. Hide
+  sample labels for dense charts and use Results for exact values and long names.
 
 The classification selector separates **Current** and **Historic** views and
 sorts each group alphabetically. The Historic group contains FAO–UNESCO 1974,
