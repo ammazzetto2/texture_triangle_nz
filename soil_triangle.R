@@ -251,7 +251,11 @@ server <- function(input, output, session) {
 
   observeEvent(input$fileUpload, {
     req(input$fileUpload)
-    add_samples(function() read_soil_csv(input$fileUpload$datapath))
+    format <- if (is.null(input$csvFormat)) "samples" else input$csvFormat
+    added <- add_samples(function() read_soil_csv(input$fileUpload$datapath, format = format))
+    if (added && identical(format, "results")) {
+      sample_feedback(paste0(sample_feedback(), "; classifications recalculated using ", input$dataset, "."))
+    }
   })
 
   observeEvent(input$clearDataBtn, {

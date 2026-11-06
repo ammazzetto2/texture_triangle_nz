@@ -44,6 +44,10 @@ runs the dependency check when sourced directly.
    indicates whether the percentages add up to 100.
 3. Alternatively, use **CSV upload**. **Get CSV template** provides the required
    header; add sample rows before uploading it.
+   To reopen an exported results CSV, choose **Downloaded results (8 columns)**
+   before selecting the file. Names and percentages are restored; classifications
+   are recalculated using the currently selected system. Choose a system compatible
+   with your laboratory fractions: importing does not convert measurements.
 4. Explore **Triangle**, or open **Results** to review classes, labelled status
    badges, and candidate classes. The top bar counts samples that need review
    because they have no single assigned class. On narrow screens, scroll the
@@ -220,10 +224,19 @@ A ready-to-upload file is available at
 - `soil`: a nonblank sample name. Surrounding whitespace is removed.
 - `sand`, `silt`, `clay`: numeric percentages from 0 to 100, adding up to 100
   for each sample. Use percentages, not fractions between 0 and 1.
-- Include all four columns, with no extra columns or missing values.
+- In **Samples (4 columns)** mode, include all four columns, with no extra
+  columns or missing values.
 - Use a comma separator and a decimal point for fractional percentages.
 
-Manual entries and uploads use the same validation rules. Missing or duplicate
+**Downloaded results (8 columns)** mode accepts exactly the four sample columns
+plus `classification`, `classification_system`, `classification_status`, and
+`classification_candidates`, in any order. The four saved classification fields
+are discarded, and current results are recalculated. This restores sample data,
+not the previous system selection or undo history. Uploads append in both modes;
+clear the current samples first if you want to reopen a file in an empty workspace.
+Sample names such as `001` and `NA` are preserved as text.
+
+Manual entries and uploads use the same measurement validation rules. Missing or duplicate
 columns, extra columns, empty tables, blank sample names, nonnumeric percentages,
 missing or infinite values, and percentages outside 0–100 are rejected. Invalid
 totals report sample row numbers (excluding the CSV header). Rejected input

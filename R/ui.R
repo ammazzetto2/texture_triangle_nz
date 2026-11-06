@@ -50,9 +50,16 @@ build_app_ui <- function() {
             ),
             tabPanel("CSV upload", value = "upload",
               tags$div(class = "entry-content",
+                radioButtons("csvFormat", "CSV contents",
+                             choices = c("Samples (4 columns)" = "samples",
+                                         "Downloaded results (8 columns)" = "results"),
+                             selected = "samples"),
+                tags$p(class = "field-help", "Choose the CSV contents before selecting a file. Uploads append to your current samples; Undo removes the latest upload."),
                 fileInput("fileUpload", "Choose a CSV file", accept = ".csv",
                           buttonLabel = "Browse", placeholder = "No file selected"),
-                tags$p(class = "field-help", "Include soil, sand, silt, and clay columns. Percentages must total 100 for every sample."),
+                tags$p(class = "field-help", "Samples need soil, sand, silt, and clay columns. Percentages must total 100 for every sample."),
+                conditionalPanel("input.csvFormat === 'results'",
+                  tags$p(class = "field-help", "Downloaded results restore names and percentages only. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
                 downloadButton("downloadTemplateBtn", "Get CSV template", class = "btn-outline-primary")
               )
             )
