@@ -1,6 +1,7 @@
 # Keep all layers in the same fraction units and inherit the ternary mapping.
 # Explicit z mappings on individual ggplot2 layers generate spurious warnings.
-build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE) {
+build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
+                            selected_row = NULL, avoid_overlap = FALSE) {
   definition <- classification_definition(system)
   polygon_data <- definition$data
   labels <- polygon_data |>
@@ -34,6 +35,12 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE)
     unname(definition$colours[canonical_texture_label(class_names)]), class_names)
   labels$font_size <- labels$font_size * text_scale
   label_points <- if (show_labels) points else points[FALSE, ]
+  selected <- points[FALSE, ]
+  if (length(selected_row) == 1L && is.finite(selected_row) &&
+      selected_row >= 1L && selected_row <= nrow(points)) {
+    selected <- points[selected_row, , drop = FALSE]
+    if (show_labels) label_points <- points[-selected_row, , drop = FALSE]
+  }
   ggtern::ggtern(polygon_data, ggtern::aes(x = Sand, y = Clay, z = Silt)) +
     ggplot2::geom_polygon(ggtern::aes(fill = Label, group = Label),
                           linewidth = 0.45, colour = "#6a7369") +
@@ -45,8 +52,13 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE)
     ggplot2::geom_point(data = points, size = 3.5, shape = 21, stroke = 0.7,
                        fill = "#a3452c", colour = "white") +
     ggplot2::geom_text(data = label_points, ggtern::aes(label = soil, hjust = hjust, vjust = vjust),
-                      position = "identity", size = 3.5 * text_scale, colour = "#963e28") +
+                      position = "identity", size = 3.5 * text_scale, colour = "#963e28",
+                      check_overlap = avoid_overlap) +
     ggplot2::geom_path(data = outline, linewidth = 0.7, colour = "#4a554c") +
+    ggplot2::geom_point(data = selected, size = 6, shape = 21, stroke = 1.4,
+                       fill = NA, colour = "#173f70") +
+    ggplot2::geom_text(data = selected, ggtern::aes(label = soil, hjust = hjust, vjust = vjust),
+                      position = "identity", size = 4 * text_scale, fontface = "bold", colour = "#173f70") +
     ggtern::theme_nogrid() +
     ggtern::theme_showarrows() +
     ggtern::theme_nolatex() +

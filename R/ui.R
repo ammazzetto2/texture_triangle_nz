@@ -98,7 +98,13 @@ build_app_ui <- function() {
           ),
           tabsetPanel(id = "workspaceView", type = "tabs",
             tabPanel("Triangle", value = "triangle",
-              tags$div(class = "plot-options", checkboxInput("showSampleLabels", "Sample labels", value = TRUE)),
+              tags$div(class = "plot-options",
+                checkboxInput("showSampleLabels", "Sample labels", value = TRUE),
+                checkboxInput("avoidLabelOverlap", "Hide overlapping labels", value = TRUE),
+                actionButton("enlargePlotBtn", "Enlarge", class = "btn-outline-primary"),
+                actionButton("classKeyBtn", "Class key", class = "btn-outline-primary"),
+                downloadButton("downloadPlotBtn", "PNG", class = "btn-outline-primary")),
+              tags$div(class = "plot-selection", uiOutput("plotSelection")),
               tags$div(class = "plot-frame", plotOutput("ternaryPlot", height = "100%", width = "100%")),
               tags$p(class = "plot-caption", "Sand, silt, and clay as a percentage of the sample. Region colours distinguish texture classes.")
             ),
@@ -167,8 +173,8 @@ build_results_table <- function(results, revision = NULL, row_indices = seq_len(
           value <- row[[name]]
           if (is.numeric(value)) value <- format(value, trim = TRUE, scientific = FALSE, digits = 8)
           actions <- if (name == "Sample" && !is.null(revision)) {
-            tags$div(class = "sample-row-actions", lapply(c("Edit", "Delete"), function(action) {
-              tags$button(type = "button", class = paste("btn btn-sm", if (action == "Edit") "btn-outline-primary" else "btn-outline-danger"),
+            tags$div(class = "sample-row-actions", lapply(c("View", "Edit", "Delete"), function(action) {
+              tags$button(type = "button", class = paste("btn btn-sm", if (action == "Delete") "btn-outline-danger" else "btn-outline-primary"),
                 `aria-label` = paste(action, "sample", row_indices[i], value),
                 `data-row` = row_indices[i], `data-revision` = revision,
                 onclick = sprintf("Shiny.setInputValue('%sSample', {row: Number(this.dataset.row), revision: Number(this.dataset.revision)}, {priority: 'event'});", tolower(action)),

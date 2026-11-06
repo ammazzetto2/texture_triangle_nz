@@ -31,6 +31,7 @@ server <- function(input, output, session) {
   edit_target <- reactiveVal(NULL)
   edit_error <- reactiveVal("")
   review_only <- reactiveVal(FALSE)
+  selected_sample <- reactiveVal(NULL)
 
   observeEvent(input$reviewOnly, {
     review_only(isTRUE(input$reviewOnly))
@@ -44,6 +45,7 @@ server <- function(input, output, session) {
   change_samples <- function(samples, description) {
     undo_state(list(data = soil_data(), description = description))
     soil_data(samples)
+    selected_sample(NULL)
     data_revision(data_revision() + 1L)
     sample_feedback(description)
   }
@@ -60,6 +62,7 @@ server <- function(input, output, session) {
     previous <- undo_state()
     req(previous)
     soil_data(previous$data)
+    selected_sample(NULL)
     data_revision(data_revision() + 1L)
     undo_state(NULL)
     sample_feedback(paste("Undone:", previous$description))
@@ -153,6 +156,39 @@ server <- function(input, output, session) {
   }
 
   output$editSampleError <- renderText(edit_error())
+  observeEvent(input$viewSample, {
+    row <- current_row(input$viewSample)
+    req(row)
+    selected_sample(row)
+    updateTabsetPanel(session, "workspaceView", selected = "triangle")
+  })
+  observeEvent(input$clearPlotSelection, selected_sample(NULL), ignoreInit = TRUE)
+  output$plotSelection <- renderUI({
+    row <- selected_sample()
+    if (is.null(row)) return(tags$p("Use View beside a sample in Results to highlight it. Hidden labels do not remove points."))
+    sample <- classified_data()[row, ]
+    tagList(tags$p(role = "status", tags$strong(sample$soil),
+      paste0(": sand ", sample$sand, "%, silt ", sample$silt, "%, clay ", sample$clay, "%. "),
+      if (is.na(sample$classification)) paste("Candidates:", sample$classification_candidates) else sample$classification),
+      actionButton("clearPlotSelection", "Clear highlight", class = "btn-outline-primary"))
+  })
+  observeEvent(input$classKeyBtn, {
+    definition <- classification_definition(input$dataset)
+    labels <- unique(definition$data$Label)
+    key <- lapply(labels, function(label) {
+      short <- definition$label_overrides[[canonical_texture_label(label)]]$text
+      tags$tr(tags$td(if (is.null(short)) label else short), tags$td(canonical_texture_label(label)))
+    })
+    showModal(modalDialog(title = "Class key", tags$p(definition$display),
+      tags$table(class = "table", tags$thead(tags$tr(tags$th(scope = "col", "Plot label"), tags$th(scope = "col", "Class"))),
+                 tags$tbody(key)), easyClose = TRUE, footer = modalButton("Close")))
+  })
+  observeEvent(input$enlargePlotBtn, {
+    showModal(modalDialog(title = "Enlarged triangle", size = "l",
+      tags$div(class = "enlarged-plot", plotOutput("enlargedPlot", height = "100%")),
+      tags$p(class = "field-help", "Uses the same labels and highlighted sample as the main chart. Close to change chart controls."),
+      easyClose = TRUE, footer = modalButton("Close")))
+  })
   observeEvent(input$editSample, {
     row <- current_row(input$editSample)
     req(row)
@@ -318,6 +354,24 @@ server <- function(input, output, session) {
     }
   )
 
+  current_plot <- function(text_scale = 1) {
+    build_soil_plot(soil_data(), input$dataset, text_scale = text_scale,
+      show_labels = !identical(input$showSampleLabels, FALSE), selected_row = selected_sample(),
+      avoid_overlap = !identical(input$avoidLabelOverlap, FALSE))
+  }
+  output$downloadPlotBtn <- downloadHandler(
+    filename = function() paste0("soil_texture_", gsub("[^a-z0-9]+", "_", tolower(input$dataset)), ".png"),
+    contentType = "image/png",
+    content = function(file) {
+      plot <- current_plot() + ggplot2::labs(title = classification_definition(input$dataset)$display,
+        caption = "All sample points shown. Labels follow the current chart controls.")
+      ggplot2::ggsave(file, plot = plot, device = "png", width = 10, height = 9, units = "in", dpi = 300, bg = "white")
+    }
+  )
+  output$enlargedPlot <- renderPlot({
+    req(input$dataset)
+    print(current_plot())
+  })
   output$ternaryPlot <- renderPlot({
     req(input$dataset)
     width <- session$clientData$output_ternaryPlot_width
@@ -325,8 +379,7 @@ server <- function(input, output, session) {
     dimensions <- c(width, height)
     text_scale <- if (length(dimensions) != 2L || any(!is.finite(dimensions))) 1 else
       max(0.65, min(1, width / 750, height / 560))
-    print(build_soil_plot(soil_data(), input$dataset, text_scale = text_scale,
-                          show_labels = !identical(input$showSampleLabels, FALSE)))
+    print(current_plot(text_scale))
   })
 
   

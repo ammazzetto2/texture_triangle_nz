@@ -66,6 +66,21 @@ runs the dependency check when sourced directly.
    details. **Sample labels** on the Triangle tab can be turned off for crowded
    datasets; the points remain visible.
 
+### Chart tools
+
+- **Enlarge** opens a larger chart using the current label controls and highlight.
+- **PNG** downloads a 3000 × 2700 pixel chart with the system name and current
+  highlight. All samples are included, even when Results is filtered.
+- **Class key** opens plot labels and full class names beside the chart workflow.
+- **Hide overlapping labels** suppresses colliding sample labels while keeping
+  all points. It does not move points or prevent collisions with class labels.
+  Turn it off to show every sample label.
+- **View** beside a Results row highlights that exact sample with a blue ring,
+  bold label and composition summary. This also works with duplicate names and
+  filtered results. The highlighted label stays visible when other labels are
+  hidden. **Clear highlight** removes the selection. Changes to sample data,
+  including Undo, clear the highlight so it cannot move to another row.
+
 Manual entries and uploaded samples share one dataset for the current session.
 Uploading appends samples. **Clear all samples** clears the dataset. **Undo**
 restores the dataset before the latest successful add, upload, edit, delete, or clear (one
@@ -338,7 +353,8 @@ dataset. They check the rendered graphics for every class label, sample name,
 and axis label, and fail on rendering warnings or messages. They also exercise
 the Shiny plot output. Class and sample text use explicit identity positioning
 for compatibility with ggplot2 4 and ggtern 4. Crowded sample labels may still
-overlap; automatic label collision avoidance is not implemented. Sample labels can be hidden without removing points.
+overlap class labels; optional suppression reduces sample-to-sample label collisions.
+Sample labels can also be hidden without removing points.
 
 ## Adding another classification
 
