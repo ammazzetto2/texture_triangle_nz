@@ -81,6 +81,14 @@ above 60% clay. Shared boundaries retain the app's candidate-class policy.
 See [Canadian source and validation notes](docs/classifications/canada.md) and
 [example Canadian samples](examples/canada_samples.csv).
 
+## FAO–UNESCO texture groups
+
+**FAO–UNESCO · 3 groups (1974)** implements Coarse, Medium and Fine from the
+original Soil Map of the World legend. This is the historical map grouping,
+with an 18% clay step and 35% clay fine limit, rather than the later detailed
+FAO texture triangle. See [source and validation notes](docs/classifications/fao_1974.md)
+and [example samples](examples/fao_1974_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -115,7 +123,7 @@ This tolerance does not accommodate laboratory measurement or rounding error.
 
 This repository is a prototype. The polygon coordinates and class names are
 stored per view in `R/classifications/`. Provenance for the original three
-systems remains under review; Brazil and Canada have separate source notes.
+systems remains under review; Brazil, Canada and FAO–UNESCO have separate source notes.
 The shared boundary policy is a software convention for every view.
 
 Classification now reports uncertainty explicitly. A unique polygon match receives
@@ -145,7 +153,7 @@ limitations, and remaining verification work are documented in
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
-| `tests/brazil.R`, `tests/canada.R` | Country-specific analytical references and integration checks |
+| `tests/brazil.R`, `tests/canada.R`, `tests/fao_1974.R` | Country-specific analytical references and integration checks |
 | `tests/fixtures/` | Independent reference compositions and expected classes |
 | `tests/definitions.R` | Schema, discovery, and geometry checks for every definition |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |

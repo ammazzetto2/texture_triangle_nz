@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, and Canadian texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, and FAO–UNESCO texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -17,6 +17,11 @@
 <p>The Canadian view contains 13 main classes, including Heavy Clay above 60% clay, based on Chapter 17, Figure 42 and the AAFC numerical class glossary. It excludes sand-size subclasses and coarse-fragment modifiers. Inputs use fine-earth percentages with a 0.05 mm sand/silt cutoff. Shared boundaries follow the same candidate policy as other views.</p>
 <p>Exports identify <code>Canada (CSSC 1998, 13 classes)</code>. Full notes are in <code>docs/classifications/canada.md</code>.</p>
 <p><a href="https://sis.agr.gc.ca/cansis/taxa/cssc3/chpt17.html">Canadian source diagram</a> · <a href="https://sis.agr.gc.ca/cansis/glossary/t/index.html">AAFC texture-class definitions</a></p>
+<h2>FAO–UNESCO — three groups (1974)</h2>
+<p>The historical Soil Map of the World legend provides Coarse, Medium and Fine groups. The coarse/medium boundary has a step at 18% clay and 65% sand; the fine group starts above 35% clay. This implements the 1974 map grouping, not the later detailed FAO triangle. The original map applies these groups to the upper 30 cm; the app classifies the supplied composition without inferring sampling depth.</p>
+<p>Use fine-earth percentages with sand 0.05–2 mm, silt 0.002–0.05 mm and clay &lt;0.002 mm. Changing systems does not convert particle-size measurements. Shared edges follow the candidate policy below.</p>
+<p>Exports identify <code>FAO-UNESCO (1974, 3 groups)</code>. Full notes are in <code>docs/classifications/fao_1974.md</code>.</p>
+<p><a href="https://www.fao.org/4/as360e/as360e.pdf">FAO–UNESCO — 1974 Legend, printed pages 4–5</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

@@ -85,3 +85,9 @@ The remaining provenance work below concerns the original three systems.
    when a single-class result is required.
 4. Add independent reference samples and exhaustive geometry checks before
    describing the data as scientifically verified.
+
+## FAO–UNESCO map groups
+
+The historical three-group view is sourced to the 1974 Soil Map of the World
+legend. Its definition, fraction convention, step boundary and checks are
+recorded in [FAO–UNESCO source notes](classifications/fao_1974.md).
