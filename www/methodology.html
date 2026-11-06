@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, SEA74 and TGL85, Belgian, European HYPRES, Romanian SRTS 2003, ISSS, and historical USDA 1911 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, SEA74 and TGL85, Belgian, European HYPRES, Romanian SRTS 2003, ISSS, historical USDA 1911, and Polish PTG 2008 texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — 13 classes and five groups</h2>
 <p>The selector identifies the detailed view with <strong>2013</strong> (SiBCS) and the five-group view with <strong>1996</strong> (Lemos and Santos). These are reference years; the current polygon implementation and export identifiers retain their documented SiBCS 2025 provenance.</p>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
@@ -77,6 +77,11 @@
 <h2>Years in the classification selector</h2>
 <p>The formerly undated options now show reference publication years: New Zealand 1995 (Milne et al.), USDA 1951 (Soil Survey Staff), Belgium 1984 (Verheye and Ameryckx), Aisne/Jamagne 1967, and Australia 2018 (Pluske, Boggs and Leopold). These are explicitly marked “reference” in the selector.</p>
 <p>Reference dates do not certify the exact edition behind legacy polygon coordinates. The 15-class Aisne view includes later modifications, and the 2018 Australian published diagram differs from this app's legacy coordinates. The precise Australian variant year remains unresolved. Full evidence is recorded in <code>docs/classification-years.md</code>; the coordinates and export IDs are unchanged.</p>
+<h2>Poland — PTG 2008, 16 texture classes</h2>
+<p>This view implements PTG 2008, adopted by the Polish Society of Soil Science on 5 March 2008 and published in 2009. Table 2 and Figure 1 of the original publication document the main triangle. Numerical geometry follows PTG_2008.TT in soiltexture 1.5.3; the app uses local static coordinates without a package dependency.</p>
+<p>Use fine-earth mass percentages with <strong>sand (piasek) 0.05–2 mm, silt (pył) 0.002–0.05 mm and clay (ił) &lt;0.002 mm</strong>. This is separate from older Polish triangles with other fraction limits. Switching systems does not convert measurements. Sand-size subdivisions, coarse-fragment classes and full soil taxonomy are excluded.</p>
+<p>Plot codes link to Polish names in the expandable key; exports preserve codes and diacritics. Exports identify <code>Poland (PTG 2008, PTG_2008.TT 1.5.3, 16 classes)</code>. Full notes are in <code>docs/classifications/poland_ptg2008.md</code>. Shared edges follow the candidate policy below; independent package comparisons remain future work.</p>
+<p><a href="https://ssa.ptgleb.pl/wp-content/uploads/pdf/2009-60-2/2009-60-2-s-5-16.pdf">Polish Society of Soil Science — PTG 2008 publication</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/inst/triangles.rds">Pinned numerical data source</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

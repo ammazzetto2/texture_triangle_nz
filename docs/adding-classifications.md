@@ -23,6 +23,7 @@ R/
     germany_sea74.R
     germany_tgl85.R
     usda_1911.R
+    poland_ptg2008.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -43,6 +44,7 @@ tests/
     germany_sea74.csv
     germany_tgl85.csv
     usda_1911.csv
+    poland_ptg2008.csv
   brazil.R                     # Country-specific scientific checks
   canada.R
   fao_1974.R
@@ -57,6 +59,7 @@ tests/
   germany_sea74.R
   germany_tgl85.R
   usda_1911.R
+  poland_ptg2008.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -76,6 +79,7 @@ docs/
     germany_sea74.md
     germany_tgl85.md
     usda_1911.md
+    poland_ptg2008.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```
@@ -100,7 +104,7 @@ leak into another definition. Use `canada.R` as a readable starting point.
 | `data` | Polygon rows: numeric `Sand`, `Silt`, `Clay` fractions and character `Label` |
 | `colours` | One named hex colour per canonical class label |
 | `label_size` | Optional default class-label size, in mm; defaults to 4 |
-| `label_overrides` | Optional named class settings: `text`, `angle`, and/or `size` |
+| `label_overrides` | Optional named class settings: `text`, `angle`, `size`, and/or paired `sand`/`clay` label percentages |
 | `source` | Publication, edition, and figure/page description |
 | `source_url` | Primary source link shown in the app |
 | `fractions` | Laboratory particle-size definitions and relevant units |
@@ -170,3 +174,10 @@ reference years and their evidence are in [Year references](classification-years
 New definitions without supporting dates should use `Year unverified` until
 researched. In particular, Aisne's 1967 reference does not date its later
 15-class modifications. Display-label changes preserve export IDs.
+
+For a concave region whose vertex-average label falls outside its own class,
+set paired `sand` and `clay` percentages in that class's label override. The
+renderer derives silt by difference. Poland's `gp` illustrates this; its
+rendered label position is checked against its polygon. Geometry coverage
+tests require an interior sample for every class, not a vertex average inside
+every polygon (an assumption that does not hold for concave shapes).

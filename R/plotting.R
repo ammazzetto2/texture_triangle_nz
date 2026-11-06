@@ -16,6 +16,11 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE)
     if (!is.null(override$text)) labels$display_label[rows] <- override$text
     if (!is.null(override$angle)) labels$angle[rows] <- override$angle
     if (!is.null(override$size)) labels$font_size[rows] <- override$size
+    if (!is.null(override$sand)) {
+      labels$Sand[rows] <- override$sand / 100
+      labels$Clay[rows] <- override$clay / 100
+      labels$Silt[rows] <- 1 - labels$Sand[rows] - labels$Clay[rows]
+    }
   }
   points <- data.frame(Sand = samples$sand / 100, Clay = samples$clay / 100,
                        Silt = samples$silt / 100, soil = samples$soil)

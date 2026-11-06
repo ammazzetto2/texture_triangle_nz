@@ -1,0 +1,17 @@
+soil,sand,silt,clay,expected
+Heavy clay,10,15,75,ic · Ił ciężki
+Clay,25,25,50,iz · Ił zwykły
+Silty clay,5,45,50,ipy · Ił pylasty
+Sandy clay,50,5,45,ip · Ił piaszczysty
+Clay loam,30,37,33,gi · Glina ilasta
+Silty clay loam,10,57,33,gpyi · Glina pylasto-ilasta
+Sandy clay loam,60,15,25,gpi · Glina piaszczysto-ilasta
+Loam,35,45,20,gz · Glina zwykła
+Clay-rich silt,10,70,20,pyi · Pył ilasty
+Loamy silt,20,75,5,pyg · Pył gliniasty
+Light loam,60,25,15,gl · Glina lekka
+Sandy loam,70,25,5,gp · Glina piaszczysta
+Silt,5,90,5,pyz · Pył zwykły
+Loamy sand,85,7,8,pg · Piasek gliniasty
+Slightly loamy sand,93,3,4,ps · Piasek słabogliniasty
+Loose sand,97,1,2,pl · Piasek luźny

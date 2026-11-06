@@ -78,10 +78,16 @@ validate_classification_definition <- function(definition) {
   for (override in overrides) {
     if (!is.list(override) || !length(override) || is.null(names(override)) ||
         anyNA(names(override)) || anyDuplicated(names(override)) ||
-        !all(names(override) %in% c("text", "angle", "size"))) fail("Label overrides support text, angle, and size only.")
+        !all(names(override) %in% c("text", "angle", "size", "sand", "clay"))) fail("Label overrides support text, angle, size, sand, and clay only.")
     if (!is.null(override$text) && !scalar_text(override$text)) fail("Override text must be a nonempty string.")
     if (!is.null(override$angle) && !scalar_number(override$angle)) fail("Override angle must be finite.")
     if (!is.null(override$size) && (!scalar_number(override$size) || override$size <= 0)) fail("Override size must be positive.")
+    if (!is.null(override$sand) || !is.null(override$clay)) {
+      if (!scalar_number(override$sand) || !scalar_number(override$clay) ||
+          override$sand < 0 || override$clay < 0 || override$sand + override$clay > 100) {
+        fail("Label positions require sand and clay percentages in the triangle.")
+      }
+    }
   }
   source_fields <- c("source", "source_url", "fractions")
   if (any(source_fields %in% names(definition)) &&

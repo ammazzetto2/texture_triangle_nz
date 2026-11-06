@@ -163,3 +163,11 @@ and its source labels, including the documented silt-side SaCL naming issue.
 It uses a 0.005 mm clay/silt cutoff, distinct from modern USDA. See
 [USDA 1911 source notes](classifications/usda_1911.md). Historical source
 review and package comparison remain deferred.
+
+## Polish PTG 2008 classes
+
+The Polish view provides 16 PTG 2008 classes, using a pinned static polygon
+transcription and original Polish names. Its 0.05 mm sand/silt cutoff differs
+from older Polish systems. The scheme was adopted in 2008 and published in
+2009. See [Polish source and implementation notes](classifications/poland_ptg2008.md).
+Package comparison remains deferred.

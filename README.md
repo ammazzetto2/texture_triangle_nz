@@ -182,6 +182,15 @@ are retained, including a documented silt-side `SaCL` naming issue awaiting
 historical review. See [USDA 1911 source and implementation notes](docs/classifications/usda_1911.md)
 and [example samples](examples/usda_1911_samples.csv).
 
+## Polish PTG classification
+
+**Poland (PTG) · 2008 · 16 classes** implements the PTG 2008 triangle, adopted
+in 2008 and published in 2009. Plot codes link to Polish names in the key;
+exports preserve diacritics. Inputs require a **0.05 mm sand/silt cutoff**.
+This is separate from the older Polish schemes also found in soiltexture.
+See [Polish source and implementation notes](docs/classifications/poland_ptg2008.md)
+and [example samples](examples/poland_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
