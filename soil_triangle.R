@@ -25,6 +25,30 @@ server <- function(input, output, session) {
     silt = numeric(),
     clay = numeric()
   ))
+  undo_state <- reactiveVal(NULL)
+  sample_feedback <- reactiveVal("")
+
+  change_samples <- function(samples, description) {
+    undo_state(list(data = soil_data(), description = description))
+    soil_data(samples)
+    sample_feedback(description)
+  }
+
+  output$sampleFeedback <- renderText(sample_feedback())
+  output$undoControl <- renderUI({
+    previous <- undo_state()
+    if (is.null(previous)) return(NULL)
+    actionButton("undoDataBtn", paste("Undo:", previous$description),
+                 class = "btn-outline-primary undo-samples")
+  })
+
+  observeEvent(input$undoDataBtn, {
+    previous <- undo_state()
+    req(previous)
+    soil_data(previous$data)
+    undo_state(NULL)
+    sample_feedback(paste("Undone:", previous$description))
+  }, ignoreInit = TRUE)
 
   # The on-screen table and shared download use the same calculated results.
   classified_data <- reactive({
@@ -102,12 +126,14 @@ server <- function(input, output, session) {
     tags$div(class = paste("composition-total", if (valid) "total-valid" else "total-invalid"),
       tags$span("Composition total"),
       tags$strong(paste0(format(round(total, 6), trim = TRUE), "%")),
-      tags$small(if (valid) "Ready to add" else "Must total 100%")
+      tags$small(if (!valid) "Must total 100%" else if (
+        is.null(input$sampleName) || !nzchar(trimws(input$sampleName))
+      ) "Enter a sample name to continue" else "Ready to add")
     )
   })
 
   # Keep the existing dataset intact when validation fails.
-  add_samples <- function(read_samples) {
+  add_samples <- function(read_samples, manual = FALSE) {
     samples <- tryCatch(
       read_samples(),
       error = function(e) {
@@ -120,8 +146,19 @@ server <- function(input, output, session) {
       }
     )
     if (!is.null(samples)) {
-      soil_data(rbind(soil_data(), samples))
+      if (manual && any(vapply(seq_len(nrow(soil_data())), function(i) {
+        all(soil_data()[i, ] == samples[1, ])
+      }, logical(1)))) {
+        sample_feedback("This sample name and composition already exist. Use a different name for a replicate.")
+        return(invisible(FALSE))
+      }
+      description <- if (manual) paste("Added", samples$soil) else
+        paste("Imported", nrow(samples), "sample(s)")
+      change_samples(rbind(soil_data(), samples), description)
+      if (manual) updateTextInput(session, "sampleName", value = "")
+      return(invisible(TRUE))
     }
+    invisible(FALSE)
   }
 
   observeEvent(input$addManualDataBtn, {
@@ -137,7 +174,7 @@ server <- function(input, output, session) {
         silt = input$siltValue,
         clay = input$clayValue
       ))
-    })
+    }, manual = TRUE)
   })
 
   observeEvent(input$fileUpload, {
@@ -146,8 +183,8 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$clearDataBtn, {
-    soil_data(data.frame(soil = character(), sand = numeric(),
-                         silt = numeric(), clay = numeric()))
+    if (!nrow(soil_data())) return()
+    change_samples(soil_data()[FALSE, ], "Cleared all samples")
   })
 
   # Download template CSV

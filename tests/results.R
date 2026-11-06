@@ -9,6 +9,8 @@ shiny::testServer(app_env$server, {
   stopifnot(grepl("No samples yet", output$resultsSummary, fixed = TRUE),
             nrow(results_table()) == 0L)
   session$setInputs(sandValue = 50, siltValue = 25, clayValue = 25)
+  stopifnot(grepl("Enter a sample name", output$compositionTotal$html, fixed = TRUE))
+  session$setInputs(sampleName = "Sample A")
   stopifnot(grepl("Ready to add", output$compositionTotal$html, fixed = TRUE))
   session$setInputs(sandValue = 49)
   stopifnot(grepl("Must total 100%", output$compositionTotal$html, fixed = TRUE))

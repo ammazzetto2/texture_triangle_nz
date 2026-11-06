@@ -58,6 +58,8 @@ build_app_ui <- function() {
             )
           ),
           tags$div(class = "session-note",
+            tags$p(class = "sample-feedback", role = "status", textOutput("sampleFeedback", inline = TRUE)),
+            uiOutput("undoControl"),
             tags$p("Samples stay in this session. Download your results before closing."),
             actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
           ),

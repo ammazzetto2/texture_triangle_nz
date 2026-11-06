@@ -53,7 +53,12 @@ runs the dependency check when sourced directly.
    datasets; the points remain visible.
 
 Manual entries and uploaded samples share one dataset for the current session.
-Uploading appends samples. **Clear all samples** clears the dataset. Download
+Uploading appends samples. **Clear all samples** clears the dataset. **Undo**
+restores the dataset before the latest successful add, upload, or clear (one
+level, within this session). Invalid input leaves that undo available. Manual
+entry clears the sample name after success and rejects an identical name and
+composition already in the dataset; use distinct names for replicate samples.
+CSV uploads preserve all supplied rows, including duplicates. Download
 results before closing the session if you want to keep them.
 
 The interface uses a shared Bootstrap 5 theme, system fonts, and local styles

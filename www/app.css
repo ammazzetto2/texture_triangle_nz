@@ -50,6 +50,8 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .field-help { color: var(--soil-muted); font-size: 12px; line-height: 1.7; }
 .session-note { margin: 0 24px; padding-top: 20px; border-top: 1px solid var(--soil-line); }
 .session-note p { font-size: 12px; color: var(--soil-muted); line-height: 1.7; margin-bottom: 6px; }
+.session-note .sample-feedback { color: var(--soil-green); overflow-wrap: anywhere; }
+.undo-samples { width: 100%; margin-bottom: 12px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
 .btn-clear { padding: 4px 0; border: none; background: transparent; color: #985044; min-height: 32px; font-weight: 500; }
 .btn-clear:hover { color: #742d24; text-decoration: underline; }
 .help-details { margin: 16px 24px 24px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
