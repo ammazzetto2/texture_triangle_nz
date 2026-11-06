@@ -54,12 +54,19 @@ runs the dependency check when sourced directly.
 
 Manual entries and uploaded samples share one dataset for the current session.
 Uploading appends samples. **Clear all samples** clears the dataset. **Undo**
-restores the dataset before the latest successful add, upload, or clear (one
+restores the dataset before the latest successful add, upload, edit, delete, or clear (one
 level, within this session). Invalid input leaves that undo available. Manual
 entry clears the sample name after success and rejects an identical name and
 composition already in the dataset; use distinct names for replicate samples.
 CSV uploads preserve all supplied rows, including duplicates. Download
 results before closing the session if you want to keep them.
+
+In **Results**, use **Edit** beside a sample name to correct its name or
+percentages, then **Save changes**. Invalid edits stay in the editor with an
+explanation; **Cancel** leaves the sample unchanged. **Delete** removes only
+that row, even when multiple samples have the same name. Both edits and deletes
+can be undone using the sample panel. Changes update the triangle, results and
+CSV download together.
 
 The interface uses a shared Bootstrap 5 theme, system fonts, and local styles
 and branding assets, with no external font requests. The desktop workspace fits

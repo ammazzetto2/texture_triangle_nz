@@ -98,7 +98,7 @@ build_app_ui <- function() {
               tags$div(class = "results-content",
                 tags$p(class = "results-summary", `aria-live` = "polite", textOutput("resultsSummary", inline = TRUE)),
                 tags$div(class = "results-table", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
-                tags$p(class = "field-help", "A dash means no single class was assigned. Review the status and candidate classes; the CSV includes all details.")
+                tags$p(class = "field-help", "Use Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes.")
               )
             )
           )
@@ -108,7 +108,7 @@ build_app_ui <- function() {
   )
 }
 
-build_results_table <- function(results) {
+build_results_table <- function(results, revision = NULL) {
   if (!nrow(results)) {
     return(tags$div(class = "empty-state", tags$span(class = "empty-symbol", `aria-hidden` = "true", "△"),
       tags$h3("Your samples will appear here"),
@@ -127,7 +127,16 @@ build_results_table <- function(results) {
         } else {
           value <- row[[name]]
           if (is.numeric(value)) value <- format(value, trim = TRUE, scientific = FALSE, digits = 8)
-          tags$td(value)
+          actions <- if (name == "Sample" && !is.null(revision)) {
+            tags$div(class = "sample-row-actions", lapply(c("Edit", "Delete"), function(action) {
+              tags$button(type = "button", class = paste("btn btn-sm", if (action == "Edit") "btn-outline-primary" else "btn-outline-danger"),
+                `aria-label` = paste(action, "sample", i, value),
+                `data-row` = i, `data-revision` = revision,
+                onclick = sprintf("Shiny.setInputValue('%sSample', {row: Number(this.dataset.row), revision: Number(this.dataset.revision)}, {priority: 'event'});", tolower(action)),
+                action)
+            }))
+          }
+          tags$td(value, actions)
         }
       })
       tags$tr(cells)

@@ -27,10 +27,14 @@ server <- function(input, output, session) {
   ))
   undo_state <- reactiveVal(NULL)
   sample_feedback <- reactiveVal("")
+  data_revision <- reactiveVal(0L)
+  edit_target <- reactiveVal(NULL)
+  edit_error <- reactiveVal("")
 
   change_samples <- function(samples, description) {
     undo_state(list(data = soil_data(), description = description))
     soil_data(samples)
+    data_revision(data_revision() + 1L)
     sample_feedback(description)
   }
 
@@ -46,6 +50,7 @@ server <- function(input, output, session) {
     previous <- undo_state()
     req(previous)
     soil_data(previous$data)
+    data_revision(data_revision() + 1L)
     undo_state(NULL)
     sample_feedback(paste("Undone:", previous$description))
   }, ignoreInit = TRUE)
@@ -103,7 +108,74 @@ server <- function(input, output, session) {
   })
 
   output$resultsTable <- renderUI({
-    build_results_table(results_table())
+    build_results_table(results_table(), revision = data_revision())
+  })
+
+  # Reject clicks from an older table so a shifted row can never be changed.
+  current_row <- function(target) {
+    if (!is.list(target) || length(target$row) != 1L ||
+        length(target$revision) != 1L || !is.numeric(target$row) ||
+        !is.numeric(target$revision) || !is.finite(target$row) ||
+        !is.finite(target$revision) || target$revision != data_revision() ||
+        target$row != floor(target$row) || target$row < 1L ||
+        target$row > nrow(soil_data())) return(NULL)
+    as.integer(target$row)
+  }
+
+  output$editSampleError <- renderText(edit_error())
+  observeEvent(input$editSample, {
+    row <- current_row(input$editSample)
+    req(row)
+    sample <- soil_data()[row, ]
+    edit_target(input$editSample)
+    edit_error("")
+    showModal(modalDialog(
+      title = "Edit sample", easyClose = FALSE,
+      textInput("editSampleName", "Sample name", value = sample$soil),
+      tags$div(class = "composition-inputs",
+        numericInput("editSand", "Sand (%)", sample$sand, min = 0, max = 100),
+        numericInput("editSilt", "Silt (%)", sample$silt, min = 0, max = 100),
+        numericInput("editClay", "Clay (%)", sample$clay, min = 0, max = 100)),
+      tags$p(class = "field-help", "Percentages must total 100%. Changes update the triangle and results."),
+      tags$p(class = "edit-sample-error", role = "alert", textOutput("editSampleError", inline = TRUE)),
+      footer = tagList(modalButton("Cancel"),
+                       actionButton("saveSampleBtn", "Save changes", class = "btn-primary"))
+    ))
+  })
+
+  observeEvent(input$saveSampleBtn, {
+    req(edit_target())
+    row <- current_row(edit_target())
+    if (is.null(row)) {
+      edit_error("The dataset changed while this editor was open. Cancel and reopen the sample from Results.")
+      return()
+    }
+    sample <- tryCatch({
+      values <- list(input$editSampleName, input$editSand, input$editSilt, input$editClay)
+      if (any(lengths(values) != 1L)) stop("Enter a sample name and all three percentages.", call. = FALSE)
+      validate_soil_data(data.frame(soil = input$editSampleName, sand = input$editSand,
+                                   silt = input$editSilt, clay = input$editClay))
+    }, error = function(e) { edit_error(conditionMessage(e)); NULL })
+    if (is.null(sample)) return()
+    samples <- soil_data()
+    if (!all(samples[row, ] == sample[1, ])) {
+      others <- setdiff(seq_len(nrow(samples)), row)
+      if (any(vapply(others, function(i) all(samples[i, ] == sample[1, ]), logical(1)))) {
+        edit_error("This sample name and composition already exist. Use a different name for a replicate.")
+        return()
+      }
+      samples[row, ] <- sample[1, ]
+      change_samples(samples, paste("Updated", sample$soil))
+    }
+    edit_target(NULL)
+    removeModal()
+  }, ignoreInit = TRUE)
+
+  observeEvent(input$deleteSample, {
+    row <- current_row(input$deleteSample)
+    req(row)
+    samples <- soil_data()
+    change_samples(samples[-row, , drop = FALSE], paste("Removed", samples$soil[row]))
   })
 
   output$workspaceStats <- renderUI({

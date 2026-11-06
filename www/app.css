@@ -73,6 +73,9 @@ details p { margin-top: 12px; }
 .sample-results td:first-child { font-weight: 600; min-width: 110px; max-width: 220px; overflow-wrap: anywhere; }
 .sample-results td:last-child { min-width: 130px; }
 .sample-results tbody tr:hover { background: #fafbf8; }
+.sample-row-actions { display: flex; gap: 6px; margin-top: 8px; }
+.sample-row-actions .btn { padding: 5px 8px; min-height: 36px; font-size: 12px; }
+.edit-sample-error { color: #9f4035; font-size: 13px; }
 .status-badge { display: inline-flex; border-radius: 6px; padding: 4px 7px; font-size: 10px; font-weight: 650; white-space: nowrap; }
 .status-classified { color: #245744; background: #e7f0e7; }
 .status-boundary { color: #795515; background: #faf0d7; }
