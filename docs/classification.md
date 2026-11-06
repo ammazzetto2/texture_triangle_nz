@@ -2,7 +2,8 @@
 
 ## Current software policy
 
-The app uses the existing polygon coordinates in `R/classification_data.R`.
+The app uses the original polygon coordinates in `R/classification_data.R`
+and the source-derived Brazilian definitions in `R/brazil_data.R`.
 The following is a transparent software policy, not a claim that the exact
 boundary conventions of all three scientific systems have been verified.
 
@@ -67,6 +68,11 @@ provenance for the repository's original coordinate arrays.
   establish the provenance or exact coordinates of this repository's polygons.
 
 ## Remaining scientific work
+
+The two Brazilian views added on 6 November 2026 have separate source and
+validation notes in [Brazilian classifications](brazil.md). Both use SiBCS
+2025 and retain the shared-boundary candidate policy described above. The
+remaining provenance work below concerns the original three systems.
 
 1. Identify the original diagram, edition, and particle-size definitions for
    each system, including the reference workbooks in `old_files/excel/`.

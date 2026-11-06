@@ -3,6 +3,8 @@ source("R/dependencies.R")
 ensure_project_dependencies()
 source("R/validation.R")
 source("R/classification_data.R")
+source("R/brazil_data.R")
+source("R/classification_systems.R")
 source("R/classification.R")
 
 systems <- c("New Zealand", "USDA", "Australian")

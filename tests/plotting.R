@@ -5,6 +5,8 @@ ensure_project_dependencies()
 # device in memory instead of creating an Rplots.pdf in the repository.
 options(device = function(...) grDevices::pdf(file = NULL))
 source("R/classification_data.R")
+source("R/brazil_data.R")
+source("R/classification_systems.R")
 source("R/plotting.R")
 
 text_labels <- function(grob) {
@@ -15,7 +17,7 @@ text_labels <- function(grob) {
 
 samples <- read.csv("examples/soil_samples.csv")
 samples$soil <- c("Sample A", "Boundary sample", "Sand sample")
-for (system in c("New Zealand", "USDA", "Australian")) {
+for (system in names(classification_systems)) {
   for (points in list(samples, samples[FALSE, ])) {
     diagnostics <- character()
     withCallingHandlers({
@@ -23,7 +25,7 @@ for (system in c("New Zealand", "USDA", "Australian")) {
       built <- ggtern::ggplot_build(plot)
       grob <- ggtern::ggplotGrob(plot)
       rendered_labels <- text_labels(grob)
-      clean <- function(x) gsub("[[:space:]]+", " ", x)
+      clean <- function(x) gsub("-[[:space:]]+", "-", gsub("[[:space:]]+", " ", x))
       expected_classes <- unique(plot$data$Label)
       stopifnot(all(clean(expected_classes) %in% clean(rendered_labels)),
                 all(points$soil %in% rendered_labels),
@@ -55,7 +57,7 @@ app_env <- new.env()
 source("soil_triangle.R", local = app_env)
 shiny::testServer(app_env$server, {
   soil_data(samples)
-  for (system in c("New Zealand", "USDA", "Australian")) {
+  for (system in names(classification_systems)) {
     session$setInputs(dataset = system)
     plot_output <- output$ternaryPlot
     stopifnot(!is.null(plot_output))

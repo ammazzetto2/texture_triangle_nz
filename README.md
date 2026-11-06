@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-New Zealand, USDA, and Australian classification polygons.
+New Zealand, USDA, Australian, and Brazilian classification polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
 triangle, and download the samples with their classifications.
@@ -63,6 +63,16 @@ panel. On smaller screens the layout stacks and normal page scrolling keeps
 controls readable. **About & methodology** in the left panel links to local notes
 covering classification behavior and the known Australian polygon overlap.
 
+## Brazilian classifications
+
+Brazil has two options: **13 classes** and **5 groups**, both based on SiBCS
+2025. Labels are in Portuguese and exports identify the edition and view.
+The selected Brazilian source and particle-size definitions appear under
+**About & methodology**. Use fine-earth percentages measured with the stated
+fractions; changing the selector does not convert laboratory measurements.
+See [Brazilian source and validation notes](docs/brazil.md) and
+[example Brazilian samples](examples/brazil_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):
@@ -121,10 +131,13 @@ limitations, and remaining verification work are documented in
 | `R/ui.R` | Page structure, Bootstrap theme, and accessible results table |
 | `R/classification_data.R` | Polygon coordinates and class labels |
 | `R/classification.R` | Shared classification and export preparation |
+| `R/classification_systems.R` | Available systems, display names, orientation, and source metadata |
+| `R/brazil_data.R` | SiBCS 2025 polygons for the 13-class and five-group views |
 | `R/plotting.R` | Ternary plot construction, labels, and styling |
 | `R/validation.R` | Shared manual-entry and CSV validation |
 | `tests/validation.R` | Validation and Shiny integration checks |
 | `tests/classification.R` | Classification, geometry, and download checks |
+| `tests/brazil.R` | Brazilian analytical references, geometry, metadata, and exports |
 | `tests/results.R` | Results table, summary, template, and export consistency checks |
 | `tests/plotting.R` | Rendered text, graphics, and Shiny plot checks |
 | `www/` | Stylesheet, methodology page, and branding assets served by Shiny |
@@ -145,6 +158,7 @@ Rscript --vanilla tests/dependencies.R
 Rscript --vanilla tests/classification.R
 Rscript --vanilla tests/results.R
 Rscript --vanilla tests/plotting.R
+Rscript --vanilla tests/brazil.R
 ```
 
 The script uses base R assertions and Shiny's `testServer()`; no separate test

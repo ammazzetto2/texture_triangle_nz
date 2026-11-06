@@ -22,7 +22,7 @@ build_app_ui <- function() {
       tags$section(class = "workspace-bar", `aria-label` = "Workspace controls",
         tags$div(class = "classification-control",
           selectInput("dataset", "Classification system",
-                      choices = c("New Zealand", "USDA", "Australian"),
+                      choices = classification_choices(),
                       selected = "New Zealand", selectize = FALSE)
         ),
         tags$div(class = "workspace-stats", `aria-live` = "polite", uiOutput("workspaceStats", inline = TRUE)),
@@ -70,7 +70,8 @@ build_app_ui <- function() {
             tags$details(class = "about-details",
               tags$summary("About & methodology"),
               tags$div(class = "about-content",
-                tags$p("This research prototype supports New Zealand, USDA, and Australian texture polygons. Scientific source verification is ongoing, and a known overlap remains in the Australian data."),
+                uiOutput("classificationReference"),
+                tags$p("A known overlap remains in the Australian data. Source verification of the original NZ, USDA, and Australian polygons is ongoing."),
                 tags$p("Boundary and overlap reporting is a software policy. It does not resolve the underlying scientific conventions."),
                 tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
               )
