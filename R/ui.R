@@ -104,6 +104,9 @@ build_app_ui <- function() {
             tabPanel("Results", value = "results",
               tags$div(class = "results-content",
                 tags$p(class = "results-summary", `aria-live` = "polite", textOutput("resultsSummary", inline = TRUE)),
+                tags$div(class = "results-controls",
+                  checkboxInput("reviewOnly", "Only samples needing review", value = FALSE),
+                  tags$p(class = "field-help", `aria-live` = "polite", textOutput("resultsFilterSummary", inline = TRUE))),
                 tags$div(class = "results-table", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
                 tags$p(class = "field-help", "Use Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes.")
               )
@@ -115,7 +118,8 @@ build_app_ui <- function() {
   )
 }
 
-build_results_table <- function(results, revision = NULL) {
+build_results_table <- function(results, revision = NULL, row_indices = seq_len(nrow(results))) {
+  stopifnot(length(row_indices) == nrow(results))
   if (!nrow(results)) {
     return(tags$div(class = "empty-state", tags$span(class = "empty-symbol", `aria-hidden` = "true", "△"),
       tags$h3("Your samples will appear here"),
@@ -130,15 +134,25 @@ build_results_table <- function(results, revision = NULL) {
       status <- row$Status
       cells <- lapply(names(row), function(name) {
         if (name == "Status") {
-          tags$td(tags$span(class = paste("status-badge", paste0("status-", status)), labels[[status]]))
+          assigned <- row$Class != "—"
+          label <- if (status == "boundary" && assigned) "Boundary (assigned)" else labels[[status]]
+          explanation <- switch(status,
+            boundary = if (assigned) "This point lies on an edge but matches only one class. A class is assigned, so it is not included in the review count." else
+              "This point matches more than one region at a boundary. Check the candidate classes and the selected system's boundary conventions. No single class is assigned.",
+            overlap = "This point is inside overlapping class regions. Check the candidate classes and methodology notes; the definitions need review. No single class is assigned.",
+            unclassified = "No class region matches this point. Check the measurements, particle-size definitions and selected system, then consult the methodology notes.",
+            NULL)
+          tags$td(tags$span(class = paste("status-badge", paste0("status-", status)), label),
+            if (!is.null(explanation)) tags$details(class = "result-explanation",
+              tags$summary("What this means"), tags$p(explanation)))
         } else {
           value <- row[[name]]
           if (is.numeric(value)) value <- format(value, trim = TRUE, scientific = FALSE, digits = 8)
           actions <- if (name == "Sample" && !is.null(revision)) {
             tags$div(class = "sample-row-actions", lapply(c("Edit", "Delete"), function(action) {
               tags$button(type = "button", class = paste("btn btn-sm", if (action == "Edit") "btn-outline-primary" else "btn-outline-danger"),
-                `aria-label` = paste(action, "sample", i, value),
-                `data-row` = i, `data-revision` = revision,
+                `aria-label` = paste(action, "sample", row_indices[i], value),
+                `data-row` = row_indices[i], `data-revision` = revision,
                 onclick = sprintf("Shiny.setInputValue('%sSample', {row: Number(this.dataset.row), revision: Number(this.dataset.revision)}, {priority: 'event'});", tolower(action)),
                 action)
             }))

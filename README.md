@@ -52,6 +52,12 @@ runs the dependency check when sourced directly.
    badges, and candidate classes. The top bar counts samples that need review
    because they have no single assigned class. On narrow screens, scroll the
    table horizontally to see all columns.
+   Click **need review** to open Results with **Only samples needing review**
+   enabled. Turn off the filter to see all rows. **What this means** explains
+   boundary, overlap and unclassified statuses. **Boundary (assigned)** means
+   an edge point has one matching class and is excluded from the review count.
+   Filtering does not change the triangle or CSV export, which still include
+   all samples. Edit, Delete and Undo remain available for filtered rows.
 5. Select **Download CSV** to export all current samples and classification
    details. **Sample labels** on the Triangle tab can be turned off for crowded
    datasets; the points remain visible.

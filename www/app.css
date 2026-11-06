@@ -27,6 +27,13 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .workspace-stats { flex: 1; }
 .stat-chip { display: inline-block; margin-right: 18px; color: var(--soil-muted); font-size: 13px; }
 .stat-chip strong { color: var(--soil-ink); font-size: 16px; margin-right: 3px; }
+.review-count.btn { background: transparent; border: 1px solid #bdcdbd; color: var(--soil-green); padding: 6px 9px; white-space: nowrap; }
+.review-count.btn:hover { background: #e0e8dc; border-color: var(--soil-green); }
+.results-controls { flex-shrink: 0; margin-bottom: 14px; }
+.results-controls .shiny-input-container { width: 100%; margin-bottom: 6px; }
+.results-controls .field-help { margin: 0; }
+.result-explanation { margin-top: 8px; min-width: 130px; font-size: 11px; font-weight: 400; }
+.result-explanation p { min-width: 180px; max-width: 280px; line-height: 1.6; }
 .btn { font-size: 13px; font-weight: 600; border-radius: 8px; min-height: 40px; padding: 9px 15px; }
 .btn-primary { background: var(--soil-green); border-color: var(--soil-green); }
 .btn-primary:hover { background: #193e30; border-color: #193e30; }

@@ -30,6 +30,16 @@ server <- function(input, output, session) {
   data_revision <- reactiveVal(0L)
   edit_target <- reactiveVal(NULL)
   edit_error <- reactiveVal("")
+  review_only <- reactiveVal(FALSE)
+
+  observeEvent(input$reviewOnly, {
+    review_only(isTRUE(input$reviewOnly))
+  })
+  observeEvent(input$reviewSamplesBtn, {
+    review_only(TRUE)
+    updateCheckboxInput(session, "reviewOnly", value = TRUE)
+    updateTabsetPanel(session, "workspaceView", selected = "results")
+  }, ignoreInit = TRUE)
 
   change_samples <- function(samples, description) {
     undo_state(list(data = soil_data(), description = description))
@@ -107,8 +117,23 @@ server <- function(input, output, session) {
     )
   })
 
+  visible_result_rows <- reactive({
+    results <- classified_data()
+    if (review_only()) which(is.na(results$classification)) else seq_len(nrow(results))
+  })
+  output$resultsFilterSummary <- renderText({
+    paste0("Showing ", length(visible_result_rows()), " of ", nrow(soil_data()),
+           " samples. CSV downloads include all samples.")
+  })
   output$resultsTable <- renderUI({
-    build_results_table(results_table(), revision = data_revision())
+    rows <- visible_result_rows()
+    if (review_only() && nrow(soil_data()) && !length(rows)) {
+      return(tags$div(class = "empty-state",
+        tags$h3("No samples need review"),
+        tags$p("Every sample has a single assigned class in this system. Turn off the filter to view all samples.")))
+    }
+    build_results_table(results_table()[rows, , drop = FALSE],
+                        revision = data_revision(), row_indices = rows)
   })
 
   # Reject clicks from an older table so a shifted row can never be changed.
@@ -183,8 +208,10 @@ server <- function(input, output, session) {
     tagList(
       tags$span(class = "stat-chip", tags$strong(nrow(results)),
                 if (nrow(results) == 1L) " sample" else " samples"),
-      tags$span(class = "stat-chip", tags$strong(sum(is.na(results$classification))),
-                " need review")
+      actionButton("reviewSamplesBtn",
+        tagList(tags$strong(sum(is.na(results$classification))), " need review"),
+        class = "stat-chip review-count",
+        `aria-label` = paste("Review", sum(is.na(results$classification)), "samples without a single class"))
     )
   })
 
