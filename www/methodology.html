@@ -7,7 +7,7 @@
 <body>
 <p><a href="/">← Back to Soil Texture</a></p>
 <h1>Methodology &amp; limitations</h1>
-<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA, German BK94, Belgian, and European HYPRES texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
+<p>This research prototype plots sand, silt, and clay percentages against New Zealand, USDA, Australian, Brazilian, Canadian, FAO–UNESCO, UK, French GEPPA and Aisne/Jamagne, German BK94, Belgian, and European HYPRES texture polygons. The original three systems retain their project coordinates; their source verification is ongoing.</p>
 <h2>Brazil — SiBCS 2025</h2>
 <p>Two views implement the 6th edition of the Sistema Brasileiro de Classificação de Solos: 13 detailed classes (Figure 1.1, printed page 55) and five texture groups (Figure 1.2, printed pages 55–56). Class names are in Portuguese; exported system names identify the edition and view.</p>
 <p>Use percentages of the fine-earth fraction: sand 0.05–2 mm, silt 0.002–0.05 mm, and clay &lt;0.002 mm. The manual uses g/kg; divide those values by ten for this app. Changing the selector does not convert measurements from another particle-size convention.</p>
@@ -47,6 +47,11 @@
 <p>Use fine-earth percentages with <strong>sand 0.05–2 mm, silt 0.002–0.05 mm and clay &lt;0.002 mm</strong>. Switching systems does not convert laboratory fractions. This option supplies mineral texture classes only; it does not infer organic horizons, topsoil/subsoil categories or hydraulic properties.</p>
 <p>Exports identify <code>Europe (HYPRES.TT 1.5.3, 5 classes)</code>; the version identifies the numerical transcription. Source and scope notes are in <code>docs/classifications/europe_hypres.md</code>. Shared edges follow the candidate policy below; package comparison remains future work.</p>
 <p><a href="https://esdac.jrc.ec.europa.eu/ESDB_Archive/ESDBv2/popup/hy_meta.htm">European Commission ESDAC — HYPRES metadata</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L374">Pinned numerical coordinate source</a></p>
+<h2>France — Aisne/Jamagne 15 classes</h2>
+<p>This is the modified 15-class Aisne/Jamagne triangle, documented by INRAE's Figure 2 and numerically transcribed from Moeys and contributors' soiltexture 1.5.3, FR.AISNE.TT. It is separate from GEPPA and does not claim to reproduce the original 1967 edition unchanged.</p>
+<p>Use fine-earth percentages with <strong>sand 0.05–2 mm, silt 0.002–0.05 mm and clay &lt;0.002 mm</strong>. The plot shows standard codes; expand the class label key for French names. Results and exports retain both. Switching views does not convert measurements.</p>
+<p>Exports identify <code>France (Aisne-Jamagne, FR.AISNE.TT 1.5.3, 15 classes)</code>. Source and scope notes are in <code>docs/classifications/france_aisne.md</code>. Shared edges follow the candidate policy below; package comparison remains future work.</p>
+<p><a href="https://mots-agronomie.inrae.fr/index.php?title=Granulom%C3%A9trie_et_diagrammes_de_texture">INRAE — Aisne/Jamagne diagram, Figure 2</a> · <a href="https://github.com/cran/soiltexture/blob/db3bfb683b420989422690f3e18188b923740e40/R/soiltexture.R#L558">Pinned numerical coordinate source</a></p>
 <h2>How classes are reported</h2>
 <table><thead><tr><th>Result</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>Classified</td><td>A single polygon interior matches.</td></tr>

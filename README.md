@@ -133,6 +133,14 @@ topsoil/subsoil distinctions and hydraulic-property estimates are outside this
 view. See [HYPRES source and implementation notes](docs/classifications/europe_hypres.md)
 and [example samples](examples/europe_hypres_samples.csv).
 
+## French Aisne/Jamagne classification
+
+**France · Aisne/Jamagne 15 classes** implements the modified detailed Aisne
+triangle as a separate option from GEPPA. Plot codes link to full French
+names in the expandable key; exports retain both. Inputs use a **0.05 mm
+sand/silt cutoff**. See [Aisne/Jamagne source and implementation notes](docs/classifications/france_aisne.md)
+and [example samples](examples/france_aisne_samples.csv).
+
 ## CSV format
 
 Use exactly these column names (the order may vary):

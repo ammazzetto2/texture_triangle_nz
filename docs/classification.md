@@ -126,3 +126,10 @@ The five-class HYPRES mineral texture view uses a pinned numerical
 transcription and a 0.05 mm sand/silt cutoff. It is separate from the 1974
 FAO–UNESCO three-group triangle. See [HYPRES source and implementation
 notes](classifications/europe_hypres.md). Package comparison remains deferred.
+
+## French Aisne/Jamagne classes
+
+The modified 15-class Aisne/Jamagne view is separate from GEPPA. Its export
+ID identifies the pinned numerical transcription; it does not claim to be
+the unmodified 1967 triangle. See [Aisne/Jamagne source and implementation
+notes](classifications/france_aisne.md). Package comparison remains deferred.
