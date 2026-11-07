@@ -88,11 +88,12 @@ try {
   await preview;
   const classified = importer.waitFor(msg => msg.values?.workspaceStats?.html?.includes("<strong>25000</strong>"));
   const start = performance.now();
+  const importDuration = classified.then(() => performance.now() - start);
   importer.update({"confirmImportBtn:shiny.action": 1});
-  await new Promise(resolve => setTimeout(resolve, 100));
+  await new Promise(resolve => setTimeout(resolve, 10));
   const sentAt = performance.now() - start;
   const [busy, duration] = await Promise.all([
-    addSample(observer, 2), classified.then(() => performance.now() - start)
+    addSample(observer, 2), importDuration
   ]);
   assert(sentAt < duration, "The second interaction missed the import window");
   console.log(`Session B add, idle: ${seconds(idle)} s\nSession B add, during import: ${seconds(busy)} s`);
