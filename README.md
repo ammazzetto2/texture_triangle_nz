@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-19 current and historic classification views, including New Zealand, USDA,
+20 current and historic classification views, including New Zealand, USDA,
 Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
@@ -127,14 +127,22 @@ covering classification behavior and the known Australian polygon overlap.
 
 ## Brazilian classifications
 
-Brazil has two options: **13 classes** (2013) and **5 groups**
-(1996). Their current geometry implementation is sourced to SiBCS
-2025. Labels are in Portuguese and exports identify the edition and view.
+Brazil has three options: **13 classes** (2013 reference), **8 classes**
+(SiBCS 2013 texture subgroups), and **5 groups** (1996 reference).
+The 13-class and five-group geometry implementations are sourced to SiBCS
+2025; the eight-class view follows `SiBCS13.TT` in soiltexture 1.5.3.
+Labels are in Portuguese and exports identify the edition and view.
 The selected Brazilian source and particle-size definitions appear under
 **About & methodology**. Use fine-earth percentages measured with the stated
 fractions; changing the selector does not convert laboratory measurements.
 See [Brazilian source and validation notes](docs/classifications/brazil.md) and
 [example Brazilian samples](examples/brazil_samples.csv).
+
+**Brazil (SiBCS) · 2013 · 8 classes** is the separate texture-subgroup
+triangle, with source codes linked to full Portuguese names in the class key.
+The `13` in `SiBCS13.TT` means 2013, not 13 classes. See
+[eight-class source and validation notes](docs/classifications/brazil_sibcs2013_8.md)
+and [example samples](examples/brazil_sibcs2013_8_samples.csv).
 
 ## Canadian classification
 

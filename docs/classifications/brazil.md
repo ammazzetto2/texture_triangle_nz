@@ -1,5 +1,11 @@
 # Brazilian texture classifications
 
+Three Brazilian views are available. This page documents the detailed
+13-class view and five broad groups, both implemented from SiBCS 2025.
+The separate **Brazil (SiBCS) · 2013 · 8 classes** option implements the
+2013 texture subgroups using soiltexture's `SiBCS13.TT` transcription; see
+[eight-class source and validation notes](brazil_sibcs2013_8.md).
+
 ## Selector reference years
 
 The 13-class selector uses **2013** (SiBCS), and the five-group

@@ -10,6 +10,7 @@ R/
     australia.R
     brazil_13.R
     brazil_groups.R
+    brazil_sibcs2013_8.R
     canada.R
     fao_1974.R
     uk_tin037.R
@@ -31,6 +32,7 @@ R/
 tests/
   fixtures/
     brazil.csv                 # Independent reference compositions and classes
+    brazil_sibcs2013_8.csv
     canada.csv
     fao_1974.csv
     uk_tin037.csv
@@ -46,6 +48,7 @@ tests/
     usda_1911.csv
     poland_ptg2008.csv
   brazil.R                     # Country-specific scientific checks
+  brazil_sibcs2013_8.R
   canada.R
   fao_1974.R
   uk_tin037.R
@@ -66,6 +69,7 @@ tests/
 docs/
   classifications/
     brazil.md
+    brazil_sibcs2013_8.md
     canada.md
     fao_1974.md
     uk_tin037.md

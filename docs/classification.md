@@ -104,6 +104,13 @@ The remaining provenance work below concerns the original three systems.
 4. Add independent reference samples and exhaustive geometry checks before
    describing the data as scientifically verified.
 
+## Brazilian SiBCS 2013 texture subgroups
+
+The eight-class view follows the pinned `SiBCS13.TT` numerical transcription
+in soiltexture 1.5.3 and the contributors' published reference examples.
+It is separate from the 13-class detailed view and five broad groups.
+See [SiBCS 2013 source and validation notes](classifications/brazil_sibcs2013_8.md).
+
 ## FAO–UNESCO map groups
 
 The historical three-group view is sourced to the 1974 Soil Map of the World
