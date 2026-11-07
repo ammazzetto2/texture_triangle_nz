@@ -11,6 +11,7 @@ for (group in choices) {
   stopifnot(identical(order(tolower(names(group)), method = "radix"), seq_along(group)))
 }
 stopifnot(setequal(unname(choices$Historic), c(
+  "Netherlands (NEN 5104 1989, 14 classes)",
   "FAO-UNESCO (1974, 3 groups)",
   "Germany (SEA74 1974, DE.SEA74.TT 1.5.3, 13 classes)",
   "Germany (TGL85 1985, DE.TGL85.TT 1.5.3, 14 classes)",

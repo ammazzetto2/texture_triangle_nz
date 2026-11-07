@@ -204,3 +204,11 @@ transcription and original Polish names. Its 0.05 mm sand/silt cutoff differs
 from older Polish systems. The scheme was adopted in 2008 and published in
 2009. See [Polish source and implementation notes](classifications/poland_ptg2008.md).
 Package comparison remains deferred.
+
+## Dutch NEN 5104:1989 classes
+
+The 14-class mineral triangle follows the official Rijkswaterstaat reproduction,
+corroborated by RIVM. Mineral fine-earth mass percentages use a 0.063 mm
+sand/silt cutoff. This withdrawn standard appears under Historic. Organic
+matter and gravel require additional inputs. Shared boundaries retain the
+app's candidate policy. See [Dutch source and validation notes](classifications/netherlands_nen5104.md).

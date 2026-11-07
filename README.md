@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-21 current and historic classification views, including New Zealand, USDA,
+22 current and historic classification views, including New Zealand, USDA,
 Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
@@ -271,6 +271,17 @@ Plot codes link to German names in the class key; exports retain both. This
 See [Swiss source and validation notes](docs/classifications/switzerland_fal1997.md)
 and [example samples](examples/switzerland_samples.csv).
 
+## Dutch NEN 5104 classification
+
+**Netherlands (NEN 5104) · 1989 · 14 classes** implements the mineral
+lutum–silt–zand triangle reproduced by Rijkswaterstaat and RIVM. It uses a
+**0.063 mm sand/silt cutoff** and appears under **Historic**, because NEN
+withdrew the standard in 2020. Organic-matter and gravel classifications
+require additional measurements and are outside this view. Plot codes link
+to Dutch names; exports retain both.
+See [Dutch source and validation notes](docs/classifications/netherlands_nen5104.md)
+and [example samples](examples/netherlands_samples.csv).
+
 ## CSV format
 
 The template uses these column names (the order may vary):
@@ -469,7 +480,7 @@ and outstanding manual coverage.
 
 The classification selector separates **Current** and **Historic** views and
 sorts each group alphabetically. The Historic group contains FAO–UNESCO 1974,
-SEA74, TGL85 and USDA 1911. Export IDs and the New Zealand default are unchanged.
+SEA74, TGL85, USDA 1911 and Netherlands NEN 5104:1989. Export IDs and the New Zealand default are unchanged.
 
 Selector labels consistently show **main name (scheme) · year · class/group
 count**. `Year unverified` marks definitions without an established edition
