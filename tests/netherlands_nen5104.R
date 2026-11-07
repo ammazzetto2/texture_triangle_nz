@@ -73,7 +73,7 @@ stopifnot(identical(classify_points(data.frame(sand = c(100, 0, 0), clay = c(0, 
 key <- classification_label_key(system)
 definition <- classification_definition(system)
 stopifnot(nrow(key) == 14L, !anyDuplicated(key$Label), setequal(key$Class, cases$expected),
-          definition$display == "Netherlands (NEN 5104) · 1989 · 14 classes",
+          definition$display == "Netherlands (NEN 5104, mineral only) · 1989 · 14 classes",
           definition$category == "Historic", system %in% classification_choices()$Historic,
           grepl("withdrawn", definition$source, fixed = TRUE),
           grepl("0.063", definition$fractions, fixed = TRUE))
@@ -98,4 +98,4 @@ shiny::testServer(app_env$server, {
   session$flushReact()
   stopifnot(nrow(read.csv(output$downloadDataBtn)) == 0L)
 })
-cat("Netherlands NEN 5104: 14 classes, 10,000 analytical checks, 22 internal segments, Historic selector, key and CSV integration PASS\n")
+cat("Netherlands NEN 5104: 14 classes, 10,000 analytical checks, 22 internal segments, Historic mineral-only selector, key and CSV integration PASS\n")

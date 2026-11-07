@@ -273,10 +273,11 @@ and [example samples](examples/switzerland_samples.csv).
 
 ## Dutch NEN 5104 classification
 
-**Netherlands (NEN 5104) · 1989 · 14 classes** implements the mineral
+**Netherlands (NEN 5104, mineral only) · 1989 · 14 classes** implements the mineral
 lutum–silt–zand triangle reproduced by Rijkswaterstaat and RIVM. It uses a
-**0.063 mm sand/silt cutoff** and appears under **Historic**, because NEN
-withdrew the standard in 2020. Organic-matter and gravel classifications
+**0.063 mm sand/silt cutoff** and appears under **Historic**.
+**NEN withdrew this standard in 2020; this
+view does not implement the current ISO 14688/Dutch supplements.** Organic-matter and gravel classifications
 require additional measurements and are outside this view. Plot codes link
 to Dutch names; exports retain both.
 See [Dutch source and validation notes](docs/classifications/netherlands_nen5104.md)

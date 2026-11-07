@@ -14,7 +14,9 @@ NEN 5104:1989 and withdrawal on 20 August 2020. The full paid standard was
 not inspected. This implementation therefore documents its public source
 reproductions and does not assert current-standard conformity.
 
-Selector: **Netherlands (NEN 5104) · 1989 · 14 classes**, under **Historic**.
+Selector: **Netherlands (NEN 5104, mineral only) · 1989 · 14 classes**, under **Historic**.
+**NEN 5104 is withdrawn; this mineral-only view does not implement current
+ISO 14688/Dutch supplements.**
 Export ID: `Netherlands (NEN 5104 1989, 14 classes)`.
 No package polygon dataset is copied or required; `NL.TT` is not an option
 in the reviewed soiltexture 1.5.3 reference.

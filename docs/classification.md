@@ -209,6 +209,8 @@ Package comparison remains deferred.
 
 The 14-class mineral triangle follows the official Rijkswaterstaat reproduction,
 corroborated by RIVM. Mineral fine-earth mass percentages use a 0.063 mm
-sand/silt cutoff. This withdrawn standard appears under Historic. Organic
+sand/silt cutoff. The mineral-only view appears under Historic; NEN 5104 is withdrawn
+and this does not implement current
+ISO 14688/Dutch supplements. Organic
 matter and gravel require additional inputs. Shared boundaries retain the
 app's candidate policy. See [Dutch source and validation notes](classifications/netherlands_nen5104.md).

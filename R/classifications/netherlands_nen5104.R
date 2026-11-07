@@ -22,7 +22,7 @@ polygons <- list(
 )
 list(
   id = "Netherlands (NEN 5104 1989, 14 classes)",
-  display = "Netherlands (NEN 5104) · 1989 · 14 classes",
+  display = "Netherlands (NEN 5104, mineral only) · 1989 · 14 classes",
   order = 210,
   category = "Historic",
   clockwise = TRUE,
@@ -40,7 +40,7 @@ list(
   label_overrides = stats::setNames(lapply(names(polygons), function(label) {
     list(text = strsplit(label, " · ", fixed = TRUE)[[1]][1])
   }), names(polygons)),
-  source = "NEN 5104:1989 mineral lutum-silt-zand triangle, 14 classes, reproduced by Rijkswaterstaat (Indelen in grondsoorten, Figure 2, 2021) and RIVM report 711701049/2008 (Figure 5-1, Table 5-13). Historical standard, withdrawn 20 August 2020. Only the mineral triangle is implemented; no organic-matter, gravel or engineering-suitability classification is inferred.",
+  source = "NEN 5104:1989 mineral lutum-silt-zand triangle, 14 classes, reproduced by Rijkswaterstaat (Indelen in grondsoorten, Figure 2, 2021) and RIVM report 711701049/2008 (Figure 5-1, Table 5-13). Historical mineral-only reference. NEN 5104:1989 was withdrawn 20 August 2020; this view does not implement the current ISO 14688/Dutch supplements. Only the mineral triangle is implemented; no organic-matter, gravel or engineering-suitability classification is inferred.",
   source_url = "https://loket.rijkswaterstaat.nl/procedures/publicatie/indelen-in-grondsoorten",
   fractions = "Mass percentages of the mineral fraction below 2 mm, totalling 100%: sand 0.063–2 mm; silt 0.002–0.063 mm; clay (lutum) <0.002 mm. Organic-matter and gravel classification require additional inputs and are excluded. This is the withdrawn NEN 5104:1989 mineral triangle, not a current-standard conformity assessment. Switching systems does not convert or rebase measurements."
 )
