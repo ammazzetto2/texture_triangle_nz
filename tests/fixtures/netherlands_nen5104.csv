@@ -1,0 +1,15 @@
+soil,sand,silt,clay,expected
+Ks1 interior,10,20,70,Ks1 · Zwak siltige klei
+Ks2 interior,20,40,40,Ks2 · Matig siltige klei
+Ks3 interior,25,45,30,Ks3 · Sterk siltige klei
+Ks4 interior,25,57,18,Ks4 · Uiterst siltige klei
+Kz1 interior,60,20,20,Kz1 · Zwak zandige klei
+Kz2 interior,65,20,15,Kz2 · Matig zandige klei
+Kz3 interior,70,20,10,Kz3 · Sterk zandige klei
+Lz1 interior,5,80,15,Lz1 · Zwak zandige leem
+Lz3 interior,30,60,10,Lz3 · Sterk zandige leem
+Zk interior,90,4,6,Zk · Kleiig zand
+Zs1 interior,95,3,2,Zs1 · Zwak siltig zand
+Zs2 interior,85,13,2,Zs2 · Matig siltig zand
+Zs3 interior,75,20,5,Zs3 · Sterk siltig zand
+Zs4 interior,60,35,5,Zs4 · Uiterst siltig zand

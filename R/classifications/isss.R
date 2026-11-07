@@ -28,7 +28,7 @@ polygons <- lapply(regions, function(rows) {
 })
 list(
   id = "ISSS (ISSS.TT 1.5.3, 12 classes)",
-  display = "ISSS · 1984 reference · 12 classes",
+  display = "ISSS (also used in Japan) · 1984 reference · 12 classes",
   order = 150,
   clockwise = TRUE,
   data = texture_polygons(polygons),
@@ -50,7 +50,7 @@ list(
   label_overrides = stats::setNames(lapply(names(regions), function(label) {
     list(text = strsplit(label, " · ", fixed = TRUE)[[1]][1])
   }), names(regions)),
-  source = "ISSS texture triangle after Verheye and Ameryckx (1984); numerical transcription: Moeys et al., soiltexture 1.5.3, ISSS.TT (contributed by Wei Shangguan)",
-  source_url = "https://www.julienmoeys.info/2015/02/06/texture-triangle-gallery/",
+  source = "Japanese international-method geometry corroborated by HRO Analysis Methods 2012, corrected chapter III (2013-04-23), Table 2, p.34; exact shared equalities retain the app candidate policy. ISSS texture triangle after Verheye and Ameryckx (1984); numerical transcription: Moeys et al., soiltexture 1.5.3, ISSS.TT (contributed by Wei Shangguan)",
+  source_url = "https://www.hro.or.jp/upload/13654/3v2.pdf",
   fractions = "Fine earth <2 mm: sand 0.02–2 mm; silt 0.002–0.02 mm; clay <0.002 mm. This is the ISSS 12-class triangle, not merely a particle-size convention or a USDA alias. Expand the class label key for names. Switching views does not convert laboratory fractions."
 )

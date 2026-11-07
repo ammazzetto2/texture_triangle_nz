@@ -189,6 +189,14 @@ It uses a 0.005 mm clay/silt cutoff, distinct from modern USDA. See
 [USDA 1911 source notes](classifications/usda_1911.md). Historical source
 review and package comparison remain deferred.
 
+## Swiss FAL 1997 classes
+
+The 13-class Swiss view is derived from FAL 1997 section 3.5, Tables 3.5a/3.5b
+and Figure 3.5a. Inputs are mineral fine-earth mass percentages with a 0.05 mm
+sand/silt cutoff. It is separate from the ten-class Zurich package variant.
+Shared boundaries retain the app's candidate policy. See
+[Swiss source and validation notes](classifications/switzerland_fal1997.md).
+
 ## Polish PTG 2008 classes
 
 The Polish view provides 16 PTG 2008 classes, using a pinned static polygon
@@ -196,3 +204,22 @@ transcription and original Polish names. Its 0.05 mm sand/silt cutoff differs
 from older Polish systems. The scheme was adopted in 2008 and published in
 2009. See [Polish source and implementation notes](classifications/poland_ptg2008.md).
 Package comparison remains deferred.
+
+## Dutch NEN 5104:1989 classes
+
+The 14-class mineral triangle follows the official Rijkswaterstaat reproduction,
+corroborated by RIVM. Mineral fine-earth mass percentages use a 0.063 mm
+sand/silt cutoff. The mineral-only view appears under Historic; NEN 5104 is withdrawn
+and this does not implement current
+ISO 14688/Dutch supplements. Organic
+matter and gravel require additional inputs. Shared boundaries retain the
+app's candidate policy. See [Dutch source and validation notes](classifications/netherlands_nen5104.md).
+
+## Japanese use of ISSS
+
+The existing ISSS view now explicitly identifies Japanese use in its selector
+label. Independent reconstruction from HRO's numerical international-method
+key matches all 12 closed regions; exact boundary reporting retains the app
+policy. The five-class Japanese Agricultural Sciences method requires a
+different clay measurement and sample basis, so it remains a research
+candidate. See [ISSS comparison notes](classifications/isss.md).

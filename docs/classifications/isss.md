@@ -18,7 +18,7 @@ retrieved for this implementation. Numerical authority here is the pinned
 ISSS.TT transcription, rather than a claim of independently verified original
 publication limits.
 
-Selector: **ISSS · 1984 reference · 12 classes**.
+Selector: **ISSS (also used in Japan) · 1984 reference · 12 classes**.
 Stable export ID: `ISSS (ISSS.TT 1.5.3, 12 classes)`.
 The version identifies the numerical transcription, not a scientific
 publication year. This option is distinct from USDA and the Romanian view.
@@ -74,7 +74,52 @@ class. Pure sand, clay and silt classify uniquely as Sa, HCl and SiLo.
   gaps/overlaps, polygon-order independence and rendering.
 
 These are implementation and regression checks. Independent package comparison
-and broader scientific validation remain deferred; soiltexture is not a
-project dependency.
+remains deferred; Japanese-source geometry comparison is documented below.
+Soiltexture is not a project dependency.
 
 Example upload: `examples/isss_samples.csv`.
+
+## Japanese international-method comparison
+
+The Japanese **international method (国際法)** is represented here by the
+existing ISSS view. The selector now says **also used in Japan**; its stable
+export ID and geometry are unchanged. The selector is a native dropdown,
+so this is a visible discovery label rather than a separate search control
+or duplicate classification.
+
+The [Hokkaido Research Organization manual](https://www.hro.or.jp/agricultural/center/research-topics/bunseki2012.html),
+*Analysis Methods for Soil and Crop Nutrition Diagnosis 2012*, corrected
+chapter III (23 April 2013), supplies a numerical decision key in
+[Table 2, printed p34 / PDF p6](https://www.hro.or.jp/upload/13654/3v2.pdf).
+`tests/japan_isss.R` reconstructs convex regions from that key rather than
+copying package vertices. All 12 closed regions match the app; checks cover
+18 distinct vertices, region edges and 10,000 reproducible interior samples.
+The manual's equality assignments differ from the app's shared-candidate
+policy: matching geometry does not imply matching exact-boundary results.
+
+Japanese codes differ from the package plot codes:
+
+| Japanese code | Japanese name | App code |
+| --- | --- | --- |
+| HC | 重埴土 | HCl |
+| SC | 砂質埴土 | SaCl |
+| LiC | 軽埴土 | LCl |
+| SiC | シルト質埴土 | SiCl |
+| SCL | 砂質埴壌土 | SaClLo |
+| CL | 埴壌土 | ClLo |
+| SiCL | シルト質埴壌土 | SiClLo |
+| LS | 壌質砂土 | LoSa |
+| S | 砂土 | Sa |
+| SL | 砂壌土 | SaLo |
+| L | 壌土 | Lo |
+| SiL | シルト質壌土 | SiLo |
+
+[NARO's research summary and Figures 1–2](https://www.naro.go.jp/project/results/4th_laboratory/tarc/2020/tarc20_s02.html)
+corroborate Japanese use, particle-size cutoffs and the 12-region diagram.
+This does not make ISSS a complete Japanese soil taxonomy or establish one
+exclusive national texture scheme.
+
+The separate **five-class Japanese Agricultural Sciences method** is not
+an ISSS grouping. Its different clay cutoff and sample-mass denominator
+need a separate input convention; research and unresolved source details are
+recorded in `SCIENTIFIC_REVIEW_DRAFT.md`. It has not been added to the app.

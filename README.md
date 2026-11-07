@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-20 current and historic classification views, including New Zealand, USDA,
+22 current and historic classification views, including New Zealand, USDA,
 Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
@@ -223,10 +223,12 @@ and [example samples](examples/romania_samples.csv).
 
 ## ISSS classification
 
-**ISSS · 1984 reference · 12 classes** adds a separate international texture triangle, including
+**ISSS (also used in Japan) · 1984 reference · 12 classes** adds a separate international texture triangle, including
 Heavy clay and Light clay. Plot codes link to full English names in the key;
 results and exports retain both. Inputs require a **0.02 mm sand/silt cutoff**.
-This is a distinct classification, not USDA with different fraction metadata.
+Japanese international-method boundaries have been independently checked
+against HRO’s numerical key. The separate five-class Japanese Agricultural
+Sciences method uses different measurements and is not included.
 See [ISSS source and implementation notes](docs/classifications/isss.md) and
 [example samples](examples/isss_samples.csv).
 
@@ -260,6 +262,28 @@ exports preserve diacritics. Inputs require a **0.05 mm sand/silt cutoff**.
 This is separate from the older Polish schemes also found in soiltexture.
 See [Polish source and implementation notes](docs/classifications/poland_ptg2008.md)
 and [example samples](examples/poland_samples.csv).
+
+## Swiss FAL classification
+
+**Switzerland (FAL) · 1997 · 13 classes** follows the numerical texture table
+and diagram in FAL's 1997 agricultural soil mapping manual. It uses mass
+percentages of **mineral fine earth**, with a **0.05 mm sand/silt cutoff**.
+Plot codes link to German names in the class key; exports retain both. This
+13-class view differs from the ten-class Zurich variant in ggsoiltexture.
+See [Swiss source and validation notes](docs/classifications/switzerland_fal1997.md)
+and [example samples](examples/switzerland_samples.csv).
+
+## Dutch NEN 5104 classification
+
+**Netherlands (NEN 5104, mineral only) · 1989 · 14 classes** implements the mineral
+lutum–silt–zand triangle reproduced by Rijkswaterstaat and RIVM. It uses a
+**0.063 mm sand/silt cutoff** and appears under **Historic**.
+**NEN withdrew this standard in 2020; this
+view does not implement the current ISO 14688/Dutch supplements.** Organic-matter and gravel classifications
+require additional measurements and are outside this view. Plot codes link
+to Dutch names; exports retain both.
+See [Dutch source and validation notes](docs/classifications/netherlands_nen5104.md)
+and [example samples](examples/netherlands_samples.csv).
 
 ## CSV format
 
@@ -459,7 +483,7 @@ and outstanding manual coverage.
 
 The classification selector separates **Current** and **Historic** views and
 sorts each group alphabetically. The Historic group contains FAO–UNESCO 1974,
-SEA74, TGL85 and USDA 1911. Export IDs and the New Zealand default are unchanged.
+SEA74, TGL85, USDA 1911 and Netherlands NEN 5104:1989. Export IDs and the New Zealand default are unchanged.
 
 Selector labels consistently show **main name (scheme) · year · class/group
 count**. `Year unverified` marks definitions without an established edition

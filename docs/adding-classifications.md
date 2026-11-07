@@ -25,6 +25,8 @@ R/
     germany_tgl85.R
     usda_1911.R
     poland_ptg2008.R
+    switzerland_fal1997.R
+    netherlands_nen5104.R
   classification_systems.R     # Discovery, definition schema, polygon helper
   classification.R             # Shared point classification and export schema
   plotting.R                   # Shared renderer; no country-specific branches
@@ -47,6 +49,8 @@ tests/
     germany_tgl85.csv
     usda_1911.csv
     poland_ptg2008.csv
+    switzerland_fal1997.csv
+    netherlands_nen5104.csv
   brazil.R                     # Country-specific scientific checks
   brazil_sibcs2013_8.R
   canada.R
@@ -63,6 +67,8 @@ tests/
   germany_tgl85.R
   usda_1911.R
   poland_ptg2008.R
+  switzerland_fal1997.R
+  netherlands_nen5104.R
   definitions.R                # Geometry/schema checks for every discovered view
   plotting.R                   # Rendering checks for every discovered view
   run_all.R                    # Discovers and runs test scripts in separate R sessions
@@ -84,6 +90,8 @@ docs/
     germany_tgl85.md
     usda_1911.md
     poland_ptg2008.md
+    switzerland_fal1997.md
+    netherlands_nen5104.md
   classification.md            # Shared boundary policy and legacy issues
   adding-classifications.md    # This guide
 ```
