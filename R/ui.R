@@ -9,7 +9,8 @@ build_app_ui <- function() {
       heading_font = '"Segoe UI", system-ui, -apple-system, sans-serif',
       "border-radius" = "0.5rem", "font-size-base" = "0.9375rem"
     ),
-    tags$head(tags$link(rel = "stylesheet", href = "app.css")),
+    tags$head(tags$link(rel = "stylesheet", href = "app.css"),
+              tags$script(src = "edit-focus.js", defer = NA)),
     tags$a(class = "skip-link", href = "#classification-workspace", "Skip to texture workspace"),
     tags$div(class = "app-shell",
       tags$header(class = "app-header",
@@ -69,7 +70,10 @@ build_app_ui <- function() {
                           buttonLabel = "Browse", placeholder = "No file selected"),
                 tags$p(class = "field-help", "Map sample name, sand, silt and clay columns. Percentages must total 100; rounded totals are not automatically normalized."),
                 tags$p(class = "entry-error", role = "alert", textOutput("uploadError", inline = TRUE)),
-                uiOutput("uploadMapping"), uiOutput("uploadPreview"),
+                uiOutput("uploadMapping"),
+                tags$div(class = "field-help", role = "status", `aria-atomic` = "true",
+                  textOutput("uploadStatus", inline = TRUE)),
+                uiOutput("uploadPreview"),
                 conditionalPanel("input.csvFormat === 'results'",
                   tags$p(class = "field-help", "Downloaded results restore names and percentages only. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
                 downloadButton("downloadTemplateBtn", "Get CSV template", class = "btn-outline-primary")
@@ -79,7 +83,7 @@ build_app_ui <- function() {
           tags$div(class = "session-note",
             tags$p(class = "sample-feedback", role = "status", textOutput("sampleFeedback", inline = TRUE)),
             uiOutput("undoControl"),
-            tags$p("Samples stay in this session. Download your results before closing."),
+            tags$p("Samples are saved only for this session. Use Download CSV before refreshing or closing this page. To restore them later, choose Downloaded results under CSV upload."),
             actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
           ),
           tags$details(class = "help-details",
@@ -133,7 +137,7 @@ build_app_ui <- function() {
                     checkboxInput("sortDescending", "Descending order", value = FALSE),
                     checkboxInput("reviewOnly", "Only samples needing review", value = FALSE)),
                   tags$p(class = "field-help", `aria-live` = "polite", textOutput("resultsFilterSummary", inline = TRUE))),
-                tags$div(class = "results-table", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
+                tags$div(class = "results-table", role = "region", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
                 tags$div(class = "results-pagination", uiOutput("resultsPagination", inline = TRUE)),
                 tags$details(class = "results-help field-help", tags$summary("Results help"),
                   tags$p("Use View, Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes."))
@@ -203,7 +207,7 @@ build_results_table <- function(results, revision = NULL, row_indices = seq_len(
             tags$div(class = "sample-row-actions", lapply(c("View", "Edit", "Delete"), function(action) {
               tags$button(type = "button", class = paste("btn btn-sm", if (action == "Delete") "btn-outline-danger" else "btn-outline-primary"),
                 `aria-label` = paste(action, "sample", row_indices[i], value),
-                `data-row` = row_indices[i], `data-revision` = revision,
+                `data-action` = tolower(action), `data-row` = row_indices[i], `data-revision` = revision,
                 onclick = sprintf("Shiny.setInputValue('%sSample', {row: Number(this.dataset.row), revision: Number(this.dataset.revision)}, {priority: 'event'});", tolower(action)),
                 action)
             }))

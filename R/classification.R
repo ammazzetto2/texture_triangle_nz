@@ -47,11 +47,17 @@ classification_details <- function(points, polygons) {
   }
   matches <- inside | on_edge
   counts <- rowSums(matches)
-  for (row in seq_len(nrow(points))) {
-    candidates <- sort(names(polygons)[matches[row, ]])
-    result$classification_candidates[row] <- paste(candidates, collapse = "; ")
-    if (counts[row] == 1L) result$classification[row] <- candidates
+  # Most samples match a single polygon. Fill those labels by column and
+  # only sort and join names for samples with multiple candidate classes.
+  single <- counts == 1L
+  for (i in seq_along(polygons)) {
+    result$classification[single & matches[, i]] <- names(polygons)[i]
   }
+  result$classification_candidates[single] <- result$classification[single]
+  multiple <- which(counts > 1L)
+  result$classification_candidates[multiple] <- vapply(multiple, function(row) {
+    paste(sort(names(polygons)[matches[row, ]]), collapse = "; ")
+  }, character(1))
   result$classification_status[counts == 1L] <- "classified"
   result$classification_status[rowSums(on_edge) > 0L] <- "boundary"
   result$classification_status[rowSums(inside) > 1L] <- "overlap"

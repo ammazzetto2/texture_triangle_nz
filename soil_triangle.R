@@ -262,7 +262,7 @@ server <- function(input, output, session) {
     edit_target(input$editSample)
     edit_error("")
     showModal(modalDialog(
-      title = "Edit sample", easyClose = FALSE,
+      title = tags$span(id = "edit-sample-title", `data-row` = row, "Edit sample"), easyClose = FALSE,
       textInput("editSampleName", "Sample name", value = sample$soil),
       tags$div(class = "composition-inputs",
         numericInput("editSand", "Sand (%)", sample$sand, min = 0, max = 100),
@@ -418,16 +418,27 @@ server <- function(input, output, session) {
       }, character(1)), names(defaults))
     tryCatch(inspect_upload(pending$data, mapping), error = function(e) list(error = conditionMessage(e)))
   })
+  output$uploadStatus <- renderText({
+    inspected <- upload_inspection()
+    if (is.null(inspected)) return("")
+    if (!is.null(inspected$error)) return(inspected$error)
+    total <- nrow(inspected$samples)
+    invalid <- length(unique(inspected$issues$row))
+    if (invalid) {
+      sprintf("Rows needing correction: %d of %d. Check the column mapping or update the CSV.", invalid, total)
+    } else {
+      sprintf("%d %s ready to import.", total, if (total == 1L) "row is" else "rows are")
+    }
+  })
   output$uploadPreview <- renderUI({
     inspected <- upload_inspection()
-    if (is.null(inspected)) return(NULL)
-    if (!is.null(inspected$error)) return(tags$p(class = "entry-error", role = "alert", inspected$error))
+    if (is.null(inspected) || !is.null(inspected$error)) return(NULL)
     tagList(tags$h3("Preview before import"),
-      tags$p(class = "field-help", paste(nrow(inspected$samples), "rows;", length(unique(inspected$issues$row)), "rows need correction. Preview shows the first 10 rows.")),
+      tags$p(class = "field-help", "Preview shows up to 10 rows."),
       if (length(inspected$ignored)) tags$p(class = "field-help", paste("Excluded columns:", paste(inspected$ignored, collapse = ", "))),
       tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV preview; scroll for more columns", build_plain_table(head(inspected$preview, 10))),
       if (nrow(inspected$issues)) tagList(
-        tags$p(class = "entry-error", "Fix the source CSV and select it again. Nothing has been imported. Errors below show sample row numbers, excluding the header; first 25 issues shown."),
+        tags$p(class = "entry-error", "Errors use sample row numbers, excluding the header. Up to 25 issues are shown."),
         tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV validation errors; scroll for more rows and columns", build_plain_table(head(inspected$issues, 25))),
         downloadButton("downloadUploadErrors", "Download all errors", class = "btn-outline-primary")),
       radioButtons("importAction", "Import into workspace", c("Append to current samples" = "append", "Replace all current samples" = "replace"), selected = "append"),
