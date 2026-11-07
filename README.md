@@ -1,7 +1,7 @@
 # Soil texture triangle
 
 An R Shiny app for plotting soil samples and assigning texture classes using
-20 current and historic classification views, including New Zealand, USDA,
+21 current and historic classification views, including New Zealand, USDA,
 Australian, Brazilian, and Canadian polygons.
 
 Enter samples manually or upload a CSV, view their positions on a texture
@@ -260,6 +260,16 @@ exports preserve diacritics. Inputs require a **0.05 mm sand/silt cutoff**.
 This is separate from the older Polish schemes also found in soiltexture.
 See [Polish source and implementation notes](docs/classifications/poland_ptg2008.md)
 and [example samples](examples/poland_samples.csv).
+
+## Swiss FAL classification
+
+**Switzerland (FAL) · 1997 · 13 classes** follows the numerical texture table
+and diagram in FAL's 1997 agricultural soil mapping manual. It uses mass
+percentages of **mineral fine earth**, with a **0.05 mm sand/silt cutoff**.
+Plot codes link to German names in the class key; exports retain both. This
+13-class view differs from the ten-class Zurich variant in ggsoiltexture.
+See [Swiss source and validation notes](docs/classifications/switzerland_fal1997.md)
+and [example samples](examples/switzerland_samples.csv).
 
 ## CSV format
 

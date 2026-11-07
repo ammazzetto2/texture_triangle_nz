@@ -189,6 +189,14 @@ It uses a 0.005 mm clay/silt cutoff, distinct from modern USDA. See
 [USDA 1911 source notes](classifications/usda_1911.md). Historical source
 review and package comparison remain deferred.
 
+## Swiss FAL 1997 classes
+
+The 13-class Swiss view is derived from FAL 1997 section 3.5, Tables 3.5a/3.5b
+and Figure 3.5a. Inputs are mineral fine-earth mass percentages with a 0.05 mm
+sand/silt cutoff. It is separate from the ten-class Zurich package variant.
+Shared boundaries retain the app's candidate policy. See
+[Swiss source and validation notes](classifications/switzerland_fal1997.md).
+
 ## Polish PTG 2008 classes
 
 The Polish view provides 16 PTG 2008 classes, using a pinned static polygon

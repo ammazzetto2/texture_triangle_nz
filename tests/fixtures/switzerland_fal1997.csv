@@ -1,0 +1,14 @@
+soil,sand,silt,clay,expected
+Sand interior,90,8,2,S · Sand
+Silty sand interior,70,28,2,uS · Schluffiger Sand
+Loamy sand interior,70,23,7,lS · Lehmiger Sand
+Loam rich sand interior,65,23,12,lrS · Lehmreicher Sand
+Sandy loam interior,60,23,17,sL · Sandiger Lehm
+Loam interior,50,25,25,L · Lehm
+Clayey loam interior,40,25,35,tL · Toniger Lehm
+Loamy clay interior,30,25,45,lT · Lehmiger Ton
+Clay interior,10,20,70,T · Ton
+Sandy silt interior,35,60,5,sU · Sandiger Schluff
+Silt interior,10,85,5,U · Schluff
+Loamy silt interior,15,65,20,lU · Lehmiger Schluff
+Clayey silt interior,5,55,40,tU · Toniger Schluff
