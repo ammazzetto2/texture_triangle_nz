@@ -134,7 +134,7 @@ build_app_ui <- function() {
                     checkboxInput("sortDescending", "Descending order", value = FALSE),
                     checkboxInput("reviewOnly", "Only samples needing review", value = FALSE)),
                   tags$p(class = "field-help", `aria-live` = "polite", textOutput("resultsFilterSummary", inline = TRUE))),
-                tags$div(class = "results-table", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
+                tags$div(class = "results-table", role = "region", tabindex = "0", `aria-label` = "Sample results; scroll horizontally for more columns", uiOutput("resultsTable")),
                 tags$div(class = "results-pagination", uiOutput("resultsPagination", inline = TRUE)),
                 tags$details(class = "results-help field-help", tags$summary("Results help"),
                   tags$p("Use View, Edit or Delete beside a sample name. Undo in the sample panel restores the latest change. A dash means no single class was assigned; review the status and candidate classes."))

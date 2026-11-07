@@ -13,3 +13,12 @@ document.addEventListener("shown.bs.modal", event => {
     (button || table).focus();
   }, {once: true});
 });
+
+// Keep a keyboard user in Results when Shiny replaces the deleted row.
+// Moving to the region also keeps a repeated Enter from deleting the next row.
+document.addEventListener("click", event => {
+  const button = event.target.closest('button[data-action="delete"]');
+  if (button && button === document.activeElement) {
+    button.closest(".results-table").focus();
+  }
+});
