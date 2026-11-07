@@ -70,7 +70,10 @@ build_app_ui <- function() {
                           buttonLabel = "Browse", placeholder = "No file selected"),
                 tags$p(class = "field-help", "Map sample name, sand, silt and clay columns. Percentages must total 100; rounded totals are not automatically normalized."),
                 tags$p(class = "entry-error", role = "alert", textOutput("uploadError", inline = TRUE)),
-                uiOutput("uploadMapping"), uiOutput("uploadPreview"),
+                uiOutput("uploadMapping"),
+                tags$div(class = "field-help", role = "status", `aria-atomic` = "true",
+                  textOutput("uploadStatus", inline = TRUE)),
+                uiOutput("uploadPreview"),
                 conditionalPanel("input.csvFormat === 'results'",
                   tags$p(class = "field-help", "Downloaded results restore names and percentages only. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
                 downloadButton("downloadTemplateBtn", "Get CSV template", class = "btn-outline-primary")

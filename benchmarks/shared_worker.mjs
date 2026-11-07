@@ -43,7 +43,7 @@ async function session() {
     "confirmImportBtn:shiny.action": 0, "addManualDataBtn:shiny.action": 0,
     ".clientdata_output_workspaceStats_hidden": false,
     ".clientdata_output_sampleFeedback_hidden": false,
-    ".clientdata_output_uploadPreview_hidden": false
+    ".clientdata_output_uploadStatus_hidden": false
   }});
   await ready;
   return {send, waitFor, update: data => send({method: "update", data})};
@@ -83,7 +83,7 @@ try {
     [[{name: "paddocks.csv", size: file.length, type: "text/csv"}]], 1);
   const upload = await fetch(new URL(job.uploadUrl, base), {method: "POST", body: file});
   assert(upload.ok, `Upload returned HTTP ${upload.status}`);
-  const preview = importer.waitFor(msg => msg.values?.uploadPreview?.html?.includes("25000 rows; 0 rows need correction"));
+  const preview = importer.waitFor(msg => msg.values?.uploadStatus === `${rows} rows are ready to import.`);
   await request(importer, "uploadEnd", [job.jobId, "fileUpload"], 2);
   await preview;
   const classified = importer.waitFor(msg => msg.values?.workspaceStats?.html?.includes("<strong>25000</strong>"));
