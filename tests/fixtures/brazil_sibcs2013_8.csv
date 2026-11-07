@@ -1,0 +1,11 @@
+soil,sand,silt,clay,expected
+Published sample 1,75,10,15,Média arenosa
+Published sample 2,50,20,30,Média argilosa
+Published sample 3,50,10,40,Argilosa
+Published sample 4 - boundary,10,30,60,NA
+Published sample 5,40,40,20,Média siltosa
+Published sample 6,95,2,3,Muito arenosa
+Published sample 7,13,80,7,Siltosa
+Published sample 8,85,3,12,Arenosa média
+Published sample 9,8,2,90,Muito argilosa
+Published sample 10,20,15,65,Muito argilosa
