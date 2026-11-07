@@ -79,7 +79,7 @@ build_app_ui <- function() {
           tags$div(class = "session-note",
             tags$p(class = "sample-feedback", role = "status", textOutput("sampleFeedback", inline = TRUE)),
             uiOutput("undoControl"),
-            tags$p("Samples stay in this session. Download your results before closing."),
+            tags$p("Samples are saved only for this session. Use Download CSV before refreshing or closing this page. To restore them later, choose Downloaded results under CSV upload."),
             actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
           ),
           tags$details(class = "help-details",
