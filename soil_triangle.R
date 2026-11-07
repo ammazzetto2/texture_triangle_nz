@@ -262,7 +262,7 @@ server <- function(input, output, session) {
     edit_target(input$editSample)
     edit_error("")
     showModal(modalDialog(
-      title = "Edit sample", easyClose = FALSE,
+      title = tags$span(id = "edit-sample-title", `data-row` = row, "Edit sample"), easyClose = FALSE,
       textInput("editSampleName", "Sample name", value = sample$soil),
       tags$div(class = "composition-inputs",
         numericInput("editSand", "Sand (%)", sample$sand, min = 0, max = 100),

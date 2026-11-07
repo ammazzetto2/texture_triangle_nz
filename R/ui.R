@@ -9,7 +9,8 @@ build_app_ui <- function() {
       heading_font = '"Segoe UI", system-ui, -apple-system, sans-serif',
       "border-radius" = "0.5rem", "font-size-base" = "0.9375rem"
     ),
-    tags$head(tags$link(rel = "stylesheet", href = "app.css")),
+    tags$head(tags$link(rel = "stylesheet", href = "app.css"),
+              tags$script(src = "edit-focus.js", defer = NA)),
     tags$a(class = "skip-link", href = "#classification-workspace", "Skip to texture workspace"),
     tags$div(class = "app-shell",
       tags$header(class = "app-header",
@@ -203,7 +204,7 @@ build_results_table <- function(results, revision = NULL, row_indices = seq_len(
             tags$div(class = "sample-row-actions", lapply(c("View", "Edit", "Delete"), function(action) {
               tags$button(type = "button", class = paste("btn btn-sm", if (action == "Delete") "btn-outline-danger" else "btn-outline-primary"),
                 `aria-label` = paste(action, "sample", row_indices[i], value),
-                `data-row` = row_indices[i], `data-revision` = revision,
+                `data-action` = tolower(action), `data-row` = row_indices[i], `data-revision` = revision,
                 onclick = sprintf("Shiny.setInputValue('%sSample', {row: Number(this.dataset.row), revision: Number(this.dataset.revision)}, {priority: 'event'});", tolower(action)),
                 action)
             }))
