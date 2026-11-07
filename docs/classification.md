@@ -214,3 +214,12 @@ and this does not implement current
 ISO 14688/Dutch supplements. Organic
 matter and gravel require additional inputs. Shared boundaries retain the
 app's candidate policy. See [Dutch source and validation notes](classifications/netherlands_nen5104.md).
+
+## Japanese use of ISSS
+
+The existing ISSS view now explicitly identifies Japanese use in its selector
+label. Independent reconstruction from HRO's numerical international-method
+key matches all 12 closed regions; exact boundary reporting retains the app
+policy. The five-class Japanese Agricultural Sciences method requires a
+different clay measurement and sample basis, so it remains a research
+candidate. See [ISSS comparison notes](classifications/isss.md).

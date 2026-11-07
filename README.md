@@ -223,10 +223,12 @@ and [example samples](examples/romania_samples.csv).
 
 ## ISSS classification
 
-**ISSS · 1984 reference · 12 classes** adds a separate international texture triangle, including
+**ISSS (also used in Japan) · 1984 reference · 12 classes** adds a separate international texture triangle, including
 Heavy clay and Light clay. Plot codes link to full English names in the key;
 results and exports retain both. Inputs require a **0.02 mm sand/silt cutoff**.
-This is a distinct classification, not USDA with different fraction metadata.
+Japanese international-method boundaries have been independently checked
+against HRO’s numerical key. The separate five-class Japanese Agricultural
+Sciences method uses different measurements and is not included.
 See [ISSS source and implementation notes](docs/classifications/isss.md) and
 [example samples](examples/isss_samples.csv).
 
