@@ -69,6 +69,24 @@ provenance for the repository's original coordinate arrays.
   Leopold (2018), *Soil Quality: 2 Integrated Soil Management*. It does not
   establish the provenance or exact coordinates of this repository's polygons.
 
+## soiltexture reference and acknowledgement
+
+Moeys, J. and contributors (2024). *soiltexture: Functions for Soil Texture
+Plot, Classification and Transformation*. R package version 1.5.3.
+[DOI: 10.32614/CRAN.package.soiltexture](https://doi.org/10.32614/CRAN.package.soiltexture).
+We acknowledge the package authors and contributors for their documented
+implementations of international texture systems and particle-size conventions.
+The [CRAN package page](https://cran.r-project.org/package=soiltexture) links
+the manual, tutorial and source code.
+
+The package provides USDA.TT and AU.TT reference implementations. The source
+review has not identified a predefined NZ system. Package agreement is a
+software comparison, not independent confirmation from the originating
+scientific authority; several other views in this repository already use
+package-derived numerical transcriptions. A numerical comparison of the
+original three views has not yet been completed. No new runtime dependency
+or polygon changes are introduced by this acknowledgement.
+
 ## Remaining scientific work
 
 The two Brazilian views added on 6 November 2026 have separate source and

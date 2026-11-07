@@ -320,6 +320,18 @@ confirmed Sand / Sandy Loam overlap. Sources, numerical tolerances, examples,
 limitations, and remaining verification work are documented in
 [`docs/classification.md`](docs/classification.md).
 
+## References and acknowledgements
+
+We acknowledge Julien Moeys and the contributors to
+**soiltexture: Functions for Soil Texture Plot, Classification and Transformation**
+(R package, version 1.5.3, 2024),
+[DOI: 10.32614/CRAN.package.soiltexture](https://doi.org/10.32614/CRAN.package.soiltexture).
+Its [documentation and tutorial](https://cran.r-project.org/package=soiltexture)
+are reference resources for comparing texture systems and particle-size
+conventions. See the [classification reference notes](docs/classification.md#soiltexture-reference-and-acknowledgement)
+for the scope of this comparison. A citation does not establish that this app's
+original polygons or boundary assignments agree with the package.
+
 ## Repository layout
 
 | Path | Purpose |
