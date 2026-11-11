@@ -63,6 +63,18 @@ server <- function(input, output, session) {
     updateCheckboxInput(session, "reviewOnly", value = TRUE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
   }, ignoreInit = TRUE)
+  observeEvent(list(input$allSamplesBtn, input$showAllSamplesBtn), {
+    review_only(FALSE)
+    updateTextInput(session, "sampleSearch", value = "")
+    updateCheckboxInput(session, "reviewOnly", value = FALSE)
+    updateTabsetPanel(session, "workspaceView", selected = "results")
+  }, ignoreInit = TRUE)
+  output$reviewFilterControl <- renderUI({
+    if (!review_only()) return(NULL)
+    tagList(
+      tags$p(role = "status", "Showing only samples needing review."),
+      actionButton("showAllSamplesBtn", "Show all samples", class = "btn-outline-primary"))
+  })
 
   change_samples <- function(samples, description) {
     undo_state(list(data = soil_data(), description = description))
@@ -313,8 +325,9 @@ server <- function(input, output, session) {
   output$workspaceStats <- renderUI({
     results <- classified_data()
     tagList(
-      tags$span(class = "stat-chip", tags$strong(nrow(results)),
-                if (nrow(results) == 1L) " sample" else " samples"),
+      actionButton("allSamplesBtn",
+        tagList(tags$strong(nrow(results)), if (nrow(results) == 1L) " sample" else " samples"),
+        class = "stat-chip review-count", `aria-label` = paste("Show all", nrow(results), "samples")),
       actionButton("reviewSamplesBtn",
         tagList(tags$strong(sum(is.na(results$classification))), " need review"),
         class = "stat-chip review-count",
