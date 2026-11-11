@@ -27,7 +27,9 @@ See the [README](../README.md#quick-start) for installation and startup.
    because they have no single assigned class. On narrow screens, scroll the
    table horizontally to see all columns.
    Click **need review** to open Results with **Only samples needing review**
-   enabled. Turn off the filter to see all rows. **What this means** explains
+   enabled. Select **Show all samples**, click the total sample count in the
+   top bar, or turn off the filter to see all rows. Both buttons also clear the
+   sample name search. **What this means** explains
    boundary, overlap and unclassified statuses. **Boundary (assigned)** means
    an edge point has one matching class and is excluded from the review count.
    Filtering does not change the triangle or CSV export, which still include

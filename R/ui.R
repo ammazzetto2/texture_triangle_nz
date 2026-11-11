@@ -126,6 +126,7 @@ build_app_ui <- function() {
             tabPanel("Results", value = "results",
               tags$div(class = "results-content",
                 tags$p(class = "results-summary", `aria-live` = "polite", textOutput("resultsSummary", inline = TRUE)),
+                tags$div(class = "review-filter-control", uiOutput("reviewFilterControl")),
                 tags$div(class = "results-controls",
                   tags$div(class = "results-search-sort",
                     textInput("sampleSearch", "Search samples", placeholder = "Sample name contains…"),
