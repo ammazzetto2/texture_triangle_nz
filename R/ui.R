@@ -79,10 +79,12 @@ build_app_ui <- function() {
               )
             )
           ),
+          tags$div(class = "clear-samples",
+            actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
+          ),
           tags$div(class = "session-note",
             tags$p(class = "sample-feedback", role = "status", textOutput("sampleFeedback", inline = TRUE)),
-            uiOutput("undoControl"),
-            actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
+            uiOutput("undoControl")
           ),
           tags$details(class = "help-details",
             tags$summary("How to read your results"),
@@ -99,9 +101,9 @@ build_app_ui <- function() {
                 tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
               )
             ),
+            tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University"),
             tags$a("Contact Josie Mazzetto", class = "sidebar-contact",
-                   href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz"),
-            tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University")
+                   href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz")
           )
         ),
         tags$section(id = "classification-workspace", tabindex = "-1", class = "visual-panel panel", `aria-label` = "Classification workspace",

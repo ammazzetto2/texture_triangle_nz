@@ -80,9 +80,10 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .session-note p { font-size: 12px; color: var(--soil-muted); line-height: 1.7; margin-bottom: 6px; }
 .session-note .sample-feedback { color: var(--soil-green); overflow-wrap: anywhere; }
 .undo-samples { width: 100%; margin-bottom: 12px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.clear-samples { margin: 0 24px 8px; }
 .btn-clear { padding: 4px 0; border: none; background: transparent; color: #985044; min-height: 32px; font-weight: 500; }
 .btn-clear:hover { color: #742d24; text-decoration: underline; }
-.help-details { margin: 16px 24px 24px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
+.help-details { margin: 16px 20px 8px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
 summary { cursor: pointer; font-weight: 600; color: var(--soil-ink); }
 details p { margin-top: 12px; }
 .visual-heading { justify-content: space-between; gap: 16px; }
@@ -124,12 +125,12 @@ details p { margin-top: 12px; }
 .empty-symbol { font-size: 42px; color: #9bad9a; }
 .empty-state h3 { font-size: 17px; margin: 16px 0 8px; }
 .empty-state p { max-width: 290px; margin: 0 auto; color: var(--soil-muted); font-size: 13px; line-height: 1.7; }
-.sidebar-resources { display: flex; flex-direction: column; gap: 8px; margin: 0 20px 6px; padding-top: 12px; border-top: 1px solid var(--soil-line); }
-.about-details { font-size: 12px; line-height: 1.7; color: var(--soil-muted); }
+.sidebar-resources { display: flex; flex-direction: column; gap: 8px; margin: 0 20px 6px; }
+.about-details { padding-bottom: 12px; border-bottom: 1px solid var(--soil-line); font-size: 12px; line-height: 1.7; color: var(--soil-muted); }
 .about-details summary { color: var(--soil-ink); font-size: 12px; }
 .sidebar-resources a { color: var(--soil-green); text-underline-offset: 3px; }
 .sidebar-contact { font-size: 12px; }
-.sidebar-logo { height: 34px; width: auto; max-width: 150px; align-self: flex-start; object-fit: contain; }
+.sidebar-logo { width: 160px; height: auto; max-width: 100%; align-self: flex-start; object-fit: contain; }
 a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:focus-visible, .upload-preview-table:focus-visible { outline: 3px solid var(--soil-green); outline-offset: 3px; }
 /* Desktop: allocate the viewport to the workspace, rather than giving the plot
    a fixed height. Only long panel content scrolls; controls stay on screen. */
@@ -157,8 +158,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .entry-content { padding: 16px 20px; }
   .entry-content .shiny-input-container { margin-bottom: 12px; }
   .composition-total { padding: 10px 12px; margin-bottom: 14px; }
+  .clear-samples { margin-inline: 20px; }
   .session-note { margin: 0 20px; padding-top: 12px; }
-  .help-details { margin: 12px 20px 16px; }
+  .help-details { margin: 12px 20px 8px; }
   .visual-panel > .tabbable { display: flex; flex-direction: column; flex: 1; min-height: 0; }
   .visual-panel .tab-content { flex: 1; min-height: 0; position: relative; }
   .visual-panel .tab-pane.active { display: flex; flex-direction: column; height: 100%; min-height: 0; }
@@ -193,7 +195,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .entry-content { padding-top: 12px; padding-bottom: 12px; }
   .entry-content .shiny-input-container { margin-bottom: 10px; }
   .session-note p { font-size: 11px; line-height: 1.5; }
-  .help-details { margin-top: 8px; margin-bottom: 12px; }
+  .help-details { margin-top: 8px; }
 }
 @media (max-width: 1000px) {
   .results-search-sort { grid-template-columns: minmax(0, 1fr) 110px; }
