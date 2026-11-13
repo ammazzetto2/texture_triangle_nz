@@ -63,12 +63,20 @@ server <- function(input, output, session) {
     updateCheckboxInput(session, "reviewOnly", value = TRUE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
   }, ignoreInit = TRUE)
-  observeEvent(list(input$allSamplesBtn, input$showAllSamplesBtn), {
+  show_all_results <- function() {
     review_only(FALSE)
     updateTextInput(session, "sampleSearch", value = "")
     updateCheckboxInput(session, "reviewOnly", value = FALSE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
-  }, ignoreInit = TRUE)
+  }
+  observeEvent(input$allSamplesBtn, {
+    req(input$allSamplesBtn > 0)
+    show_all_results()
+  })
+  observeEvent(input$showAllSamplesBtn, {
+    req(input$showAllSamplesBtn > 0)
+    show_all_results()
+  })
   output$reviewFilterControl <- renderUI({
     if (!review_only()) return(NULL)
     tagList(
@@ -415,7 +423,7 @@ server <- function(input, output, session) {
     pending <- pending_upload()
     if (is.null(pending) || pending$format == "results") return(NULL)
     defaults <- default_upload_mapping(pending$data)
-    tagList(tags$p(class = "field-help", "Map four different columns. Unselected columns will not be imported."),
+    tagList(tags$p(class = "field-help", "Choose one column each for sample name, sand, silt and clay. Percentages must total 100. Rounded totals are used as supplied."),
       lapply(names(defaults), function(column) selectInput(paste0("map_", column), paste("Column for", column),
         choices = c("Choose a column" = "", stats::setNames(names(pending$data), names(pending$data))),
         selected = defaults[[column]], selectize = FALSE)))
@@ -447,7 +455,7 @@ server <- function(input, output, session) {
     inspected <- upload_inspection()
     if (is.null(inspected) || !is.null(inspected$error)) return(NULL)
     tagList(tags$h3("Preview before import"),
-      tags$p(class = "field-help", "Preview shows up to 10 rows."),
+      tags$p(class = "field-help", "Preview shows up to 10 rows. Changing CSV contents clears the preview and requires selecting the file again."),
       if (length(inspected$ignored)) tags$p(class = "field-help", paste("Excluded columns:", paste(inspected$ignored, collapse = ", "))),
       tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV preview; scroll for more columns", build_plain_table(head(inspected$preview, 10))),
       if (nrow(inspected$issues)) tagList(
@@ -455,7 +463,7 @@ server <- function(input, output, session) {
         tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV validation errors; scroll for more rows and columns", build_plain_table(head(inspected$issues, 25))),
         downloadButton("downloadUploadErrors", "Download all errors", class = "btn-outline-primary")),
       radioButtons("importAction", "Import into workspace", c("Append to current samples" = "append", "Replace all current samples" = "replace"), selected = "append"),
-      tags$p(class = "field-help", "Import applies to every row; invalid files are never partially imported. Undo restores the dataset before this import."),
+      tags$p(class = "field-help", "Append keeps existing samples and adds the CSV rows. Replace uses the CSV as the entire workspace. All rows must pass validation. Undo restores the previous samples."),
       actionButton("confirmImportBtn", "Import reviewed samples", class = "btn-primary",
                    disabled = nrow(inspected$issues) > 0L))
   })
