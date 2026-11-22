@@ -27,33 +27,52 @@ validate_soil_data <- function(data, tolerance = 1e-8) {
   data
 }
 
+# Shared CSV reader: preserve identifiers and reject malformed records before mapping.
+read_soil_table <- function(path, format = c("samples", "results")) {
+  format <- match.arg(format)
+  data <- tryCatch(withCallingHandlers({
+    counts <- count.fields(path, sep = ",", quote = '"', comment.char = "", blank.lines.skip = TRUE)
+    counts <- counts[!is.na(counts)]
+    if (length(counts) && any(counts != counts[1])) stop("Inconsistent field counts.")
+    read.csv(path, check.names = FALSE, colClasses = "character", na.strings = character(),
+             row.names = NULL, fill = FALSE)
+    },
+    warning = function(w) stop(conditionMessage(w), call. = FALSE)),
+    error = function(e) stop("Could not read the CSV. Check comma separators, quotes, and the number of columns in each row.", call. = FALSE))
+  if (anyDuplicated(names(data)) || any(!nzchar(trimws(names(data)))))
+    stop("Column names must be nonblank and unique.", call. = FALSE)
+  if (!nrow(data)) stop("Add at least one sample to the CSV.", call. = FALSE)
+  if (identical(format, "results") && !setequal(names(data),
+      c("soil", "sand", "silt", "clay", "classification", "classification_system",
+        "classification_status", "classification_candidates"))) {
+    stop("Downloaded results must contain exactly these columns: soil, sand, silt, clay, classification, classification_system, classification_status, classification_candidates. Choose Samples to map another CSV layout.", call. = FALSE)
+  }
+  data
+}
+
+# Both direct CSV reads and mapped uploads use the same text-to-number conversion.
+parse_soil_values <- function(data) {
+  data$soil <- trimws(data$soil)
+  for (column in c("sand", "silt", "clay")) {
+    data[[column]] <- suppressWarnings(as.numeric(data[[column]]))
+  }
+  data
+}
+
 read_soil_csv <- function(path, format = c("samples", "results")) {
   format <- match.arg(format)
-  # Treat parser warnings (for example, an unterminated quoted field) as errors.
-  data <- tryCatch(
-    withCallingHandlers(
-      read.csv(path, check.names = FALSE, stringsAsFactors = FALSE,
-               row.names = NULL, fill = FALSE, na.strings = character(),
-               colClasses = c(soil = "character")),
-      warning = function(w) stop(conditionMessage(w), call. = FALSE)
-    ),
-    error = function(e) stop(
-      "Could not read the CSV. Check comma separators, quotes, and the number of fields in each row.",
-      call. = FALSE
-    )
-  )
-  if (format == "results") {
-    required <- c("soil", "sand", "silt", "clay")
-    exported <- c(required, "classification", "classification_system",
-                  "classification_status", "classification_candidates")
-    if (anyDuplicated(names(data))) stop("Column names must be unique.", call. = FALSE)
-    if (!setequal(names(data), exported)) {
-      stop("Downloaded results must contain exactly these columns: ",
-           paste(exported, collapse = ", "), ". Choose Samples for a four-column CSV.", call. = FALSE)
-    }
-    # Saved classifications are historical output, never trusted input. Only
-    # measurements enter the dataset; the selected system recalculates results.
-    data <- data[, required, drop = FALSE]
+  data <- read_soil_table(path, format)
+  required <- c("soil", "sand", "silt", "clay")
+  if (format == "samples" && !setequal(names(data), required)) {
+    stop("Use exactly these columns: soil, sand, silt, clay (no extra columns).", call. = FALSE)
   }
-  validate_soil_data(data)
+  # Recalculate saved classifications from the measurements on import.
+  samples <- validate_soil_data(parse_soil_values(data[, required, drop = FALSE]))
+  # Preserve integer columns returned by the original direct reader.
+  for (column in required[-1]) {
+    if (is.integer(type.convert(data[[column]], as.is = TRUE))) {
+      samples[[column]] <- as.integer(samples[[column]])
+    }
+  }
+  samples
 }

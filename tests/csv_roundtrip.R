@@ -7,7 +7,7 @@ expect_error <- function(expr, pattern) {
   message <- tryCatch({ force(expr); NULL }, error = conditionMessage)
   stopifnot(!is.null(message), grepl(pattern, message, fixed = TRUE))
 }
-samples <- data.frame(soil = c("001", "NA", 'Paddock, "north"', "Łąka", "Boundary"),
+samples <- data.frame(soil = c("001", "NA", 'Paddock, "north"', "Łąka\nnorth", "Boundary"),
                       sand = c(50, 90, 20, 33.3, 20),
                       silt = c(25, 5, 20, 33.3, 20), clay = c(25, 5, 60, 33.4, 60))
 csv <- tempfile(fileext = ".csv")
@@ -18,6 +18,65 @@ for (system in systems) {
   restored <- app_env$read_soil_csv(csv, "results")
   stopifnot(isTRUE(all.equal(restored, samples)))
 }
+# Exercise downloads and staged uploads in separate, initially empty sessions.
+roundtrip_samples <- rbind(samples, samples[1, ])
+rownames(roundtrip_samples) <- NULL
+for (system in systems) {
+  saved <- tempfile(fileext = ".csv")
+  shiny::testServer(app_env$server, {
+    session$setInputs(dataset = system)
+    change_samples(roundtrip_samples, "Export fixture")
+    session$flushReact()
+    file.copy(output$downloadDataBtn, saved)
+  })
+  shiny::testServer(app_env$server, {
+    session$setInputs(dataset = system, csvFormat = "results", confirmImportBtn = 0,
+      undoDataBtn = 0, importAction = "replace", duplicateAction = "keep")
+    session$setInputs(fileUpload = list(datapath = saved))
+    stopifnot(nrow(soil_data()) == 0L, nrow(upload_inspection()$issues) == 0L)
+    session$setInputs(confirmImportBtn = 1)
+    stopifnot(isTRUE(all.equal(soil_data(), roundtrip_samples)),
+      isTRUE(all.equal(classified_data(), app_env$classify_soil_data(roundtrip_samples, system))))
+    # Repeated uploads honor both duplicate choices and preserve undo.
+    previous <- undo_state()
+    session$setInputs(importAction = "append", duplicateAction = "skip",
+      fileUpload = list(datapath = saved))
+    session$setInputs(confirmImportBtn = 2)
+    stopifnot(isTRUE(all.equal(soil_data(), roundtrip_samples)), identical(undo_state(), previous))
+    session$setInputs(duplicateAction = "keep", fileUpload = list(datapath = saved))
+    session$setInputs(confirmImportBtn = 3)
+    stopifnot(nrow(soil_data()) == 2L * nrow(roundtrip_samples))
+    session$setInputs(undoDataBtn = 1)
+    stopifnot(isTRUE(all.equal(soil_data(), roundtrip_samples)))
+  })
+  unlink(saved)
+}
+
+# Both entry points reject the same malformed records and headers.
+malformed <- list(
+  c("soil,sand,silt,clay", "Short,50,25"),
+  c("soil,sand,silt,clay", "Long,50,25,25,extra"),
+  c("soil,sand,silt,clay", '"Unclosed,50,25,25'),
+  c("soil,sand,sand,clay", "Duplicate,50,25,25"),
+  c("soil,sand,,clay", "Blank,50,25,25")
+)
+for (i in seq_along(malformed)) {
+  writeLines(malformed[[i]], csv)
+  expected <- if (i <= 3L) "Could not read the CSV" else "Column names must be nonblank and unique"
+  expect_error(app_env$read_soil_csv(csv), expected)
+  expect_error(app_env$read_upload_table(csv), expected)
+}
+# Invalid numeric fields are rejected consistently after parsing.
+for (value in c("", "NA", "NaN", "Inf", "TRUE", "50%", "-1", "101")) {
+  invalid <- samples
+  invalid$sand[1] <- value
+  write.csv(invalid, csv, row.names = FALSE)
+  expect_error(app_env$read_soil_csv(csv), "finite values")
+  raw <- app_env$read_upload_table(csv)
+  inspected <- app_env$inspect_upload(raw, app_env$default_upload_mapping(raw))
+  stopifnot(any(inspected$issues$row == 1L & inspected$issues$field == "sand"))
+}
+write.csv(exported, csv, row.names = FALSE)
 # Exact schemas, not arbitrary extra columns, distinguish the two formats.
 expect_error(app_env$read_soil_csv(csv), "exactly these columns")
 write.csv(samples, csv, row.names = FALSE)
