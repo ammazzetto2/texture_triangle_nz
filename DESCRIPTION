@@ -1,0 +1,11 @@
+Type: Project
+Title: Soil Texture Triangle
+Version: 0.0.0
+Description: An R Shiny workspace for soil texture classification.
+Imports:
+    shiny,
+    bslib,
+    ggplot2,
+    ggtern,
+    dplyr,
+    pracma

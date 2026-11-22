@@ -27,25 +27,32 @@ and export results or a high-resolution chart.
 
 ## Quick start
 
-Install **R 4.1 or newer**, clone this repository, and run from its root folder:
+Install **R 4.6.1** (the version recorded in the lockfile), clone this repository,
+and run from its root folder:
 
 ```sh
 git clone https://github.com/ammazzetto2/texture_triangle_nz.git
 cd texture_triangle_nz
+Rscript -e 'renv::restore()'
 Rscript run_app.R
 ```
 
 Alternatively, open the project folder in R or RStudio and run:
 
 ```r
+renv::restore()
 source("run_app.R")
 ```
 
-Startup checks for `shiny`, `bslib`, `ggplot2`, `ggtern`, `dplyr` and `pracma`.
-Missing packages are installed from CRAN into the Git-ignored `.R-library/`
-folder; available, loadable packages are reused. First-time installation needs
-internet access and may require system build tools. Dependency versions are
-not yet locked.
+The project uses `renv.lock` to pin its R dependencies. Opening the project
+activates `renv` through `.Rprofile`; the launcher and test helpers also activate
+it when R starts with `--vanilla`. Run `renv::restore()` after cloning or pulling
+changes to the lockfile. The first run bootstraps the pinned version of `renv`
+and needs internet access. Restoring packages may require system build tools.
+
+The project library is stored under the Git-ignored `renv/library/` directory.
+Startup reports missing dependencies with restore instructions. The lockfile
+records the tested R version, but R itself must be installed separately.
 
 RStudio opens the app in a browser; terminal startup prints a local URL.
 Stop the app with Escape in RStudio or Ctrl+C in the terminal.

@@ -14,11 +14,10 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   webServer: {
-    command: 'Rscript --vanilla -e \'shiny::runApp("soil_triangle.R", host="127.0.0.1", port=38765, launch.browser=FALSE)\'',
+    command: 'Rscript --vanilla -e \'source("R/dependencies.R"); ensure_project_dependencies(); shiny::runApp("soil_triangle.R", host="127.0.0.1", port=38765, launch.browser=FALSE)\'',
     cwd: "../..",
     url: "http://127.0.0.1:38765",
     timeout: 120000,
     reuseExistingServer: false,
-    env: { R_LIBS_USER: ".R-library" },
   },
 });
