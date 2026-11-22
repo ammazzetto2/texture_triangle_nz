@@ -20,7 +20,8 @@ shiny::testServer(app_env$server, {
 
   session$setInputs(fileUpload = list(datapath = normalizePath("examples/soil_samples.csv")))
   session$setInputs(confirmImportBtn = 1)
-  stopifnot(nrow(soil_data()) == 4L)
+  # The existing Sample A is skipped by default.
+  stopifnot(nrow(soil_data()) == 3L)
   # Rejected entry must not overwrite the preceding successful operation's undo.
   session$setInputs(sandValue = 49, addManualDataBtn = 4)
   session$setInputs(dataset = "USDA", undoDataBtn = 2)

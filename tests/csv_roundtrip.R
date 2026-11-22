@@ -58,7 +58,7 @@ shiny::testServer(app_env$server, {
   session$setInputs(csvFormat = "results", dataset = "USDA",
                     fileUpload = list(datapath = saved))
   stopifnot(identical(soil_data(), original))
-  session$setInputs(confirmImportBtn = 1)
+  session$setInputs(duplicateAction = "keep", confirmImportBtn = 1)
   stopifnot(nrow(soil_data()) == 10L,
             identical(soil_data()$soil, rep(samples$soil, 2)),
             all(classified_data()$classification_system == "USDA"),
