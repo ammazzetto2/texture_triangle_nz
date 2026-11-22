@@ -1,3 +1,6 @@
+# Keep incidental graphics devices from creating Rplots.pdf.
+options(device = function(...) grDevices::pdf(file = NULL))
+
 source("R/dependencies.R")
 ensure_project_dependencies()
 app_env <- new.env()

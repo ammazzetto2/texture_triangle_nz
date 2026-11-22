@@ -42,15 +42,22 @@ Do not include confidential sample data or credentials in issues or commits.
    git switch -c feature/describe-your-change
    ```
 
-3. Install R 4.1 or newer and start the app from the repository root:
+3. Install R 4.6.1, restore the locked dependencies, and start the app from the repository root:
 
    ```sh
+   Rscript -e 'renv::restore()'
    Rscript run_app.R
    ```
 
-Missing R packages are installed into `.R-library/`. Do not commit that folder,
-R session files, generated plots or editor state. Dependency versions are not
-yet locked; report the environment used to validate your changes.
+Commit `renv.lock`, `.Rprofile`, `renv/activate.R`, `renv/settings.json`,
+and `DESCRIPTION` when dependency requirements change. Project libraries,
+caches, R session files and generated plots belong outside version control.
+
+`DESCRIPTION` lists the app and test dependencies. To add or update a dependency,
+edit that list as needed, use `renv::install("package@version")`, and run the
+checks below before saving the updated lockfile with `renv::snapshot()`.
+Use `renv::status()` to check consistency. Collaborators apply the changes with
+`renv::restore()`. Record an R-version change explicitly when upgrading R.
 
 ## Make and verify changes
 
