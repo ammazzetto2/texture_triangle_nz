@@ -1,0 +1,11 @@
+{
+  "name": "soil-texture-browser-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

@@ -9,3 +9,8 @@
 
 # macOS metadata
 .DS_Store
+
+# Browser regression dependencies and reports
+tests/browser/node_modules/
+tests/browser/test-results/
+tests/browser/playwright-report/
