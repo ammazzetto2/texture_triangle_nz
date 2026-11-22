@@ -117,6 +117,7 @@ build_app_ui <- function() {
                 checkboxInput("showSampleLabels", "Sample labels", value = TRUE),
                 checkboxInput("avoidLabelOverlap", "Hide overlapping labels", value = TRUE),
                 actionButton("enlargePlotBtn", "Enlarge", class = "btn-outline-primary"),
+                uiOutput("coincidentControl", inline = TRUE),
                 actionButton("classKeyBtn", "Class key", class = "btn-outline-primary"),
                 downloadButton("downloadPlotBtn", "PNG", class = "btn-outline-primary")),
               tags$div(class = "plot-selection", uiOutput("plotSelection")),

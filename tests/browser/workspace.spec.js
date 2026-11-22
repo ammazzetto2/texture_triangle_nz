@@ -89,3 +89,17 @@ test("320px workspace has usable controls and no page overflow", async ({ page }
   expect(logo.width).toBeGreaterThan(0);
   expect(logo.x + logo.width).toBeLessThanOrEqual(320);
 });
+
+test("shared positions expose every sample name", async ({ page }) => {
+  await openWorkspace(page);
+  await addSample(page, "First");
+  await addSample(page, "Second");
+  await expect(page.getByRole("button", { name: "Shared positions 1", exact: true })).toBeVisible();
+  await page.locator("#showSampleLabels").uncheck();
+  await page.getByRole("button", { name: "Shared positions 1", exact: true }).click();
+  await expect(page.locator("#coincidentGroup")).toContainText("2 samples");
+  await expect(page.locator("#coincidentSamples")).toContainText("First");
+  await expect(page.locator("#coincidentSamples")).toContainText("Second");
+  await page.getByRole("button", { name: "Close", exact: true }).click();
+  await page.screenshot({ path: "/tmp/soil-shared-positions.png" });
+});

@@ -249,3 +249,5 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
 @media (max-width: 380px) {
   .workspace-bar { grid-template-columns: minmax(0, 1fr); }
 }
+
+.coincident-table { max-height: 50vh; overflow: auto; overflow-wrap: anywhere; }

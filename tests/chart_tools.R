@@ -41,3 +41,33 @@ shiny::testServer(app_env$server, {
   stopifnot(is.null(selected_sample()), !is.null(output$ternaryPlot))
 })
 cat("Chart tools: row identity, highlighting, labels, PNG export, enlarged plot, stale clicks and undo PASS\n")
+
+shared <- data.frame(soil = c("First", "<Second>", "Other", "First"),
+  sand = c(50, 50, 90, 50), silt = c(25, 25, 5, 25), clay = c(25, 25, 5, 25))
+groups <- app_env$coincident_sample_groups(shared)
+stopifnot(nrow(groups) == 1L, groups$count == 3L, identical(groups$rows[[1]], c(1L, 2L, 4L)))
+for (labels in c(TRUE, FALSE)) {
+  plot <- app_env$build_soil_plot(shared, "New Zealand", show_labels = labels, selected_row = 2)
+  built <- ggtern::ggplot_build(plot)
+  stopifnot(nrow(built$data[[3]]) == 4L, built$data[[8]]$label == "3 samples",
+    built$data[[8]]$x == 0.5, built$data[[8]]$y == 0.25,
+    built$data[[7]]$label == "<Second>")
+  ggtern::ggplotGrob(plot)
+}
+nearby <- shared[1:2, ]
+nearby$sand[2] <- nearby$sand[2] + 1e-6
+nearby$silt[2] <- nearby$silt[2] - 1e-6
+stopifnot(nrow(app_env$coincident_sample_groups(nearby)) == 0L)
+shiny::testServer(app_env$server, {
+  session$setInputs(dataset = "New Zealand", coincidentGroup = "1", undoDataBtn = 0)
+  change_samples(shared, "Shared samples")
+  stopifnot(grepl("Shared positions 1", output$coincidentControl$html, fixed = TRUE),
+    grepl("&lt;Second&gt;", output$coincidentSamples$html, fixed = TRUE))
+  session$setInputs(deleteSample = list(row = 2, revision = data_revision()))
+  stopifnot(coincident_groups()$count == 2L)
+  session$setInputs(undoDataBtn = 1)
+  stopifnot(coincident_groups()$count == 3L)
+  session$setInputs(clearDataBtn = 1)
+  stopifnot(is.null(output$coincidentControl), nrow(coincident_groups()) == 0L)
+})
+cat("Shared positions: exact counts, unchanged coordinates, hidden labels, escaped names, delete and undo PASS\n")

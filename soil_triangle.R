@@ -258,6 +258,37 @@ server <- function(input, output, session) {
       if (is.na(sample$classification)) paste("Candidates:", sample$classification_candidates) else sample$classification),
       actionButton("clearPlotSelection", "Clear highlight", class = "btn-outline-primary"))
   })
+  coincident_groups <- reactive(coincident_sample_groups(soil_data()))
+  output$coincidentControl <- renderUI({
+    groups <- coincident_groups()
+    if (!nrow(groups)) return(NULL)
+    actionButton("coincidentBtn", paste("Shared positions", nrow(groups)), class = "btn-outline-primary")
+  })
+  observeEvent(input$coincidentBtn, {
+    req(nrow(coincident_groups()))
+    showModal(modalDialog(title = "Samples at shared positions",
+      tags$p("Count labels show samples with identical sand, silt and clay percentages."),
+      uiOutput("coincidentChoices"),
+      tags$div(class = "coincident-table", tabindex = "0", role = "region",
+        `aria-label` = "Samples at the selected position", uiOutput("coincidentSamples")),
+      easyClose = TRUE, footer = modalButton("Close")))
+  })
+  output$coincidentChoices <- renderUI({
+    groups <- coincident_groups()
+    if (!nrow(groups)) return(tags$p("There are no shared positions."))
+    labels <- sprintf("Sand %s%%, silt %s%%, clay %s%% (%d samples)",
+      groups$sand, groups$silt, groups$clay, groups$count)
+    selectInput("coincidentGroup", "Position", choices = stats::setNames(seq_len(nrow(groups)), labels),
+      selectize = FALSE)
+  })
+  output$coincidentSamples <- renderUI({
+    groups <- coincident_groups()
+    index <- suppressWarnings(as.integer(input$coincidentGroup))
+    req(length(index) == 1L, !is.na(index), index >= 1L, index <= nrow(groups))
+    rows <- groups$rows[[index]]
+    build_plain_table(data.frame(Row = rows, Sample = soil_data()$soil[rows]))
+  })
+
   observeEvent(input$classKeyBtn, {
     definition <- classification_definition(input$dataset)
     labels <- unique(definition$data$Label)
@@ -557,7 +588,7 @@ server <- function(input, output, session) {
     paste("Soil texture triangle for", classification_definition(input$dataset)$display,
       "with", nrow(soil_data()), "sample points. Axes show sand, silt and clay percentages.",
       "Open the Results tab for sample names, exact percentages, classifications and review status.",
-      "The Class key lists region names. Coincident points and overlapping labels may be hidden.")
+      "The Class key lists region names. Count labels mark identical compositions. Use Shared positions to inspect their sample names. Nearby points and labels may overlap.")
   })
   output$enlargedPlot <- renderPlot({
     req(input$dataset)
