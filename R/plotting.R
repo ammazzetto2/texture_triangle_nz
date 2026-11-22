@@ -57,6 +57,9 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
   }
   # A shared position gets one count label. Selected samples still show their name.
   shared_rows <- unlist(groups$rows, use.names = FALSE)
+  if (nrow(selected) && selected_row %in% shared_rows) {
+    selected$vjust <- ifelse(selected$Clay < 0.1, -3, 3)
+  }
   label_points <- label_points[!rownames(label_points) %in% as.character(shared_rows), , drop = FALSE]
   ggtern::ggtern(polygon_data, ggtern::aes(x = Sand, y = Clay, z = Silt)) +
     ggplot2::geom_polygon(ggtern::aes(fill = Label, group = Label),

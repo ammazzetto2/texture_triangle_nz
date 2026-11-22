@@ -61,6 +61,7 @@ stopifnot(nrow(app_env$coincident_sample_groups(nearby)) == 0L)
 shiny::testServer(app_env$server, {
   session$setInputs(dataset = "New Zealand", coincidentGroup = "1", undoDataBtn = 0)
   change_samples(shared, "Shared samples")
+  session$flushReact()
   stopifnot(grepl("Shared positions 1", output$coincidentControl$html, fixed = TRUE),
     grepl("&lt;Second&gt;", output$coincidentSamples$html, fixed = TRUE))
   session$setInputs(deleteSample = list(row = 2, revision = data_revision()))

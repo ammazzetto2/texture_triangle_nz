@@ -278,7 +278,7 @@ server <- function(input, output, session) {
     if (!nrow(groups)) return(tags$p("There are no shared positions."))
     labels <- sprintf("Sand %s%%, silt %s%%, clay %s%% (%d samples)",
       groups$sand, groups$silt, groups$clay, groups$count)
-    selectInput("coincidentGroup", "Position", choices = stats::setNames(seq_len(nrow(groups)), labels),
+    selectInput("coincidentGroup", "Position", width = "100%", choices = stats::setNames(seq_len(nrow(groups)), labels),
       selectize = FALSE)
   })
   output$coincidentSamples <- renderUI({

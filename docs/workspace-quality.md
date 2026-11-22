@@ -68,5 +68,6 @@ deployment host.
   Check each session’s CSV contains its own samples, then restore a download
   into a fresh session and compare names and percentages.
 - Inspect dense charts with representative data. All points are still plotted;
-  coincident points overlap and long chart labels can be clipped. Hide labels and
+  identical compositions have count labels and a Shared positions name list.
+  Nearby points can still overlap and long chart labels can be clipped. Hide labels and
   use the Results table for exact names and values.

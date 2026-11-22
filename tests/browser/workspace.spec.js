@@ -101,5 +101,6 @@ test("shared positions expose every sample name", async ({ page }) => {
   await expect(page.locator("#coincidentSamples")).toContainText("First");
   await expect(page.locator("#coincidentSamples")).toContainText("Second");
   await page.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(page.locator("#coincidentGroup")).toBeHidden();
   await page.screenshot({ path: "/tmp/soil-shared-positions.png" });
 });

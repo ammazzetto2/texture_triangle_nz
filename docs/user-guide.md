@@ -144,3 +144,12 @@ Totals use an absolute tolerance of `1e-8` percentage points to accommodate
 floating-point arithmetic. Values are not normalized or rounded automatically.
 This tolerance does not accommodate laboratory measurement or rounding error.
 
+
+### Samples at identical positions
+
+Samples with exactly matching sand, silt and clay percentages share a count
+label on the triangle, including when sample labels are hidden. Choose
+**Shared positions** above the chart to inspect every sample name at a chosen
+composition. Row numbers distinguish repeated names. Counts also appear in
+enlarged charts and PNG downloads. Selecting a sample with **View** in Results
+still displays its name. Nearby compositions remain separate.
