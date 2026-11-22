@@ -17,12 +17,12 @@ body { background: var(--soil-bg); color: var(--soil-ink); }
 .eyebrow { margin: 0 0 5px; font-size: 10px; line-height: 1.5; font-weight: 700; letter-spacing: .16em; color: var(--soil-muted); }
 h1 { margin: 0; font-size: 28px; letter-spacing: -.04em; font-weight: 650; }
 h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
-.header-note { margin: 0; font-size: 14px; color: var(--soil-muted); }
 .workspace-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: end; gap: 12px 16px; min-width: 0; padding: 16px 20px; margin-bottom: 24px; border: 1px solid var(--soil-line); border-radius: var(--soil-radius); background: #edf0e8; }
 .classification-control { min-width: 0; }
 .classification-control .shiny-input-container { width: 100%; margin: 0; }
 .classification-control .form-select { width: 100%; min-width: 0; }
-.workspace-bar > .btn { white-space: nowrap; }
+.workspace-download { max-width: 26ch; }
+.workspace-download p { margin: 4px 0 0; line-height: 1.35; }
 .system-context { grid-column: 1 / -1; border-top: 1px solid #d3dccf; padding-top: 8px; min-width: 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .system-context p { display: inline; margin: 0 8px 0 0; }
 .system-context .system-selected { display: block; margin-bottom: 3px; font-weight: 650; }
@@ -80,9 +80,10 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .session-note p { font-size: 12px; color: var(--soil-muted); line-height: 1.7; margin-bottom: 6px; }
 .session-note .sample-feedback { color: var(--soil-green); overflow-wrap: anywhere; }
 .undo-samples { width: 100%; margin-bottom: 12px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.clear-samples { margin: 0 24px 8px; }
 .btn-clear { padding: 4px 0; border: none; background: transparent; color: #985044; min-height: 32px; font-weight: 500; }
 .btn-clear:hover { color: #742d24; text-decoration: underline; }
-.help-details { margin: 16px 24px 24px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
+.help-details { margin: 16px 20px 8px; font-size: 12px; color: var(--soil-muted); line-height: 1.7; }
 summary { cursor: pointer; font-weight: 600; color: var(--soil-ink); }
 details p { margin-top: 12px; }
 .visual-heading { justify-content: space-between; gap: 16px; }
@@ -124,12 +125,12 @@ details p { margin-top: 12px; }
 .empty-symbol { font-size: 42px; color: #9bad9a; }
 .empty-state h3 { font-size: 17px; margin: 16px 0 8px; }
 .empty-state p { max-width: 290px; margin: 0 auto; color: var(--soil-muted); font-size: 13px; line-height: 1.7; }
-.sidebar-resources { display: flex; flex-direction: column; gap: 8px; margin: 0 20px 6px; padding-top: 12px; border-top: 1px solid var(--soil-line); }
-.about-details { font-size: 12px; line-height: 1.7; color: var(--soil-muted); }
+.sidebar-resources { display: flex; flex-direction: column; gap: 8px; margin: 0 20px 6px; }
+.about-details { padding-bottom: 12px; border-bottom: 1px solid var(--soil-line); font-size: 12px; line-height: 1.7; color: var(--soil-muted); }
 .about-details summary { color: var(--soil-ink); font-size: 12px; }
 .sidebar-resources a { color: var(--soil-green); text-underline-offset: 3px; }
 .sidebar-contact { font-size: 12px; }
-.sidebar-logo { height: 34px; width: auto; max-width: 150px; align-self: flex-start; object-fit: contain; }
+.sidebar-logo { width: 160px; height: auto; max-width: 100%; align-self: flex-start; object-fit: contain; }
 a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:focus-visible, .upload-preview-table:focus-visible { outline: 3px solid var(--soil-green); outline-offset: 3px; }
 /* Desktop: allocate the viewport to the workspace, rather than giving the plot
    a fixed height. Only long panel content scrolls; controls stay on screen. */
@@ -157,8 +158,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .entry-content { padding: 16px 20px; }
   .entry-content .shiny-input-container { margin-bottom: 12px; }
   .composition-total { padding: 10px 12px; margin-bottom: 14px; }
+  .clear-samples { margin-inline: 20px; }
   .session-note { margin: 0 20px; padding-top: 12px; }
-  .help-details { margin: 12px 20px 16px; }
+  .help-details { margin: 12px 20px 8px; }
   .visual-panel > .tabbable { display: flex; flex-direction: column; flex: 1; min-height: 0; }
   .visual-panel .tab-content { flex: 1; min-height: 0; position: relative; }
   .visual-panel .tab-pane.active { display: flex; flex-direction: column; height: 100%; min-height: 0; }
@@ -180,7 +182,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
     padding: 12px 20px 10px;
   }
   .app-header { grid-column: 1; grid-row: 1; align-self: start; padding-top: 12px; }
-  .app-header .header-note { display: none; }
   .workspace-bar { grid-column: 2; grid-row: 1; gap: 16px; }
   .workspace-grid { grid-column: 1 / -1; grid-row: 2; }
 }
@@ -194,7 +195,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .entry-content { padding-top: 12px; padding-bottom: 12px; }
   .entry-content .shiny-input-container { margin-bottom: 10px; }
   .session-note p { font-size: 11px; line-height: 1.5; }
-  .help-details { margin-top: 8px; margin-bottom: 12px; }
+  .help-details { margin-top: 8px; }
 }
 @media (max-width: 1000px) {
   .results-search-sort { grid-template-columns: minmax(0, 1fr) 110px; }
@@ -205,7 +206,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .panel .nav-tabs { padding: 0 20px; }
   .session-note { margin: 0 20px; }
   .help-details { margin-left: 20px; margin-right: 20px; }
-  .header-note { max-width: 220px; text-align: right; }
 }
 @media (min-width: 761px) and (max-width: 1000px) {
   .app-shell { padding: 12px 16px; }
@@ -220,7 +220,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
   .results-search-sort > :first-child { grid-column: 1 / -1; }
   .app-shell { padding: 20px 12px; }
   .app-header { margin-bottom: 20px; }
-  .header-note { display: none; }
   .workspace-bar { grid-template-columns: minmax(0, 1fr) auto; gap: 14px; padding: 16px; margin-bottom: 16px; }
   .classification-control { grid-column: 1 / -1; }
   .workspace-grid { grid-template-columns: minmax(0, 1fr); }
@@ -249,5 +248,6 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
 .upload-preview-table th { overflow-wrap: anywhere; }
 @media (max-width: 380px) {
   .workspace-bar { grid-template-columns: minmax(0, 1fr); }
-  .workspace-bar > .btn { justify-self: start; }
 }
+
+.coincident-table { max-height: 50vh; overflow: auto; overflow-wrap: anywhere; }

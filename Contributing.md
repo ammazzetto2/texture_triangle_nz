@@ -135,6 +135,28 @@ and rerun affected checks. If the scope changes, update the title and descriptio
 to match the final implementation. Maintainers may request changes before
 merging; a submitted pull request is not a guarantee of acceptance.
 
+## Browser regression checks
+
+With Node.js 22 or newer and the R dependencies installed, run:
+
+```sh
+cd tests/browser
+npm ci
+npx playwright install chromium
+npm test
+```
+
+The suite starts and stops its own local Shiny server on port 38765 and uses
+a fresh browser session for each test. Keep that port free. Checks cover the
+initial Triangle tab, keyboard sample entry, CSV mapping and validation,
+editing and focus restoration, and the 320-pixel mobile layout.
+
+Failures save screenshots and Playwright traces under
+`tests/browser/test-results/`. These generated files are Git-ignored.
+Run these checks after changes to interface markup, styling, browser scripts,
+or server behaviour that affects navigation. Screen-reader announcements and
+actual browser zoom still require manual checks.
+
 ## Contribution licensing
 
 Submit original contributions under the project's [MIT License](Licensing.md).

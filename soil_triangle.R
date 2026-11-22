@@ -63,12 +63,20 @@ server <- function(input, output, session) {
     updateCheckboxInput(session, "reviewOnly", value = TRUE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
   }, ignoreInit = TRUE)
-  observeEvent(list(input$allSamplesBtn, input$showAllSamplesBtn), {
+  show_all_results <- function() {
     review_only(FALSE)
     updateTextInput(session, "sampleSearch", value = "")
     updateCheckboxInput(session, "reviewOnly", value = FALSE)
     updateTabsetPanel(session, "workspaceView", selected = "results")
-  }, ignoreInit = TRUE)
+  }
+  observeEvent(input$allSamplesBtn, {
+    req(input$allSamplesBtn > 0)
+    show_all_results()
+  })
+  observeEvent(input$showAllSamplesBtn, {
+    req(input$showAllSamplesBtn > 0)
+    show_all_results()
+  })
   output$reviewFilterControl <- renderUI({
     if (!review_only()) return(NULL)
     tagList(
@@ -250,6 +258,37 @@ server <- function(input, output, session) {
       if (is.na(sample$classification)) paste("Candidates:", sample$classification_candidates) else sample$classification),
       actionButton("clearPlotSelection", "Clear highlight", class = "btn-outline-primary"))
   })
+  coincident_groups <- reactive(coincident_sample_groups(soil_data()))
+  output$coincidentControl <- renderUI({
+    groups <- coincident_groups()
+    if (!nrow(groups)) return(NULL)
+    actionButton("coincidentBtn", paste("Shared positions", nrow(groups)), class = "btn-outline-primary")
+  })
+  observeEvent(input$coincidentBtn, {
+    req(nrow(coincident_groups()))
+    showModal(modalDialog(title = "Samples at shared positions",
+      tags$p("Count labels show samples with identical sand, silt and clay percentages."),
+      uiOutput("coincidentChoices"),
+      tags$div(class = "coincident-table", tabindex = "0", role = "region",
+        `aria-label` = "Samples at the selected position", uiOutput("coincidentSamples")),
+      easyClose = TRUE, footer = modalButton("Close")))
+  })
+  output$coincidentChoices <- renderUI({
+    groups <- coincident_groups()
+    if (!nrow(groups)) return(tags$p("There are no shared positions."))
+    labels <- sprintf("Sand %s%%, silt %s%%, clay %s%% (%d samples)",
+      groups$sand, groups$silt, groups$clay, groups$count)
+    selectInput("coincidentGroup", "Position", width = "100%", choices = stats::setNames(seq_len(nrow(groups)), labels),
+      selectize = FALSE)
+  })
+  output$coincidentSamples <- renderUI({
+    groups <- coincident_groups()
+    index <- suppressWarnings(as.integer(input$coincidentGroup))
+    req(length(index) == 1L, !is.na(index), index >= 1L, index <= nrow(groups))
+    rows <- groups$rows[[index]]
+    build_plain_table(data.frame(Row = rows, Sample = soil_data()$soil[rows]))
+  })
+
   observeEvent(input$classKeyBtn, {
     definition <- classification_definition(input$dataset)
     labels <- unique(definition$data$Label)
@@ -415,7 +454,7 @@ server <- function(input, output, session) {
     pending <- pending_upload()
     if (is.null(pending) || pending$format == "results") return(NULL)
     defaults <- default_upload_mapping(pending$data)
-    tagList(tags$p(class = "field-help", "Map four different columns. Unselected columns will not be imported."),
+    tagList(tags$p(class = "field-help", "Choose one column each for sample name, sand, silt and clay. Percentages must total 100. Rounded totals are used as supplied."),
       lapply(names(defaults), function(column) selectInput(paste0("map_", column), paste("Column for", column),
         choices = c("Choose a column" = "", stats::setNames(names(pending$data), names(pending$data))),
         selected = defaults[[column]], selectize = FALSE)))
@@ -430,6 +469,20 @@ server <- function(input, output, session) {
         if (is.null(value)) defaults[[column]] else value
       }, character(1)), names(defaults))
     tryCatch(inspect_upload(pending$data, mapping), error = function(e) list(error = conditionMessage(e)))
+  })
+  upload_duplicates <- reactive({
+    inspected <- upload_inspection()
+    req(inspected, is.null(inspected$error))
+    samples <- inspected$samples
+    existing <- if (identical(input$importAction, "replace")) soil_data()[FALSE, ] else soil_data()
+    tail(duplicated(rbind(existing, samples)), nrow(samples))
+  })
+  output$uploadDuplicateSummary <- renderText({
+    inspected <- upload_inspection()
+    req(inspected, is.null(inspected$error))
+    count <- sum(upload_duplicates())
+    kept <- if (identical(input$duplicateAction, "keep")) nrow(inspected$samples) else nrow(inspected$samples) - count
+    sprintf("%d duplicate row(s). %d row(s) selected for import. Duplicates have the same name and all three percentages. Append also checks existing samples.", count, kept)
   })
   output$uploadStatus <- renderText({
     inspected <- upload_inspection()
@@ -447,7 +500,7 @@ server <- function(input, output, session) {
     inspected <- upload_inspection()
     if (is.null(inspected) || !is.null(inspected$error)) return(NULL)
     tagList(tags$h3("Preview before import"),
-      tags$p(class = "field-help", "Preview shows up to 10 rows."),
+      tags$p(class = "field-help", "Preview shows up to 10 rows. Changing CSV contents clears the preview and requires selecting the file again."),
       if (length(inspected$ignored)) tags$p(class = "field-help", paste("Excluded columns:", paste(inspected$ignored, collapse = ", "))),
       tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV preview; scroll for more columns", build_plain_table(head(inspected$preview, 10))),
       if (nrow(inspected$issues)) tagList(
@@ -455,7 +508,10 @@ server <- function(input, output, session) {
         tags$div(class = "upload-preview-table", tabindex = "0", role = "region", `aria-label` = "CSV validation errors; scroll for more rows and columns", build_plain_table(head(inspected$issues, 25))),
         downloadButton("downloadUploadErrors", "Download all errors", class = "btn-outline-primary")),
       radioButtons("importAction", "Import into workspace", c("Append to current samples" = "append", "Replace all current samples" = "replace"), selected = "append"),
-      tags$p(class = "field-help", "Import applies to every row; invalid files are never partially imported. Undo restores the dataset before this import."),
+      tags$p(class = "field-help", "Append keeps existing samples and adds the CSV rows. Replace uses the CSV as the entire workspace. All rows must pass validation. Undo restores the previous samples."),
+      radioButtons("duplicateAction", "Duplicate rows",
+        c("Skip duplicates" = "skip", "Keep duplicates" = "keep"), selected = "skip"),
+      tags$p(class = "field-help", role = "status", textOutput("uploadDuplicateSummary", inline = TRUE)),
       actionButton("confirmImportBtn", "Import reviewed samples", class = "btn-primary",
                    disabled = nrow(inspected$issues) > 0L))
   })
@@ -467,8 +523,20 @@ server <- function(input, output, session) {
     req(pending, inspected, is.null(inspected$error), nrow(inspected$issues) == 0L)
     samples <- validate_soil_data(inspected$samples)
     replace <- identical(input$importAction, "replace")
+    skipped <- 0L
+    if (!identical(input$duplicateAction, "keep")) {
+      duplicates <- upload_duplicates()
+      skipped <- sum(duplicates)
+      samples <- samples[!duplicates, , drop = FALSE]
+    }
+    if (!replace && !nrow(samples)) {
+      sample_feedback(paste("Skipped", skipped, "duplicate row(s). No samples added."))
+      pending_upload(NULL)
+      return()
+    }
     change_samples(if (replace) samples else rbind(soil_data(), samples),
       paste(if (replace) "Replaced dataset with" else "Imported", nrow(samples), "sample(s)"))
+    if (skipped) sample_feedback(paste0(sample_feedback(), "; skipped ", skipped, " duplicate row(s)."))
     if (pending$format == "results") sample_feedback(paste0(sample_feedback(), "; classifications recalculated using ", input$dataset, "."))
     pending_upload(NULL)
   }, ignoreInit = TRUE)
@@ -520,7 +588,7 @@ server <- function(input, output, session) {
     paste("Soil texture triangle for", classification_definition(input$dataset)$display,
       "with", nrow(soil_data()), "sample points. Axes show sand, silt and clay percentages.",
       "Open the Results tab for sample names, exact percentages, classifications and review status.",
-      "The Class key lists region names. Coincident points and overlapping labels may be hidden.")
+      "The Class key lists region names. Count labels mark identical compositions. Use Shared positions to inspect their sample names. Nearby points and labels may overlap.")
   })
   output$enlargedPlot <- renderPlot({
     req(input$dataset)

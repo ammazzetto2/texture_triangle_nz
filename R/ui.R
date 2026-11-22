@@ -18,8 +18,7 @@ build_app_ui <- function() {
           tags$div(class = "brand-mark", `aria-hidden` = "true", "△"),
           tags$div(tags$p(class = "eyebrow", "SOIL SCIENCE WORKSPACE"),
                    tags$h1("Soil Texture"))
-        ),
-        tags$p(class = "header-note", "Explore the composition beneath the surface.")
+        )
       ),
       tags$section(class = "workspace-bar", `aria-label` = "Workspace controls",
         tags$div(class = "classification-control",
@@ -28,7 +27,10 @@ build_app_ui <- function() {
                       selected = "New Zealand", selectize = FALSE)
         ),
         tags$div(class = "workspace-stats", `aria-live` = "polite", uiOutput("workspaceStats", inline = TRUE)),
-        downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
+        tags$div(class = "workspace-download",
+          downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
+          tags$p(class = "field-help", "Samples last only for this session. Download before refreshing or closing.")
+        ),
         tags$div(class = "system-context", `aria-live` = "polite", uiOutput("systemRequirements"))
       ),
       tags$nav(class = "mobile-workspace-nav", `aria-label` = "Workspace shortcuts",
@@ -38,7 +40,6 @@ build_app_ui <- function() {
       tags$main(class = "workspace-grid",
         tags$aside(id = "sample-entry", class = "sample-panel panel", `aria-label` = "Sample entry",
           tags$div(class = "panel-heading",
-            tags$p(class = "eyebrow", "01 / YOUR DATA"),
             tags$h2("Add samples"),
             tags$p("Enter a composition or bring your own CSV.")
           ),
@@ -65,26 +66,25 @@ build_app_ui <- function() {
                              choices = c("Samples (map columns)" = "samples",
                                          "Downloaded results (8 columns)" = "results"),
                              selected = "samples"),
-                tags$p(class = "field-help", "Choose CSV contents, then select a file. Review the preview and choose Append or Replace before importing. Changing CSV contents clears the preview; select the file again."),
                 fileInput("fileUpload", "Choose a CSV file", accept = ".csv",
                           buttonLabel = "Browse", placeholder = "No file selected"),
-                tags$p(class = "field-help", "Map sample name, sand, silt and clay columns. Percentages must total 100; rounded totals are not automatically normalized."),
                 tags$p(class = "entry-error", role = "alert", textOutput("uploadError", inline = TRUE)),
                 uiOutput("uploadMapping"),
                 tags$div(class = "field-help", role = "status", `aria-atomic` = "true",
                   textOutput("uploadStatus", inline = TRUE)),
                 uiOutput("uploadPreview"),
                 conditionalPanel("input.csvFormat === 'results'",
-                  tags$p(class = "field-help", "Downloaded results restore names and percentages only. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
+                  tags$p(class = "field-help", "Select a previously downloaded CSV to restore sample names and percentages. Saved classifications are replaced using the currently selected system. Particle-size measurements are not converted; select a compatible system before uploading.")),
                 downloadButton("downloadTemplateBtn", "Get CSV template", class = "btn-outline-primary")
               )
             )
           ),
+          tags$div(class = "clear-samples",
+            actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
+          ),
           tags$div(class = "session-note",
             tags$p(class = "sample-feedback", role = "status", textOutput("sampleFeedback", inline = TRUE)),
-            uiOutput("undoControl"),
-            tags$p("Samples are saved only for this session. Use Download CSV before refreshing or closing this page. To restore them later, choose Downloaded results under CSV upload."),
-            actionButton("clearDataBtn", "Clear all samples", class = "btn-clear")
+            uiOutput("undoControl")
           ),
           tags$details(class = "help-details",
             tags$summary("How to read your results"),
@@ -101,22 +101,23 @@ build_app_ui <- function() {
                 tags$a("View methodology notes", href = "methodology.html", target = "_blank", rel = "noopener")
               )
             ),
+            tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University"),
             tags$a("Contact Josie Mazzetto", class = "sidebar-contact",
-                   href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz"),
-            tags$img(class = "sidebar-logo", src = "branding/lincoln_uni.jpg", alt = "Lincoln University")
+                   href = "mailto:josiane.lopesmazzetto@lincoln.ac.nz")
           )
         ),
         tags$section(id = "classification-workspace", tabindex = "-1", class = "visual-panel panel", `aria-label` = "Classification workspace",
           tags$div(class = "panel-heading visual-heading",
-            tags$div(tags$p(class = "eyebrow", "02 / EXPLORE"), tags$h2("Texture workspace")),
+            tags$h2("Texture workspace"),
             tags$span(class = "sample-key", tags$span(class = "sample-dot", `aria-hidden` = "true"), "Your samples")
           ),
-          tabsetPanel(id = "workspaceView", type = "tabs",
+          tabsetPanel(id = "workspaceView", type = "tabs", selected = "triangle",
             tabPanel("Triangle", value = "triangle",
               tags$div(class = "plot-options",
                 checkboxInput("showSampleLabels", "Sample labels", value = TRUE),
                 checkboxInput("avoidLabelOverlap", "Hide overlapping labels", value = TRUE),
                 actionButton("enlargePlotBtn", "Enlarge", class = "btn-outline-primary"),
+                uiOutput("coincidentControl", inline = TRUE),
                 actionButton("classKeyBtn", "Class key", class = "btn-outline-primary"),
                 downloadButton("downloadPlotBtn", "PNG", class = "btn-outline-primary")),
               tags$div(class = "plot-selection", uiOutput("plotSelection")),

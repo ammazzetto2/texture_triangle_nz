@@ -1,3 +1,12 @@
+# Exact compositions only: nearby points retain their individual coordinates.
+coincident_sample_groups <- function(samples) {
+  samples$row <- seq_len(nrow(samples))
+  samples |>
+    dplyr::group_by(sand, silt, clay) |>
+    dplyr::summarise(count = dplyr::n(), rows = list(row), .groups = "drop") |>
+    dplyr::filter(count > 1L)
+}
+
 # Keep all layers in the same fraction units and inherit the ternary mapping.
 # Explicit z mappings on individual ggplot2 layers generate spurious warnings.
 build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
@@ -25,6 +34,11 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
   }
   points <- data.frame(Sand = samples$sand / 100, Clay = samples$clay / 100,
                        Silt = samples$silt / 100, soil = samples$soil)
+  groups <- coincident_sample_groups(samples)
+  counts <- data.frame(Sand = groups$sand / 100, Clay = groups$clay / 100,
+                       Silt = groups$silt / 100, label = sprintf("%d samples", groups$count))
+  counts$hjust <- ifelse(counts$Sand > 0.8, 0, ifelse(counts$Silt > 0.8, 1, 0.5))
+  counts$vjust <- ifelse(counts$Clay > 0.8, 1.5, -0.8)
   # Keep labels near sand/silt corners directed into the triangle.
   points$hjust <- ifelse(points$Sand > 0.8, 0, ifelse(points$Silt > 0.8, 1, 0.5))
   points$vjust <- ifelse(points$Clay < 0.1, -0.8, 1.5)
@@ -41,6 +55,12 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
     selected <- points[selected_row, , drop = FALSE]
     if (show_labels) label_points <- points[-selected_row, , drop = FALSE]
   }
+  # A shared position gets one count label. Selected samples still show their name.
+  shared_rows <- unlist(groups$rows, use.names = FALSE)
+  if (nrow(selected) && selected_row %in% shared_rows) {
+    selected$vjust <- ifelse(selected$Clay < 0.1, -3, 3)
+  }
+  label_points <- label_points[!rownames(label_points) %in% as.character(shared_rows), , drop = FALSE]
   ggtern::ggtern(polygon_data, ggtern::aes(x = Sand, y = Clay, z = Silt)) +
     ggplot2::geom_polygon(ggtern::aes(fill = Label, group = Label),
                           linewidth = 0.45, colour = "#6a7369") +
@@ -59,6 +79,10 @@ build_soil_plot <- function(samples, system, text_scale = 1, show_labels = TRUE,
                        fill = NA, colour = "#173f70") +
     ggplot2::geom_text(data = selected, ggtern::aes(label = soil, hjust = hjust, vjust = vjust),
                       position = "identity", size = 4 * text_scale, fontface = "bold", colour = "#173f70") +
+    ggplot2::geom_label(data = counts,
+      ggtern::aes(label = label, hjust = hjust, vjust = vjust),
+      position = "identity", size = 3.2 * text_scale,
+      fill = "white", colour = "#963e28", linewidth = 0.2) +
     ggtern::theme_nogrid() +
     ggtern::theme_showarrows() +
     ggtern::theme_nolatex() +

@@ -75,8 +75,12 @@ restores the dataset before the latest successful add, upload, edit, delete, or 
 level, within this session). Invalid input leaves that undo available. Manual
 entry clears the sample name after success and rejects an identical name and
 composition already in the dataset; use distinct names for replicate samples.
-CSV uploads preserve all supplied rows, including duplicates. Download
-results before closing the session if you want to keep them.
+CSV uploads show a duplicate count and default to **Skip duplicates**. A duplicate
+has the same trimmed sample name and all three percentages. Append checks both
+existing samples and earlier rows in the CSV. Replace checks earlier CSV rows.
+Choose **Keep duplicates** to import every supplied row. Skipping an entire
+append leaves the workspace and its undo history intact. Download results before
+closing the session if you want to keep them.
 
 In **Results**, use **Edit** beside a sample name to correct its name or
 percentages, then **Save changes**. Invalid edits stay in the editor with an
@@ -140,3 +144,12 @@ Totals use an absolute tolerance of `1e-8` percentage points to accommodate
 floating-point arithmetic. Values are not normalized or rounded automatically.
 This tolerance does not accommodate laboratory measurement or rounding error.
 
+
+### Samples at identical positions
+
+Samples with exactly matching sand, silt and clay percentages share a count
+label on the triangle, including when sample labels are hidden. Choose
+**Shared positions** above the chart to inspect every sample name at a chosen
+composition. Row numbers distinguish repeated names. Counts also appear in
+enlarged charts and PNG downloads. Selecting a sample with **View** in Results
+still displays its name. Nearby compositions remain separate.
