@@ -66,6 +66,13 @@ geometry and metadata in `R/classifications/`, rather than adding special cases
 to the shared classifier or renderer. Preserve stable export IDs unless a
 migration is explicitly justified and documented.
 
+The server entry point in `soil_triangle.R` owns shared session data, Undo state,
+classification results, and row-revision checks. Feature handlers live in
+`R/server/samples.R`, `imports.R`, `results.R`, and `charts.R`. These files are
+sourced with `local = TRUE` inside each server session and share its environment.
+Use `change_samples()` for sample mutations so Undo, revision checks, and chart
+selection remain consistent.
+
 Run checks relevant to your change while developing, then run the complete
 suite before submitting code or classification changes:
 
