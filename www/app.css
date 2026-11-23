@@ -21,7 +21,7 @@ h2 { margin: 0; font-size: 19px; letter-spacing: -.025em; font-weight: 650; }
 .classification-control { min-width: 0; }
 .classification-control .shiny-input-container { width: 100%; margin: 0; }
 .classification-control .form-select { width: 100%; min-width: 0; }
-.workspace-download { max-width: 26ch; }
+.workspace-download { max-width: 34ch; }
 .workspace-download p { margin: 4px 0 0; line-height: 1.35; }
 .system-context { grid-column: 1 / -1; border-top: 1px solid #d3dccf; padding-top: 8px; min-width: 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .system-context p { display: inline; margin: 0 8px 0 0; }
@@ -251,3 +251,5 @@ a:focus-visible, button:focus-visible, summary:focus-visible, .results-table:foc
 }
 
 .coincident-table { max-height: 50vh; overflow: auto; overflow-wrap: anywhere; }
+
+.workspace-download-actions { display: flex; flex-wrap: wrap; gap: 8px; }

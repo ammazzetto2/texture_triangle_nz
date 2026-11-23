@@ -153,3 +153,26 @@ label on the triangle, including when sample labels are hidden. Choose
 composition. Row numbers distinguish repeated names. Counts also appear in
 enlarged charts and PNG downloads. Selecting a sample with **View** in Results
 still displays its name. Nearby compositions remain separate.
+
+## Save and restore a workspace
+
+Open **Workspace** beside Download CSV and choose **Save workspace**. The JSON
+file includes all samples (including duplicates), the selected classification
+system, both label options, and the highlighted sample. Save again after making
+changes you want to keep.
+
+To resume, open **Workspace**, select the saved JSON file, check its sample count
+and classification system, then choose **Restore workspace**. Restoration replaces
+the current samples, selects the saved system and chart settings, clears Results
+filters, and opens Triangle. Classifications are recalculated from the current
+definitions. Empty workspaces can also be saved and restored.
+
+The app validates the file before changing session data. An unsupported version,
+unknown classification system, or invalid sample leaves the current workspace
+intact. Immediately after restoration, **Undo** restores the previous samples,
+classification system, label settings, and highlighted sample. A subsequent
+sample change becomes the new single-step Undo action.
+
+Workspace files contain sample names and percentages. Keep the downloaded file
+where you normally store your sample data. CSV remains available for exporting
+tabular results and importing measurements.

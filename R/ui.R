@@ -28,8 +28,10 @@ build_app_ui <- function() {
         ),
         tags$div(class = "workspace-stats", `aria-live` = "polite", uiOutput("workspaceStats", inline = TRUE)),
         tags$div(class = "workspace-download",
-          downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
-          tags$p(class = "field-help", "Samples last only for this session. Download before refreshing or closing.")
+          tags$div(class = "workspace-download-actions",
+            downloadButton("downloadDataBtn", "Download CSV", class = "btn-primary"),
+            actionButton("workspaceBtn", "Workspace", class = "btn-outline-primary")),
+          tags$p(class = "field-help", "Save your workspace or download CSV before refreshing or closing.")
         ),
         tags$div(class = "system-context", `aria-live` = "polite", uiOutput("systemRequirements"))
       ),

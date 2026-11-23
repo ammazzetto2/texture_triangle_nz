@@ -104,3 +104,53 @@ test("shared positions expose every sample name", async ({ page }) => {
   await expect(page.locator("#coincidentGroup")).toBeHidden();
   await page.screenshot({ path: "/tmp/soil-shared-positions.png" });
 });
+
+test("saved workspace restores a fresh session and supports full undo", async ({ page, context }, testInfo) => {
+  await openWorkspace(page);
+  await addSample(page, "Saved sample");
+  await page.locator("#dataset").selectOption("USDA");
+  await page.locator("#showSampleLabels").uncheck();
+  await page.locator("#avoidLabelOverlap").uncheck();
+  await page.getByRole("tab", { name: "Results", exact: true }).click();
+  await page.getByRole("button", { name: "View sample 1 Saved sample", exact: true }).click();
+  await expect(page.locator("#plotSelection")).toContainText("Saved sample");
+  await page.getByRole("button", { name: "Workspace", exact: true }).click();
+  const downloadReady = page.waitForEvent("download");
+  await page.locator("#downloadWorkspace").click();
+  const saved = testInfo.outputPath("workspace.json");
+  await (await downloadReady).saveAs(saved);
+
+  const restored = await context.newPage();
+  await openWorkspace(restored);
+  await addSample(restored, "Previous sample");
+  await restored.getByRole("button", { name: "Workspace", exact: true }).click();
+  await restored.locator("#workspaceUpload").setInputFiles(saved);
+  await expect(restored.locator("#workspacePreview")).toContainText("1 sample(s)");
+  await restored.getByRole("button", { name: "Restore workspace", exact: true }).click();
+  await expect(restored.locator("#workspaceUpload")).toBeHidden();
+  await expect(restored.locator("#dataset")).toHaveValue("USDA");
+  await expect(restored.locator("#showSampleLabels")).not.toBeChecked();
+  await expect(restored.locator("#avoidLabelOverlap")).not.toBeChecked();
+  await expect(restored.locator("#plotSelection")).toContainText("Saved sample");
+  await restored.getByRole("tab", { name: "Results", exact: true }).click();
+  await expect(restored.locator(".sample-results")).toContainText("Saved sample");
+  await expect(restored.locator(".sample-results")).not.toContainText("Previous sample");
+
+  await restored.locator("#undoDataBtn").click();
+  await expect(restored.locator("#dataset")).toHaveValue("New Zealand");
+  await expect(restored.locator("#showSampleLabels")).toBeChecked();
+  await expect(restored.locator("#avoidLabelOverlap")).toBeChecked();
+  await expect(restored.locator(".sample-results")).toContainText("Previous sample");
+  await restored.setViewportSize({ width: 320, height: 640 });
+  await restored.getByRole("button", { name: "Workspace", exact: true }).click();
+  await expect(restored.locator("#workspaceUpload")).toBeAttached();
+  await expect.poll(() => restored.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await restored.locator("#workspaceUpload").setInputFiles({
+    name: "broken.json", mimeType: "application/json", buffer: Buffer.from("{broken"),
+  });
+  await expect(restored.locator("#workspaceError")).toContainText("Could not read");
+  await expect(restored.locator("#restoreWorkspace")).toHaveCount(0);
+  await restored.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(restored.locator(".sample-results")).toContainText("Previous sample");
+  await restored.close();
+});
