@@ -80,6 +80,13 @@ suite before submitting code or classification changes:
 Rscript --vanilla tests/run_all.R
 ```
 
+GitHub Actions runs the R and Chromium suites on pull requests and pushes to
+`main`, using a standard Ubuntu runner and the R version from `renv.lock`.
+The workflow is in `.github/workflows/tests.yml`. In a pull request, open the
+**Tests / R and browser tests** check to inspect the logs. Failed browser runs
+save traces and screenshots as an artifact for seven days. The **Tests**
+workflow can also be started manually from the repository's **Actions** tab.
+
 For example, an individual comparison check can be run with:
 
 ```sh
