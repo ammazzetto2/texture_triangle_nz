@@ -68,7 +68,7 @@ migration is explicitly justified and documented.
 
 The server entry point in `soil_triangle.R` owns shared session data, Undo state,
 classification results, and row-revision checks. Feature handlers live in
-`R/server/samples.R`, `imports.R`, `results.R`, and `charts.R`. These files are
+`R/server/samples.R`, `imports.R`, `results.R`, `charts.R`, and `workspace.R`. These files are
 sourced with `local = TRUE` inside each server session and share its environment.
 Use `change_samples()` for sample mutations so Undo, revision checks, and chart
 selection remain consistent.

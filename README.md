@@ -22,6 +22,8 @@ and export results or a high-resolution chart.
   unclassified samples, with search, sorting and review filters.
 - **Chart tools:** sample highlighting, label controls, enlarged charts and
   3000 × 2700 pixel PNG downloads.
+- **Workspace recovery:** save samples, classification selection, label settings and
+  the highlighted sample in a JSON file, then restore them in a fresh session.
 - **CSV exports:** every sample's composition, classification system, result
   status and candidate classes.
 
@@ -65,7 +67,8 @@ Stop the app with Escape in RStudio or Ctrl+C in the terminal.
    samples without a single assigned class.
 4. Download your results as CSV or save the chart as PNG.
 
-Samples remain in the current session. Export your data before closing it.
+Samples remain in the current session. Choose **Workspace → Save workspace**
+to resume later, or export CSV before closing.
 See the [user guide](docs/user-guide.md) for import modes, editing, undo,
 chart controls and results navigation.
 

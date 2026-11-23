@@ -33,6 +33,7 @@ observeEvent(input$undoDataBtn, {
   soil_data(previous$data)
   selected_sample(NULL)
   data_revision(data_revision() + 1L)
+  if (!is.null(previous$workspace)) apply_workspace_settings(previous$workspace)
   undo_state(NULL)
   sample_feedback(paste("Undone:", previous$description))
 }, ignoreInit = TRUE)

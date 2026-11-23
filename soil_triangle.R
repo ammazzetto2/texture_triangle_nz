@@ -12,6 +12,7 @@ source("R/classification_systems.R", local = TRUE)
 source("R/classification.R", local = TRUE)
 
 source("R/plotting.R", local = TRUE)
+source("R/workspace.R", local = TRUE)
 
 source("R/ui.R", local = TRUE)
 ui <- build_app_ui()
@@ -60,6 +61,7 @@ server <- function(input, output, session) {
   source("R/server/imports.R", local = TRUE)
   source("R/server/results.R", local = TRUE)
   source("R/server/charts.R", local = TRUE)
+  source("R/server/workspace.R", local = TRUE)
 }
 
 shinyApp(ui = ui, server = server)
