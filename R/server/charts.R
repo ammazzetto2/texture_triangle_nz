@@ -76,7 +76,7 @@ output$downloadPlotBtn <- downloadHandler(
   contentType = "image/png",
   content = function(file) {
     plot <- current_plot() + ggplot2::labs(title = classification_definition(input$dataset)$display,
-      caption = "All sample points shown. Labels follow the current chart controls.")
+      caption = "Label lines lead to sample points. Long names may be shortened; full names are in the CSV export.")
     ggplot2::ggsave(file, plot = plot, device = "png", width = 10, height = 9, units = "in", dpi = 300, bg = "white")
   }
 )
@@ -85,7 +85,8 @@ plot_description <- reactive({
   paste("Soil texture triangle for", classification_definition(input$dataset)$display,
     "with", nrow(soil_data()), "sample points. Axes show sand, silt and clay percentages.",
     "Open the Results tab for sample names, exact percentages, classifications and review status.",
-    "The Class key lists region names. Count labels mark identical compositions. Use Shared positions to inspect their sample names. Nearby points and labels may overlap.")
+    "The Class key lists region names. Count labels mark identical compositions. Use Shared positions to inspect their sample names.",
+    "Label lines lead to sample points. Arrange sample labels reduces overlap and hides ordinary labels when space is limited. Long chart labels may be shortened; full names are in Results.")
 })
 output$enlargedPlot <- renderPlot({
   req(input$dataset)

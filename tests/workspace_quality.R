@@ -21,7 +21,7 @@ shiny::testServer(app_env$server, {
     grepl("&lt;script&gt;", output$resultsTable$html, fixed = TRUE))
   session$setInputs(viewSample = list(row = 1000, revision = data_revision()))
   built <- ggtern::ggplot_build(current_plot())
-  stopifnot(nrow(built$data[[3]]) == 1000L, nrow(built$data[[4]]) == 0L,
-    identical(built$data[[7]]$label, samples$soil[1000]))
+  stopifnot(nrow(built$data[[3]]) == 1000L, nrow(built$data[[6]]) == 2L,
+    identical(built$data[[6]]$label[1], samples$soil[1000]))
 })
 cat("Workspace quality: 1000 coincident samples, long escaped names, complete export and chart description PASS\n")

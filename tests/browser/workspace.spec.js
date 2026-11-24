@@ -105,6 +105,34 @@ test("shared positions expose every sample name", async ({ page }) => {
   await page.screenshot({ path: "/tmp/soil-shared-positions.png" });
 });
 
+test("nearby samples and long names render with arranged labels", async ({ page }) => {
+  await openWorkspace(page);
+  const longName = "A very long sample name near the sand corner of the triangle";
+  await page.getByRole("tab", { name: "CSV upload", exact: true }).click();
+  await page.locator("#fileUpload").setInputFiles({
+    name: "nearby.csv", mimeType: "text/csv",
+    buffer: Buffer.from(`soil,sand,silt,clay\nField A,50,25,25\nField B,51,24,25\nField C,49,26,25\n${longName},99,0,1\n`),
+  });
+  await expect(page.locator("#uploadStatus")).toHaveText("4 rows are ready to import.");
+  await page.locator("#confirmImportBtn").click();
+  await expect(page.locator("#sampleFeedback")).toContainText("Imported 4 sample(s)");
+  await page.getByRole("tab", { name: "Results", exact: true }).click();
+  await page.getByRole("button", { name: `View sample 4 ${longName}`, exact: true }).click();
+  await expect(page.locator("#plotSelection")).toContainText(longName);
+  await expect(page.getByLabel("Arrange sample labels", { exact: true })).toBeChecked();
+  const chart = page.locator("#ternaryPlot img");
+  await expect(chart).toHaveAttribute("alt", /with 4 sample points/);
+  await expect.poll(() => chart.evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+  await page.locator("#ternaryPlot").screenshot({ path: "/tmp/soil-arranged-desktop.png" });
+  const desktopSource = await chart.getAttribute("src");
+  await page.setViewportSize({ width: 320, height: 640 });
+  await expect(chart).not.toHaveAttribute("src", desktopSource);
+  await expect.poll(() => chart.evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true);
+  await expect(page.locator(".shiny-output-error")).toHaveCount(0);
+  await expect(page.locator("#plotSelection")).toContainText(longName);
+  await page.locator("#ternaryPlot").screenshot({ path: "/tmp/soil-arranged-mobile.png" });
+});
+
 test("saved workspace restores a fresh session and supports full undo", async ({ page, context }, testInfo) => {
   await openWorkspace(page);
   await addSample(page, "Saved sample");

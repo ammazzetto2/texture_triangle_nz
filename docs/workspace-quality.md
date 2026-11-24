@@ -69,5 +69,6 @@ deployment host.
   into a fresh session and compare names and percentages.
 - Inspect dense charts with representative data. All points are still plotted;
   identical compositions have count labels and a Shared positions name list.
-  Nearby points can still overlap and long chart labels can be clipped. Hide labels and
-  use the Results table for exact names and values.
+  Sample labels use leader lines and are arranged around nearby points. Long
+  names are shortened to fit inside the triangle. Check the placement on the
+  deployment host; Results provides full names and exact values.
