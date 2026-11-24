@@ -44,9 +44,12 @@ See the [README](../README.md#quick-start) for installation and startup.
 - **PNG** downloads a 3000 × 2700 pixel chart with the system name and current
   highlight. All samples are included, even when Results is filtered.
 - **Class key** opens plot labels and full class names beside the chart workflow.
-- **Hide overlapping labels** suppresses colliding sample labels while keeping
-  all points. It does not move points or prevent collisions with class labels.
-  Turn it off to show every sample label.
+- **Arrange sample labels** positions names around nearby points, using leader
+  lines to identify each composition. Placement accounts for sample points,
+  class labels and other sample labels. Ordinary labels are hidden when space
+  is limited. Turn it off to show every label with simpler placement.
+  Long chart names are shortened to fit, with full names in Results, CSV exports
+  and the highlighted-sample summary. Points retain their exact compositions.
 - **View** beside a Results row highlights that exact sample with a blue ring,
   bold label and composition summary. This also works with duplicate names and
   filtered results. The highlighted label stays visible when other labels are

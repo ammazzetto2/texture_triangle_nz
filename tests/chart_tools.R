@@ -15,14 +15,14 @@ shiny::testServer(app_env$server, {
   session$setInputs(viewSample = target)
   stopifnot(selected_sample() == 2L, grepl("sand 90%", output$plotSelection$html, fixed = TRUE))
   built <- ggtern::ggplot_build(current_plot())
-  stopifnot(nrow(built$data[[3]]) == 3L, nrow(built$data[[4]]) == 0L,
-            nrow(built$data[[6]]) == 1L, built$data[[7]]$label == "Same",
-            built$data[[6]]$x == 0.9)
+  stopifnot(nrow(built$data[[3]]) == 3L, nrow(built$data[[6]]) == 1L,
+            nrow(built$data[[5]]) == 1L, built$data[[6]]$label == "Same",
+            built$data[[5]]$x == 0.9)
   session$setInputs(showSampleLabels = TRUE)
-  stopifnot(nrow(ggtern::ggplot_build(current_plot())$data[[4]]) == 2L,
-            isTRUE(current_plot()$layers[[4]]$geom_params$check_overlap))
+  stopifnot(nrow(ggtern::ggplot_build(current_plot())$data[[6]]) == 3L,
+            isTRUE(current_plot()$layers[[6]]$geom_params$avoid_overlap))
   session$setInputs(avoidLabelOverlap = FALSE)
-  stopifnot(identical(current_plot()$layers[[4]]$geom_params$check_overlap, FALSE))
+  stopifnot(identical(current_plot()$layers[[6]]$geom_params$avoid_overlap, FALSE))
   session$setInputs(dataset = "USDA")
   stopifnot(selected_sample() == 2L, !is.null(output$enlargedPlot))
   png <- output$downloadPlotBtn
@@ -52,9 +52,9 @@ stopifnot(nrow(groups) == 1L, groups$count == 3L, identical(groups$rows[[1]], c(
 for (labels in c(TRUE, FALSE)) {
   plot <- app_env$build_soil_plot(shared, "New Zealand", show_labels = labels, selected_row = 2)
   built <- ggtern::ggplot_build(plot)
-  stopifnot(nrow(built$data[[3]]) == 4L, built$data[[8]]$label == "3 samples",
-    built$data[[8]]$x == 0.5, built$data[[8]]$y == 0.25,
-    built$data[[7]]$label == "<Second>")
+  stopifnot(nrow(built$data[[3]]) == 4L, built$data[[6]]$label[2] == "3 samples",
+    built$data[[6]]$x[2] == 0.5, built$data[[6]]$y[2] == 0.25,
+    built$data[[6]]$label[1] == "<Second>")
   ggtern::ggplotGrob(plot)
 }
 nearby <- shared[1:2, ]

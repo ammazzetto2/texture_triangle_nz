@@ -117,14 +117,14 @@ build_app_ui <- function() {
             tabPanel("Triangle", value = "triangle",
               tags$div(class = "plot-options",
                 checkboxInput("showSampleLabels", "Sample labels", value = TRUE),
-                checkboxInput("avoidLabelOverlap", "Hide overlapping labels", value = TRUE),
+                checkboxInput("avoidLabelOverlap", "Arrange sample labels", value = TRUE),
                 actionButton("enlargePlotBtn", "Enlarge", class = "btn-outline-primary"),
                 uiOutput("coincidentControl", inline = TRUE),
                 actionButton("classKeyBtn", "Class key", class = "btn-outline-primary"),
                 downloadButton("downloadPlotBtn", "PNG", class = "btn-outline-primary")),
               tags$div(class = "plot-selection", uiOutput("plotSelection")),
               tags$div(class = "plot-frame", plotOutput("ternaryPlot", height = "100%", width = "100%")),
-              tags$p(class = "plot-caption", "Sand, silt, and clay as a percentage of the sample. Region colours distinguish texture classes.")
+              tags$p(class = "plot-caption", "Sand, silt, and clay as a percentage of the sample. Region colours distinguish texture classes. Label lines lead to sample points; Results shows full names.")
             ),
             tabPanel("Results", value = "results",
               tags$div(class = "results-content",
